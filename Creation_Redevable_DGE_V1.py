@@ -156,7 +156,42 @@ def main():
         WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBrtitnomPrslibLibelleProfessionRaisonSoc')))
         wd.find_element(By.ID, 'inputBrtitnomPrslibLibelleProfessionRaisonSoc').send_keys(Keys.TAB)
 
-        ##Capture et Saisie Dénomination
+        ##Saisie d'une tabulation d'échappement du code
+
+        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB326codeYa326CodeCodeSirOuSpi')))
+        wd.find_element(By.ID, 'inputB326codeYa326CodeCodeSirOuSpi').send_keys(Keys.TAB)
+
+        ##Saisie de la conservation du code
+
+        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBrep9081Rep9082ReponseUtilisateurON')))
+        wd.find_element(By.ID, 'inputBrep9081Rep9082ReponseUtilisateurON').send_keys('O')
+
+        ##Saisie de l'adresse du redevable
+        ##Saisie du Complément d'Adresse
+
+        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'repeatBradr01SaisieUneAdresse:0:inputBradr01CpladrComplementAdressage')))
+        wd.find_element(By.ID, 'repeatBradr01SaisieUneAdresse:0:inputBradr01CpladrComplementAdressage').send_keys(data[line][23])
+
+        ##Saisie du Numéro de rue
+
+        if data[line][20]!= 0:
+            WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'repeatBradr01SaisieUneAdresse:0:inputBradr01NuvoiDonNumeroVoirie')))
+            wd.find_element(By.ID, 'repeatBradr01SaisieUneAdresse:0:inputBradr01NuvoiDonNumeroVoirie').send_keys(data[line][20])
+
+        ##Saisie de la Boîte postale ou d'une Course Spéciale
+
+        if data[line][6]!= 0:
+            WebDriverWait(wd, 20).until(EC.presence_of_element_located(
+                (By.ID, 'repeatBradr01SaisieUneAdresse:0:inputBradr01ToplibvoLibelleVoie')))
+            wd.find_element(By.ID, 'repeatBradr01SaisieUneAdresse:0:inputBradr01ToplibvoLibelleVoie').send_keys(
+                data[line][6])
+
+        ##Saisie de la Commune
+
+        WebDriverWait(wd, 20).until(EC.presence_of_element_located(
+                (By.ID, 'repeatBradr01SaisieUneAdresse:0:inputBradr01ToplibcoLibeleCommune')))
+        wd.find_element(By.ID, 'repeatBradr01SaisieUneAdresse:0:inputBradr01ToplibcoLibeleCommune').send_keys(
+                data[line][27])
 
 
         WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBndordNatureDegrevement')))
