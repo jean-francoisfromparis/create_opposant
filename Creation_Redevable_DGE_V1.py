@@ -35,9 +35,6 @@ def resource_path(relative_path):
 
 def main():
 
-    
-  
-
     ##Délai entre opérations automate. Pour des numéros non entiers il faut utiliser le point pas la virgule
     while True:
         try:
@@ -52,7 +49,7 @@ def main():
     while True:
         line = EnterTable2.get()
         if line.isnumeric():  ##vérifie que ça soit un numéro
-            line = int(line) - 1  ##ajuste l'indice
+            line = int(line)  ##ajuste l'indice
             break
         else:
             messagebox.OK('Saisie incorrecte, réessayez')
@@ -72,7 +69,7 @@ def main():
     ## une ligne du fichier Calc. Il faut faire ça parce que pyxcel_ods prend les données sous forme 
     ## de dictionaire.
     donnees_entree = pe.get_data(File_path)
-    data = [i for i in donnees_entree['Feuille1']]
+    data = [i for i in donnees_entree['Database']]
 
     
     # Condition qui vérifie que chaque cellule de la colonne rib, à part le header, est vide, 
@@ -91,23 +88,26 @@ def main():
       #########################################        
         
     # ##Saisie nom utilisateur et mot de passe
-    #login = pe.get_data('C:/Users/meddb-el-farouki01/Desktop/Rembursement_DGE/Programme/login.ods')['Feuille1'][0]
+    #login = pe.get_data('C:/Users/meddb-el-farouki01/Desktop/Rembursement_DGE/Programme/login.ods')['Database'][0]
     login =EnterTable4.get()
     mot_de_passe= EnterTable5.get()
     ##Lancement webdriver Selenium
     s=Service(resource_path("geckodriver"))
-    wd = webdriver.Firefox(service=s)
+    # wd = webdriver.Firefox(service=s)
+    wd = webdriver.Firefox(executable_path=GeckoDriverManager().install())
     wd_options = Options()
     wd_options.set_preference('detach',True)
-    wd.get('https://portailmetierpriv.ira.appli.impots/cas/login?service=http%3A%2F%2Fmedoc.ia.dgfip%3A8141%2Fmedocweb%2Fcas%2Fvalidation')
+    wd.get('https://portailmetierpriv.ira.appli.impots/cas/login?service=http%3A%2F%2Fmedoc.ia.dgfip%3A8121%2Fmedocweb%2Fcas%2Fvalidation')
 
     ##Saisir utilisateur
     time.sleep(delay)
-    wd.find_element(By.ID, 'identifiant').send_keys(login)
+    # wd.find_element(By.ID, 'identifiant').send_keys(login)
+    wd.find_element(By.ID, 'identifiant').send_keys("youssef.atigui")
 
     ##Saisie mot de pass
     time.sleep(delay)
-    wd.find_element(By.ID, 'secret_tmp').send_keys(mot_de_passe)
+    # wd.find_element(By.ID, 'secret_tmp').send_keys(mot_de_passe)
+    wd.find_element(By.ID, 'secret_tmp').send_keys("1")
 
 
     time.sleep(delay)
@@ -116,7 +116,7 @@ def main():
     WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'ligneServiceHabilitation')))
     
     ##Saisir service
-    wd.find_element(By.ID, 'nomServiceChoisi').send_keys('0070100')
+    wd.find_element(By.ID, 'nomServiceChoisi').send_keys('6200100')
     time.sleep(delay)
     wd.find_element(By.ID, 'nomServiceChoisi').send_keys(Keys.TAB)
 
@@ -134,500 +134,143 @@ def main():
         ## Arriver à la transactionv 3-2-4
 
         time.sleep(delay)
-        wd.find_element(By.ID, 'bmenuxtableMenus:9:outputBmenuxBrmenx04LibelleLigneProposee').send_keys('324')
+        wd.find_element(By.ID, 'inputBmenuxBrmenx07CodeSaisieDirecte').send_keys('324')
+        wd.find_element(By.ID, 'inputBmenuxBrmenx07CodeSaisieDirecte').send_keys(Keys.ENTER)
 
         ##Saisir sous-dossier: "DIV"
         WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBrdos02Yrdos021NatureSousDossier')))
 
-        time.sleep(delay)
         wd.find_element(By.ID, 'inputBrdos02Yrdos021NatureSousDossier').send_keys('DIV')
+        wd.find_element(By.ID, 'inputBrdos02Yrdos021NatureSousDossier').send_keys(Keys.ENTER)
 
-        ##Creation Redevable
-        ##Capture et Saisie Dénomination
 
+        ##Saisie du Champ du Genre
+
+        time.sleep(delay)
+        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBrtitnomTitredTitreCftitdes')))
+        wd.find_element(By.ID, "inputBrtitnomTitredTitreCftitdes").click()
+        wd.find_element(By.ID, "inputBrtitnomTitredTitreCftitdes").send_keys("M")
+        wd.find_element(By.ID, "inputBrtitnomTitredTitreCftitdes").send_keys(Keys.ENTER)
+
+        ##Saisie du Champ du Destinataire
+
+        time.sleep(delay)
         WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBrtitnomNomprfNomProfession')))
+        wd.find_element(By.ID, "inputBrtitnomNomprfNomProfession").click()
+        wd.find_element(By.ID, "inputBrtitnomNomprfNomProfession").send_keys(data[line][0])
+        wd.find_element(By.ID, "inputBrtitnomNomprfNomProfession").send_keys(Keys.ENTER)
 
+        ##Saisie du Champ de la raison sociale
         time.sleep(delay)
-        wd.find_element(By.ID, 'inputBrtitnomNomprfNomProfession').send_keys(data[line][0])
-        wd.find_element(By.ID, 'inputBrtitnomNomprfNomProfession').send_keys(Keys.ENTER)
-
-        ##Saisie d'une tabulation d'échappement de la saisie de la profession
-
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBrtitnomPrslibLibelleProfessionRaisonSoc')))
-        wd.find_element(By.ID, 'inputBrtitnomPrslibLibelleProfessionRaisonSoc').send_keys(Keys.TAB)
-
-        ##Saisie d'une tabulation d'échappement du code
-
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB326codeYa326CodeCodeSirOuSpi')))
-        wd.find_element(By.ID, 'inputB326codeYa326CodeCodeSirOuSpi').send_keys(Keys.TAB)
-
-        ##Saisie de la conservation du code
-
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBrep9081Rep9082ReponseUtilisateurON')))
-        wd.find_element(By.ID, 'inputBrep9081Rep9082ReponseUtilisateurON').send_keys('O')
-
-        ##Saisie de l'adresse du redevable
-        ##Saisie du Complément d'Adresse
-
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'repeatBradr01SaisieUneAdresse:0:inputBradr01CpladrComplementAdressage')))
-        wd.find_element(By.ID, 'repeatBradr01SaisieUneAdresse:0:inputBradr01CpladrComplementAdressage').send_keys(data[line][23])
-
-        ##Saisie du Numéro de rue
-
-        if data[line][20]!= 0:
-            WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'repeatBradr01SaisieUneAdresse:0:inputBradr01NuvoiDonNumeroVoirie')))
-            wd.find_element(By.ID, 'repeatBradr01SaisieUneAdresse:0:inputBradr01NuvoiDonNumeroVoirie').send_keys(data[line][20])
-
-        ##Saisie de la Boîte postale ou d'une Course Spéciale
-
-        if data[line][6]!= 0:
-            WebDriverWait(wd, 20).until(EC.presence_of_element_located(
-                (By.ID, 'repeatBradr01SaisieUneAdresse:0:inputBradr01ToplibvoLibelleVoie')))
-            wd.find_element(By.ID, 'repeatBradr01SaisieUneAdresse:0:inputBradr01ToplibvoLibelleVoie').send_keys(
-                data[line][6])
-
-        ##Saisie de la Commune
-
         WebDriverWait(wd, 20).until(EC.presence_of_element_located(
-                (By.ID, 'repeatBradr01SaisieUneAdresse:0:inputBradr01ToplibcoLibeleCommune')))
-        wd.find_element(By.ID, 'repeatBradr01SaisieUneAdresse:0:inputBradr01ToplibcoLibeleCommune').send_keys(
-                data[line][27])
+            (By.ID, 'inputBrtitnomPrslibLibelleProfessionRaisonSoc')))
+        wd.find_element(By.ID,
+                        "inputBrtitnomPrslibLibelleProfessionRaisonSoc").click()
+        wd.find_element(By.ID,
+                        "inputBrtitnomPrslibLibelleProfessionRaisonSoc").send_keys(
+            Keys.ENTER)
 
+        ##Saisie du Champ du code
+        time.sleep(delay)
+        WebDriverWait(wd, 20).until(EC.presence_of_element_located(
+            (By.ID, 'inputB326codeYa326CodeCodeSirOuSpi')))
+        wd.find_element(By.ID,
+                        "inputB326codeYa326CodeCodeSirOuSpi").click()
+        wd.find_element(By.ID,
+                        "inputB326codeYa326CodeCodeSirOuSpi").send_keys(
+            Keys.ENTER)
 
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBndordNatureDegrevement')))
+        ##Saisie du Champ du
+        WebDriverWait(wd, 20).until(EC.presence_of_element_located(
+            (By.ID, 'inputBrep9081Rep9082ReponseUtilisateurON')))
+        time.sleep(delay)
+        wd.find_element(By.ID,
+                        "inputBrep9081Rep9082ReponseUtilisateurON").click()
+        wd.find_element(By.ID,
+                        "inputBrep9081Rep9082ReponseUtilisateurON").send_keys(
+            "O")
+
+        ##Saisie du Champ du Code DSF
+        time.sleep(delay)
+        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'repeatBradr01SaisieUneAdresse:0:inputBradr01NudsfCodeDsfAdresseCorrespondance')))
+        wd.find_element(By.ID, "repeatBradr01SaisieUneAdresse:0:inputBradr01NudsfCodeDsfAdresseCorrespondance").send_keys(Keys.TAB)
+
+        ##Saisie du Champ du Code Commune
+        wd.find_element(By.ID,
+                        "repeatBradr01SaisieUneAdresse:0:inputBradr01CcomCodeCommune").send_keys(
+            Keys.TAB)
+
+        ##Saisie du Champ du numéro de voie
+        time.sleep(delay)
+        wd.find_element(By.ID, "repeatBradr01SaisieUneAdresse:0:inputBradr01TopnuvoiNumeroVoie").click()
+        wd.find_element(By.ID, "repeatBradr01SaisieUneAdresse:0:inputBradr01TopnuvoiNumeroVoie").send_keys(
+            data[line][20])
+
+        ##Saisie du Champ du libellé de la voie
+        wd.find_element(By.ID, "repeatBradr01SaisieUneAdresse:0:inputBradr01ToplibvoLibelleVoie").click()
+        wd.find_element(By.ID, "repeatBradr01SaisieUneAdresse:0:inputBradr01ToplibvoLibelleVoie").send_keys(
+            data[line][23])
+
+        ##Saisie du Champ du libellé de la commune
+        wd.find_element(By.ID, "repeatBradr01SaisieUneAdresse:0:inputBradr01ToplibcoLibeleCommune").click()
+        wd.find_element(By.ID, "repeatBradr01SaisieUneAdresse:0:inputBradr01ToplibcoLibeleCommune").send_keys(
+            data[line][32])
+
+        ##Saisie du Champ du libellé code postal
+        wd.find_element(By.ID, "repeatBradr01SaisieUneAdresse:0:inputBradr01TopcodpoCodePostal").click()
+        wd.find_element(By.ID, "repeatBradr01SaisieUneAdresse:0:inputBradr01TopcodpoCodePostal").send_keys(
+            data[line][13])
+
+        ##Saisie du Champ du libellé du bureau distributeur
+        time.sleep(delay)
+        wd.find_element(By.ID, "repeatBradr01SaisieUneAdresse:0:inputBradr01TopburBureauDistributeur").click()
+
 
         time.sleep(delay)
-        wd.find_element(By.ID, 'inputBndordNatureDegrevement').send_keys('REMTF')
-
-        wd.find_element(By.ID, 'inputBndordNatureDegrevement').send_keys(Keys.TAB)
-        
-        ##Capture et reutilisation de la date journee comptable
-        djc_capture = wd.find_element(By.ID, 'PDATCPT_dateJourneeComptable').text
-
-        djc = djc_capture.split('/')
+        wd.find_element(By.ID,
+                                 "repeatBradr01SaisieUneAdresse:0:inputBrval01ReponseOOuN").send_keys("N")
 
         time.sleep(delay)
-        wd.find_element(By.ID, 'inputBndordDatordDateOrdonnancementJour').send_keys(djc[0])
+        wd.find_element(By.ID,
+                                 "repeatBradr01SaisieUneAdresse:0:inputBradr01TitdesTitreDestinataire").send_keys("M")
+        wd.find_element(By.ID, "repeatBradr01SaisieUneAdresse:0:inputBradr01TitdesTitreDestinataire").send_keys(
+            Keys.TAB)
 
         time.sleep(delay)
-        wd.find_element(By.ID, 'inputBndordDatordDateOrdonnancementMois').send_keys(djc[1])
+        wd.find_element(By.ID, "repeatBradr01SaisieUneAdresse:0:inputBradr01NomdesNomDestinataire").send_keys(
+            data[line][0])
+        wd.find_element(By.ID, "repeatBradr01SaisieUneAdresse:0:inputBradr01NomdesNomDestinataire").send_keys(
+            Keys.TAB)
 
+        ##Saisie du Champ DU Formulaire d'adresse
         time.sleep(delay)
-        wd.find_element(By.ID, 'inputBndordDatordDateOrdonnancementAnnee').send_keys(djc[2])
-        
-        ##Saisir montant
-        time.sleep(delay)
-        wd.find_element(By.ID, 'inputBndordMntordMontantOrdonnance').send_keys(data[line][1])
+        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBrval01Yrval011ReponseOOuN')))
+        wd.find_element(By.ID, 'inputBrval01Yrval011ReponseOOuN').send_keys('N')
 
+        ##Saisie du Champ de Validation du Formulaire
         time.sleep(delay)
-        wd.find_element(By.ID, 'inputBndordMntordMontantOrdonnance').send_keys(Keys.ENTER)
+        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBr351val')))
+        wd.find_element(By.ID, 'inputBr351val').send_keys('O')
 
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBrep9081Rep9082ReponseUtilisateurON')))
-
+        ##Capture du numéro de dossier
         time.sleep(delay)
-        wd.find_element(By.ID, 'inputBrep9081Rep9082ReponseUtilisateurON').send_keys('o')
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'outputBdnuordAnOrdAnneeOrdonnancement')))
-        valeur_rib=str(data[line][1])
-        ## Création d'une liste temporaire avec numéro ordonnancement et numéro d'opération d'ordonnancement
-        ## NB le numéro d'ordonnancement est divisé sur deux cellules dans MEDOC
-        ## Cette liste sera finalement collée comme ligne dans le fichiers de donnees de sortie
+        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'brmes01Row6Label2')))
+        numero_dossier_capture = wd.find_element(By.ID, 'brmes01Row6Label2').text
+
+
+        ##Capture du numéro de la Clé du dossier
+
+        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'brmes01Row6Label4')))
+        cle_capture = wd.find_element(By.ID, 'brmes01Row6Label4').text
+
+        ##Enregistrement de données captures dans un tableau temporaire
+        ## Cette liste sera finalement collée comme ligne dans le fichier de données de sortie
         temp_data = []
-        temp_data.append(str(data[line][0])) ##FRP  ##0 (indice dans temp_data)
-        temp_data.append(str(data[line][1])) ##Montant  ##1 (indice dans temp_data)
-        temp_data.append(str(data[line][5])) ##Interets moratoires  ##2 (indice dans temp_data)
-        
-        
-
-        ##Numero ordonnancement
-        temp_data.append(wd.find_element(By.ID, 'outputBdnuordAnOrdAnneeOrdonnancement').text +
-        wd.find_element(By.ID, 'outputBdnuordNuOrdNuopesPourOrdonnancement').text)  ##4 (indice dans temp_data)
-        ##numero operation ordonnancement
-        #try:
-        temp_data.append(wd.find_element(By.ID, 'outputBdnuordNuopet1ErCarNuopeF2').text +
-        wd.find_element(By.ID, 'outputBdnuordNuopes5DerniersCarNuope').text)  ##5 (indice dans temp_data)
-        #except:
-            #pass
-        ##Cree un fichier txt de securité avec les donnees en sortie au cas où le script plante avant 
-        ##ajouter la ligne dans le fichier csv
-        #with open(resource_path('temp_safety_file.txt'), 'w') as f:
-        # f.write(' '.join(temp_data))
-        time.sleep(delay)
-        wd.find_element(By.ID,'barre_outils:image_f2').click()
-        
-        #wd.find_element(By.ID,'inputBdnuordYc94401AcqBarreEspace').send_keys(Keys.F2)
-
-        ##Cree un fichier txt de securité avec les donnees en sortie au cas où le script plante avant 
-        ##ajouter la ligne dans le fichier csv
-        with open('temp_safety_file.txt', 'w') as f:
-         f.write(' '.join(temp_data))
-
-        ##DEPENSE MONTANT DEGREVEMENT
-        ## Arriver à la transactionv 21-2
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBmenuxBrmenx07CodeSaisieDirecte')))
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'inputBmenuxBrmenx07CodeSaisieDirecte').send_keys('212')
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'inputBmenuxBrmenx07CodeSaisieDirecte').send_keys(Keys.ENTER)
-
-        ##Saisir nature et montant
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'repeatBcimp01:0:inputBcimp01Ycimp013NatureSaisie')))
-        
-        time.sleep(delay)
-        wd.find_element(By.ID, 'repeatBcimp01:0:inputBcimp01Ycimp013NatureSaisie').send_keys('REMTF')
-
-        time.sleep(delay)
-        keyboard.tap(Key.tab)
-        time.sleep(delay)
-        keyboard.tap(Key.tab)
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'repeatBcimp01:0:inputBcimp01Ycimp018MontantImputation').send_keys(data[line][1])
-        
-        time.sleep(delay)
-        wd.find_element(By.ID, 'repeatBcimp01:0:inputBcimp01Ycimp018MontantImputation').send_keys(Keys.ENTER)
-
-        ##Saisir libelle
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'repeatBcimp01:0:inputBciddepPc8IdentIndentificationBeneficiaireDep')))
-
-        time.sleep(delay)
-        libelle = 'REMBT DGVT TF ' + str(data[line][2]) + '-' + str(data[line][3]) + '-' + str(data[line][4])
-        wd.find_element(By.ID, 'repeatBcimp01:0:inputBciddepPc8IdentIndentificationBeneficiaireDep').send_keys(libelle)
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'repeatBcimp01:0:inputBciddepPc8IdentIndentificationBeneficiaireDep').send_keys(Keys.ENTER)
-
-        ##Saisir numero ordonnancement
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBddeord1NuordodemNumeroOrdonancementOuDemande')))
-        delai_qui_debloque = 2
-        time.sleep(delai_qui_debloque )
-        wd.find_element(By.ID, 'inputBddeord1NuordodemNumeroOrdonancementOuDemande').send_keys(temp_data[3])
-
-        time.sleep(delai_qui_debloque )
-        wd.find_element(By.ID, 'inputBddeord1NuordodemNumeroOrdonancementOuDemande').send_keys(Keys.ENTER)
-
-        ##Saisie credit et date imputation. Dans cette étape il faut utilisé delai double parce que medoc est particulierment capricieux.
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'repeatBcimp01:0:inputBcimp01Ycimp011ActionCSOuI')))
-
-        time.sleep(delai_qui_debloque )
-        keyboard.tap(Key.tab)
-
-        time.sleep(delai_qui_debloque )
-        wd.find_element(By.ID, 'repeatBcimp01:0:inputBcimp01CcompteNumeroCompteXxxXx').send_keys('512-96')
-
-        time.sleep(delai_qui_debloque )
-        wd.find_element(By.ID, 'repeatBcimp01:0:inputBcimp01Ycimp013NatureSaisie').send_keys('VIRT')
-
-        time.sleep(delai_qui_debloque )
-        keyboard.tap(Key.tab)
-
-        time.sleep(delai_qui_debloque )
-        wd.find_element(By.ID, 'repeatBcimp01:0:inputBcimp01YcimpdevCEstDeviseEOuF').send_keys('E')
-
-        time.sleep(delai_qui_debloque )
-        wd.find_element(By.ID, 'repeatBcimp01:0:inputBcimp01Ycimp018MontantImputation').send_keys(data[line][1])
-
-        time.sleep(delai_qui_debloque )
-        keyboard.tap(Key.enter)
-
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'repeatBcimp01:0:inputBcimp01Ycimp016JourDateImputation')))
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'repeatBcimp01:0:inputBcimp01Ycimp016JourDateImputation').send_keys(djc[0])
-
-        time.sleep(delay)
-        keyboard.tap(Key.tab)
-        time.sleep(delay)
-        keyboard.tap(Key.tab)
-
-        ##Saisie numero dossier
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputYrdos211NumeroDeDossier')))
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(temp_data[0])
-
-
-        ##ATTENTE POUR MESSAGE D'ERREUR RÉLATIF À LA PRÉSENCE DE RAR. 
-        ##SI LE MESSAGE NE S'AFFICHE PAS DANS 20 SECONDS LE SCRIPT CONTINUE
-        ##EFFACER OU "COMMENT-OUT"LES LIGNES SUIVANTES SI CE MESSAGE N'APPARAITRE JAMAIS DANS LES CAS REELS
-        try:
-            WebDriverWait(wd, 10).until(EC.presence_of_element_located((By.ID, 'inputBrep9081Rep9082ReponseUtilisateurON')))
-            time.sleep(delay)
-            wd.find_element(By.ID, 'inputBrep9081Rep9082ReponseUtilisateurON').send_keys('o')
-        except:
-            pass
-        ##JUSQ'A ICI
-
-
-        ## Choix RIB
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBibanremYaribchoixSaisieChoix')))
-
-        time.sleep(delay)
-
-        wd.find_element(By.ID, 'inputBibanremYaribchoixSaisieChoix').send_keys(data[line][7])
-
-        #if data[line][7] =="2":
-            #numero_rang_rib=2
-            #wd.find_element(By.ID, 'inputBibanremYaribchoixSaisieChoix').send_keys(numero_rang_rib)
-        #elif data[line][7] =="3":
-            #numero_rang_rib=3
-            #wd.find_element(By.ID, 'inputBibanremYaribchoixSaisieChoix').send_keys(numero_rang_rib)
-        #else:
-            #numero_rang_rib=1
-            #wd.find_element(By.ID, 'inputBibanremYaribchoixSaisieChoix').send_keys(numero_rang_rib)
-        
-        ##Saisie libelle virement emis et validation
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'repeatBcimp01:1:inputBcrib01IbanlibLibelleVirementEmis')))
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'repeatBcimp01:1:inputBcrib01IbanlibLibelleVirementEmis').send_keys(libelle)
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'repeatBcimp01:1:inputBcrib01IbanlibLibelleVirementEmis').send_keys(Keys.ENTER)
-
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBcvim01Ycvim013ReponseOperateur')))
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'inputBcvim01Ycvim013ReponseOperateur').send_keys('o')
-
-        ##Capture numero ordre de depense et numero operation
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBcvcs04Ycvcs028Reponse')))
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'inputBcvcs04Ycvcs028Reponse').send_keys(' ')
-
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBcvcs03Ycvcs014DemandeSuite')))
-
-        temp_data.append(wd.find_element(By.ID, 'outputBcvcs04Cr17R27CodeR17OuR27').text + ':' +
-        wd.find_element(By.ID, 'outputBcvcs04NudepNumeroPieceDepenseCfF2').text)  ##5 (indice dans temp_data)
-
-        temp_data.append(wd.find_element(By.ID, 'outputBcvcs03Nuopet1ErCarNuopeF2').text + 
-        wd.find_element(By.ID, 'outputBcvcs03Nuopes5DerniersCarNuope').text)  ##6 (indice dans temp_data)
-
-        ##Cree un fichier txt de securité avec les donnees en sortie au cas où le script plante avant 
-        ##ajouter la ligne dans le fichier csv
-        with open('temp_safety_file.txt', 'w') as f:
-            f.write(' '.join(temp_data))
-
-        time.sleep(delay)
-        keyboard.tap(Key.f2)
-
-        ##ORDONNANCEMENT DE LA DEPENSE INTERETS MORATOIRES
-        ## Arriver à la transactionv 26-3-1
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBmenuxBrmenx07CodeSaisieDirecte')))
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'inputBmenuxBrmenx07CodeSaisieDirecte').send_keys('2631')
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'inputBmenuxBrmenx07CodeSaisieDirecte').send_keys(Keys.ENTER)
-
-        ##Saisir numero dossier
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputYrdos211NumeroDeDossier')))
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(data[line][0])
-
-        ##Creation REMTF
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBndordTypeModifChoixModificationCMA')))
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'inputBndordTypeModifChoixModificationCMA').send_keys('c')
-
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBndordNatureDegrevement')))
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'inputBndordNatureDegrevement').send_keys('REMIMO')
-
-        time.sleep(delay)
-        
-        ##Capture et reutilisation de la date journee comptable
-        djc_capture = wd.find_element(By.ID, 'PDATCPT_dateJourneeComptable').text
-
-        djc = djc_capture.split('/')
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'inputBndordDatordDateOrdonnancementJour').send_keys(djc[0])
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'inputBndordDatordDateOrdonnancementMois').send_keys(djc[1])
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'inputBndordDatordDateOrdonnancementAnnee').send_keys(djc[2])
-        
-        ##Saisir montant
-        time.sleep(delay)
-        wd.find_element(By.ID, 'inputBndordMntordMontantOrdonnance').send_keys(data[line][5])
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'inputBndordMntordMontantOrdonnance').send_keys(Keys.ENTER)
-
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBrep9081Rep9082ReponseUtilisateurON')))
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'inputBrep9081Rep9082ReponseUtilisateurON').send_keys('o')
-
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'outputBdnuordAnOrdAnneeOrdonnancement')))
-
-        ## Ajoute numero ordonnancemnt des interets moratoires et le numero de l'operation correspondante
-        ## à liste temporaire créée precedemment
-        ## NB le numéro d'ordonnancement est divisé sur deux cellules dans MEDOC
-        ## Cette liste sera finalement collée come ligne dans le fichiers de donnees de sortie
-
-        ##Numero ordonnancement     
-        temp_data.append(wd.find_element(By.ID, 'outputBdnuordAnOrdAnneeOrdonnancement').text +
-        wd.find_element(By.ID, 'outputBdnuordNuOrdNuopesPourOrdonnancement').text)  ##7 (indice dans temp_data)
-
-        ##numero operation ordonnancement
-        temp_data.append(wd.find_element(By.ID, 'outputBdnuordNuopet1ErCarNuopeF2').text +
-        wd.find_element(By.ID, 'outputBdnuordNuopes5DerniersCarNuope').text)  ##8 (indice dans temp_data)
-
-        ##Cree un fichier txt de securité avec les donnees en sortie au cas où le script plante avant 
-        ##ajouter la ligne dans le fichier csv
-        with open('temp_safety_file.txt', 'w') as f:
-            f.write(' '.join(temp_data))
-
-        time.sleep(delay)
-        keyboard.tap(Key.f2)
-
-        ##DEPENSE INTERETS MORATOIRES
-        ## Arriver à la transaction 21-2
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBmenuxBrmenx07CodeSaisieDirecte')))
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'inputBmenuxBrmenx07CodeSaisieDirecte').send_keys('212')
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'inputBmenuxBrmenx07CodeSaisieDirecte').send_keys(Keys.ENTER)
-
-        ##Saisir nature et montant
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'repeatBcimp01:0:inputBcimp01Ycimp013NatureSaisie')))
-        
-        time.sleep(delay)
-        wd.find_element(By.ID, 'repeatBcimp01:0:inputBcimp01Ycimp013NatureSaisie').send_keys('REMIMO')
-
-        time.sleep(delay)
-        keyboard.tap(Key.tab)
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'repeatBcimp01:0:inputBcimp01Ycimp018MontantImputation').send_keys(data[line][5])
-        
-        time.sleep(delay)
-        wd.find_element(By.ID, 'repeatBcimp01:0:inputBcimp01Ycimp018MontantImputation').send_keys(Keys.ENTER)
-
-        ##Saisir libelle
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'repeatBcimp01:0:inputBciddepPc8IdentIndentificationBeneficiaireDep')))
-
-        time.sleep(delay)
-        libelle = 'REMBT IM TEOM DGVT TF ' + str(data[line][2]) + '-' + str(data[line][3]) + '-' + str(data[line][4])
-        wd.find_element(By.ID, 'repeatBcimp01:0:inputBciddepPc8IdentIndentificationBeneficiaireDep').send_keys(libelle)
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'repeatBcimp01:0:inputBciddepPc8IdentIndentificationBeneficiaireDep').send_keys(Keys.ENTER)
-
-        ##Saisir numero ordonnancement
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBddeord1NuordodemNumeroOrdonancementOuDemande')))
-
-        time.sleep(delai_qui_debloque )
-        wd.find_element(By.ID, 'inputBddeord1NuordodemNumeroOrdonancementOuDemande').send_keys(temp_data[7])
-
-        time.sleep(delai_qui_debloque )
-        wd.find_element(By.ID, 'inputBddeord1NuordodemNumeroOrdonancementOuDemande').send_keys(Keys.ENTER)
-
-        ##Saisie credit et date imputation
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'repeatBcimp01:0:inputBcimp01Ycimp011ActionCSOuI')))
-
-        time.sleep(delai_qui_debloque )
-        keyboard.tap(Key.tab)
-
-        time.sleep(delai_qui_debloque )
-        wd.find_element(By.ID, 'repeatBcimp01:0:inputBcimp01CcompteNumeroCompteXxxXx').send_keys('512-96')
-
-        time.sleep(delai_qui_debloque )
-        wd.find_element(By.ID, 'repeatBcimp01:0:inputBcimp01Ycimp013NatureSaisie').send_keys('VIRT')
-
-        time.sleep(delai_qui_debloque )
-        keyboard.tap(Key.tab)
-
-        time.sleep(delai_qui_debloque )
-        wd.find_element(By.ID, 'repeatBcimp01:0:inputBcimp01YcimpdevCEstDeviseEOuF').send_keys('E')
-
-        time.sleep(delai_qui_debloque )
-        wd.find_element(By.ID, 'repeatBcimp01:0:inputBcimp01Ycimp018MontantImputation').send_keys(data[line][5])
-
-        time.sleep(delai_qui_debloque )
-        keyboard.tap(Key.enter)
-
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'repeatBcimp01:0:inputBcimp01Ycimp016JourDateImputation')))
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'repeatBcimp01:0:inputBcimp01Ycimp016JourDateImputation').send_keys(djc[0])
-
-        keyboard.tap(Key.tab)
-        time.sleep(delay)
-        keyboard.tap(Key.tab)
-
-        ##Saisie numero dossier
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputYrdos211NumeroDeDossier')))
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(temp_data[0])
-
-
-        ## ATTENTE POUR MESSAGE D'ERREUR RÉLATIF À LA PRÉSENCE DE RAR. 
-        ## SI LE MESSAGE NE S'AFFICHE PAS DANS 20 SECONDS LE SCRIPT CONTINUE.
-        ## SI CE MESSAGE N'APPARAITRE JAMAIS DANS LES CAS REELS ON PEUT EFFACER OU 
-        ## "COMMENT-OUT" LES LIGNES SUIVANTES.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
-        try:
-            WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBrep9081Rep9082ReponseUtilisateurON')))
-
-            time.sleep(delay)
-            wd.find_element(By.ID, 'inputBrep9081Rep9082ReponseUtilisateurON').send_keys('o')
-        except:
-            pass
-        ##JUSQ' ICI
-
-
-        ## Choix RIB
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBibanremYaribchoixSaisieChoix')))
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'inputBibanremYaribchoixSaisieChoix').send_keys(data[line][7])
-
-        ##Saisie libelle virement emis et validation
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'repeatBcimp01:1:inputBcrib01IbanlibLibelleVirementEmis')))
-
-        time.sleep(delay)
-        libelle = 'REMBT IMTEOM TF ' + str(data[line][2]) + '-' + str(data[line][3]) + '-' + str(data[line][4])
-        wd.find_element(By.ID, 'repeatBcimp01:1:inputBcrib01IbanlibLibelleVirementEmis').send_keys(libelle)
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'repeatBcimp01:1:inputBcrib01IbanlibLibelleVirementEmis').send_keys(Keys.ENTER)
-
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBcvim01Ycvim013ReponseOperateur')))
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'inputBcvim01Ycvim013ReponseOperateur').send_keys('o')
-
-        ##Capture numero ordre de depense et numero operation
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBcvcs04Ycvcs028Reponse')))
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'inputBcvcs04Ycvcs028Reponse').send_keys(' ')
-
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBcvcs03Ycvcs014DemandeSuite')))
-
-        temp_data.append(wd.find_element(By.ID, 'outputBcvcs04Cr17R27CodeR17OuR27').text + ':' +
-        wd.find_element(By.ID, 'outputBcvcs04NudepNumeroPieceDepenseCfF2').text)  ##9 (indice dans temp_data)
-
-        temp_data.append(wd.find_element(By.ID, 'outputBcvcs03Nuopet1ErCarNuopeF2').text + 
-        wd.find_element(By.ID, 'outputBcvcs03Nuopes5DerniersCarNuope').text)  ##10 (indice dans temp_data)
-
-        time.sleep(delay)
-        keyboard.tap(Key.f2)
-
-        ##Cree un fichier txt de securité avec les donnees en sortie au cas où le script plante avant 
+        temp_data.append(str(data[line][0]))  ##FRP  ##0 (indice dans temp_data)
+        temp_data.append(str(numero_dossier_capture))  ##Numero de dossier  ##1
+        temp_data.append(str(cle_capture))  ##Cle du dossier ##2
+
+        ##Cree un fichier txt de securité avec les donnees en sortie au cas où le script plante avant
         ##ajouter la ligne dans le fichier csv
         with open('temp_safety_file.txt', 'w') as f:
             f.write(' '.join(temp_data))
@@ -636,21 +279,108 @@ def main():
         with open('donnees_sortie.csv', 'a', newline='\n') as f:
             writer_object = csv.writer(f)
             writer_object.writerow(temp_data)
-    
+
         ## La ligne du fichier BIS des données d'entrée est marquée comme traitée
         ## Pour faire ça on ajoute un element à la fin de la bonne ligne de l'"array" des données
-        ## d'entrée et on écrase le fichier. C'est pour ça qu'on le fait sur un copie, comme mésure 
+        ## d'entrée et on écrase le fichier. C'est pour ça qu'on le fait sur un copie, comme mésure
         ## de sécurité extra
         donnees_entree_bis = pe.get_data('donnees_entree_bis.ods')
-        donnees_entree_bis['Feuille1'][line].append('X') 
+        donnees_entree_bis['Database'][line].append('X')
         pe.save_data('donnees_entree_bis.ods', donnees_entree_bis)
 
         ##On passe à la ligne suivante
-        line += 1
-    wd.quit()
+        # line += 1
 
-#if __name__ == '__main__':
-    #main()
+        ## Retour au menu principal
+        time.sleep(delay)
+        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+        wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+
+        ##Création d'un Redevable
+        ## Arriver à la transactionv 3-15-2
+
+        time.sleep(delay)
+        wd.find_element(By.ID, 'inputBmenuxBrmenx07CodeSaisieDirecte').send_keys('3152')
+        wd.find_element(By.ID, 'inputBmenuxBrmenx07CodeSaisieDirecte').send_keys(Keys.ENTER)
+
+        ## Saisie du N° de Dossier
+        numero_dossier = numero_dossier_capture[1:][:-3]
+        time.sleep(delay)
+        wd.find_element(By.ID, 'inputBrib002YaribnumSaisieNuord').click()
+        wd.find_element(By.ID, 'inputBrib002YaribnumSaisieNuord').send_keys(numero_dossier)
+
+        ## Saisie de la ligne NOUVEAU COMPTE
+        time.sleep(delay)
+        wd.find_element(By.ID, 'inputBrib002RibtypTypeCompteCfTexte').click()
+        wd.find_element(By.ID, 'inputBrib002RibtypTypeCompteCfTexte').send_keys('1')
+
+        ## Saisie de la Création
+        time.sleep(delay)
+        wd.find_element(By.ID, 'inputBrib003YaribchxChoixCompteATraiter').click()
+        wd.find_element(By.ID, 'inputBrib003YaribchxChoixCompteATraiter').send_keys('1')
+
+        ## Saisie de l'IBAN
+            ## Saisie du code pays
+        time.sleep(delay)
+        wd.find_element(By.ID, 'inputBrib004Yaiban1Bqriban1OuBqeiban1').click()
+        wd.find_element(By.ID, 'inputBrib004Yaiban1Bqriban1OuBqeiban1').send_keys(data[line][36])
+
+           ## Saisie du code Banque
+        time.sleep(delay)
+        wd.find_element(By.ID, 'inputBrib004Yaiban2Bqriban2OuBqeiban2').click()
+        wd.find_element(By.ID, 'inputBrib004Yaiban2Bqriban2OuBqeiban2').send_keys(data[line][38])
+
+           ## Saisie du code Guichet
+        time.sleep(delay)
+        wd.find_element(By.ID, 'inputBrib004Yaiban3Bqriban3OuBqeiban3').click()
+        wd.find_element(By.ID, 'inputBrib004Yaiban3Bqriban3OuBqeiban3').send_keys(data[line][40])
+
+           ## Saisie du code Agence
+        time.sleep(delay)
+        wd.find_element(By.ID, 'inputBrib004Yaiban4Bqriban4OuBqeiban4').click()
+        wd.find_element(By.ID, 'inputBrib004Yaiban4Bqriban4OuBqeiban4').send_keys(data[line][42])
+
+           ## Saisie du Compte tranche 1
+        time.sleep(delay)
+        wd.find_element(By.ID, 'inputBrib004Yaiban5Bqriban5OuBqeiban5').click()
+        wd.find_element(By.ID, 'inputBrib004Yaiban5Bqriban5OuBqeiban5').send_keys(data[line][44])
+
+           ## Saisie du Compte tranche 2
+        time.sleep(delay)
+        wd.find_element(By.ID, 'inputBrib004Yaiban6Bqriban6OuBqeiban6').click()
+        wd.find_element(By.ID, 'inputBrib004Yaiban6Bqriban6OuBqeiban6').send_keys(data[line][46])
+
+           ## Saisie du Compte tranche 3
+        time.sleep(delay)
+        wd.find_element(By.ID, 'inputBrib004Yaiban7Bqriban7OuBqeiban7').click()
+        wd.find_element(By.ID, 'inputBrib004Yaiban7Bqriban7OuBqeiban7').send_keys(data[line][48])
+
+        ## Tabulation dernier champs
+        time.sleep(delay)
+        wd.find_element(By.ID, 'inputBrib004Yaiban8Bqriban8OuBqeiban8').click()
+        wd.find_element(By.ID, 'inputBrib004Yaiban8Bqriban8OuBqeiban8').send_keys(Keys.TAB)
+
+        time.sleep(delay)
+        wd.find_element(By.ID, 'inputBrib004Yaiban9Bqriban9OuBqeiban9').click()
+        wd.find_element(By.ID, 'inputBrib004Yaiban9Bqriban9OuBqeiban9').send_keys(Keys.TAB)
+
+           # Saisie du BIC
+        time.sleep(delay)
+        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputBrib004YabicCodeBic')))
+        wd.find_element(By.ID, 'inputBrib004YabicCodeBic').click()
+        wd.find_element(By.ID, 'inputBrib004YabicCodeBic').send_keys(data[line][34])
+
+          ## Valider la saisie du formulaire
+        time.sleep(delay)
+        wd.find_element(By.ID, 'inputBrib004YaribvalValidationEcran').send_keys('O')
+
+         ## Validation retour au menu
+
+
+    # wd.quit()
+
+
+
 
 # Procédure pour 
 def open_file():
@@ -665,7 +395,7 @@ def open_file():
 
 Interface = Tk()
 Interface.geometry('1000x500')
-Interface.title('Remboursement TEOM')
+Interface.title('Création Redevable')
 
 
 EnterTable1 = StringVar()
@@ -679,9 +409,9 @@ EnterTable5 = StringVar()
 #label_file_explorer.grid(row=30,column=4)
 paramx=10
 paramy=170
-label1=Label(Interface, text='Remboursement TEOM', font=('Arial',15), fg='Black',bg='#ffffff')
+label1=Label(Interface, text='Création Redevable', font=('Arial',15), fg='Black',bg='#ffffff')
 label1.place(x= 400,y=1)
-label2=Label(Interface,text='Saisir le delai entre les opérations de l\'automate en secondes :')
+label2=Label(Interface,text='Saisir le délai entre les opérations de l\'automate en secondes :')
 label2.place(x=paramx + 250,y=paramy+30)
 entry1=Entry(Interface, textvariable=EnterTable1, justify='center')
 entry1.place(x= paramx +600,y=paramy+30)
@@ -703,7 +433,7 @@ label6.place(x= 500,y=60)
 entry5=Entry(Interface, textvariable=EnterTable5, justify='center')
 entry5.place(x= 600,y=60)
 #entry6=Entry(Interface, textvariable=EnterTable, justify='center').grid(row=6, column=6)
-#label1=Label(Interface,text='aaa').grid(row=7,column=6)            
+#label1=Label(Interface,text='aaa').grid(row=7,column=6)
 button2=Button(Interface, text='Choisir le fichier d\'entrée', command=open_file)
 button2.place(x= 400,y=120)
 label_path=Label(Interface)
