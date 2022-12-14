@@ -374,10 +374,15 @@ def main():
         time.sleep(delay)
         wd.find_element(By.ID, 'inputBrib004YaribvalValidationEcran').send_keys('O')
 
-         ## Validation retour au menu
+        ## Retour au menu principal
+        time.sleep(delay)
+        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+        wd.find_element(By.ID, 'barre_outils:touche_f2').click()
 
+        ##Incrémentation des lignes du tableau
+        line += 1
 
-    # wd.quit()
+    wd.quit()
 
 
 

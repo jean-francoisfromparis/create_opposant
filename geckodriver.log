@@ -3839,3 +3839,76 @@ console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message f
 console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8121"
 1671029084624	Marionette	INFO	Stopped listening on port 64073
 console.warn: TopSitesFeed: Failed to fetch data from Contile server: NetworkError when attempting to fetch resource.
+1671031914573	geckodriver	INFO	Listening on 127.0.0.1:55412
+1671031915118	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "55413" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileTnuvev"
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1671031916097	Marionette	INFO	Marionette enabled
+1671031916105	Marionette	INFO	Listening on port 55420
+WebDriver BiDi listening on ws://localhost:55413
+Read port: 55420
+1671031916282	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileTnuvev\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://localhost:55413/devtools/browser/8ee24fa2-0565-467c-8a87-649d68f62d99
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8121"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8121"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8121"
+1671032478232	geckodriver	INFO	Listening on 127.0.0.1:63481
+1671032478749	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "63482" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofile6Y8cO3"
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1671032479624	Marionette	INFO	Marionette enabled
+1671032479629	Marionette	INFO	Listening on port 63489
+Read port: 63489
+WebDriver BiDi listening on ws://localhost:63482
+1671032479776	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofile6Y8cO3\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://localhost:63482/devtools/browser/4af4f2ed-b8da-4868-9b40-68d4d2f84f5c
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8121"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8121"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8121"
+console.error: (new TypeError("parent is null", "resource://devtools/client/inspector/shared/style-change-tracker.js", 67))
+TypeError: parent is null: canMutationImpactCurrentStyles@resource://devtools/client/inspector/shared/style-change-tracker.js:67:24
+onMutations@resource://devtools/client/inspector/shared/style-change-tracker.js:84:41
+_emit@resource://devtools/shared/event-emitter.js:242:32
+emit@resource://devtools/shared/event-emitter.js:186:18
+emit@resource://devtools/shared/event-emitter.js:330:18
+getMutations@resource://devtools/client/fronts/walker.js:312:10
+
+JavaScript error: resource://gre/modules/AsyncShutdown.jsm, line 575: NotFoundError: No such JSWindowActor 'DevToolsFrame'
+1671032899023	Marionette	INFO	Stopped listening on port 63489
+1671032937066	geckodriver	INFO	Listening on 127.0.0.1:59893
+1671032937592	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "59894" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileCzPijT"
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1671032938359	Marionette	INFO	Marionette enabled
+1671032938364	Marionette	INFO	Listening on port 59901
+WebDriver BiDi listening on ws://localhost:59894
+Read port: 59901
+1671032938512	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileCzPijT\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://localhost:59894/devtools/browser/93b72430-544b-41d4-80c8-b1e8c53966c9
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8121"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8121"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8121"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8121"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8121"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8121"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8121"
+1671033071571	Marionette	INFO	Stopped listening on port 59901
