@@ -1,3 +1,4 @@
+import datetime
 import os
 import sys
 import time
@@ -432,23 +433,22 @@ def date_dialog():
     global pop
     pop = Toplevel(Interface)
     pop.title("Choisir une date")
-    pop.geometry("400X400")
+    pop.geometry('400x400')
     pop.config(bg="white")
-    # Create a Label Text
-    label = Label(pop, text="Choisir une date",
-                  font=('Arial', 12))
-    label.place(x=10, y=10)
+    now = datetime.datetime.today()
+    print(now.day)
+    # Add Calendar
+    cal = Calendar(pop, selectmode='day', locale='fr_FR', year=now.year, month=now.month, day=now.day)
+    cal.pack(pady=50)
 
-    Button(pop, text="Get Date").pack(pady=50)
-
-
+    Button(pop, text="📅", font=30, command=cal.get_date()).pack(pady=50)
 
 
 date_dialog_button = Button(Interface, text="Date d'Effet", command=date_dialog)
-date_dialog_button.place(x=paramx + 250, y=paramy +95)
+date_dialog_button.place(x=paramx + 250, y=paramy + 95)
 
 label2 = Label(Interface, text='Saisir le délai entre les opérations de l\'automate en secondes :')
-label2.place(x=paramx + 250, y=paramy +120)
+label2.place(x=paramx + 250, y=paramy + 120)
 entry1 = Entry(Interface, textvariable=EnterTable1, justify='center')
 entry1.place(x=paramx + 600, y=paramy + 120)
 label3 = Label(Interface, text='Saisir la ligne du début: ')
