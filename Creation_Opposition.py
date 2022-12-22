@@ -442,13 +442,11 @@ def date_dialog():
     Button(pop, text="Get Date").pack(pady=50)
 
 
-
-
 date_dialog_button = Button(Interface, text="Date d'Effet", command=date_dialog)
-date_dialog_button.place(x=paramx + 250, y=paramy +95)
+date_dialog_button.place(x=paramx + 250, y=paramy + 95)
 
 label2 = Label(Interface, text='Saisir le délai entre les opérations de l\'automate en secondes :')
-label2.place(x=paramx + 250, y=paramy +120)
+label2.place(x=paramx + 250, y=paramy + 120)
 entry1 = Entry(Interface, textvariable=EnterTable1, justify='center')
 entry1.place(x=paramx + 600, y=paramy + 120)
 label3 = Label(Interface, text='Saisir la ligne du début: ')
