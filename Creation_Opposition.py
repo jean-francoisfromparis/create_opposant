@@ -1,9 +1,10 @@
+import datetime
 import os
 import sys
 import time
 from pathlib import Path
 from tkinter import *
-from tkinter import filedialog, messagebox, ttk
+from tkinter import filedialog, messagebox
 
 import pandas as pd
 from pynput.keyboard import Controller
@@ -14,7 +15,7 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from tkcalendar import Calendar
+from tkcalendar import Calendar, DateEntry
 from webdriver_manager.firefox import GeckoDriverManager
 
 keyboard = Controller()
@@ -362,9 +363,36 @@ def create_opposant():
     wd.find_element(By.ID, 'inputB33ginf2Ya33GdtefDateEffetAnnee').send_keys(Keys.TAB)
 
 
+# class CalendarDialog():
+#     """Dialog box that displays a calendar and returns the selected date"""
+#
+#     def __init__(self):
+#         self.result = None
+#
+#     def body(self, master):
+#         master = Toplevel(Interface)
+#         master.title("Choisir une date")
+#         master.geometry('400x400')
+#         master.config(bg="white")
+#
+#         now = datetime.datetime.today()
+#         # Add Calendar
+#         cal = Calendar(master, selectmode='day', locale='fr_FR', year=now.year, month=now.month, day=now.day)
+#         cal.pack(pady=50)
+#
+#         # Button(pop, text="📆", font=30, activeforeground='red', command=cal.get_date())
+#         # EnterTable12.pack(pady=50)
+#         label = Label(master, text="La date choisie est : ")
+#         label.pack()
+#
+#     def apply(self):
+#         self.result = self.cal.selection
+
+
 # Procédure pour
 def open_file():
     global File_path
+    global l1
     file = filedialog.askopenfile(mode='r', filetypes=[('Ods Files', '*.ods')])
     if file:
         filepath = os.path.abspath(file.name)
@@ -388,7 +416,7 @@ EnterTable8 = StringVar()
 EnterTable9 = StringVar()
 EnterTable10 = StringVar()
 EnterTable11 = StringVar()
-
+EnterTable12 = StringVar()
 paramx = 10
 paramy = 170
 label1 = Label(Interface, text='Création Opposition', font=('Arial', 15), fg='Black', bg='#ffffff')
@@ -416,34 +444,51 @@ montantCreance.place(x=paramx + 500, y=paramy + 45)
 
 labelDateEffet = Label(Interface, text="Saisir la date d'effet :")
 labelDateEffet.place(x=paramx + 250, y=paramy + 70)
-jour_d_effet = Entry(Interface, textvariable=EnterTable9, justify='center', width=4)
-jour_d_effet.place(x=paramx + 500, y=paramy + 70)
-labelSlash = Label(Interface, text="/")
-labelSlash.place(x=paramx + 515, y=paramy + 70)
-mois_d_effet = Entry(Interface, textvariable=EnterTable10, justify='center', width=4)
-mois_d_effet.place(x=paramx + 525, y=paramy + 70)
-labelSlash1 = Label(Interface, text="/")
-labelSlash1.place(x=paramx + 540, y=paramy + 70)
-annee_d_effet = Entry(Interface, textvariable=EnterTable11, justify='center', width=7)
-annee_d_effet.place(x=paramx + 555, y=paramy + 70)
+# jour_d_effet = Entry(Interface, textvariable=EnterTable9, justify='center', width=4)
+# jour_d_effet.place(x=paramx + 500, y=paramy + 70)
+# labelSlash = Label(Interface, text="/")
+# labelSlash.place(x=paramx + 515, y=paramy + 70)
+# mois_d_effet = Entry(Interface, textvariable=EnterTable10, justify='center', width=4)
+# mois_d_effet.place(x=paramx + 525, y=paramy + 70)
+# labelSlash1 = Label(Interface, text="/")
+# labelSlash1.place(x=paramx + 540, y=paramy + 70)
+# annee_d_effet = Entry(Interface, textvariable=EnterTable11, justify='center', width=7)
+# annee_d_effet.place(x=paramx + 555, y=paramy + 70)
+now = datetime.datetime.today()
+date_d_effet = DateEntry(Interface, selectmode='day', textvariable=EnterTable12, locale='fr_FR', year=now.year,
+                         month=now.month, day=now.day)
+date_d_effet.pack(pady=100)
+l1 = Label(Interface, bg='yellow')
+l1.config(text=date_d_effet.selection_get())
+l1.pack(pady=120)
+# def date_dialog():
+#     global pop
+#     pop = Toplevel(Interface)
+#     pop.title("Choisir une date")
+#     pop.geometry('400x400')
+#     pop.config(bg="white")
+#
+#     now = datetime.datetime.today()
+#     # Add Calendar
+#     cal = DateEntry(pop, selectmode='day', locale='fr_FR', year=now.year, month=now.month, day=now.day)
+#     cal.pack(pady=50)
+#
+#     # Button(pop, text="📆", font=30, activeforeground='red', command=cal.get_date())
+#     # EnterTable12.pack(pady=50)
+#     label = Label(pop, text="La date choisie est : ")
+#     label.pack()
+#     result = cal.get_date()
+#     print(result)
 
 
-def date_dialog():
-    global pop
-    pop = Toplevel(Interface)
-    pop.title("Choisir une date")
-    pop.geometry("400X400")
-    pop.config(bg="white")
-    # Create a Label Text
-    label = Label(pop, text="Choisir une date",
-                  font=('Arial', 12))
-    label.place(x=10, y=10)
-
-    Button(pop, text="Get Date").pack(pady=50)
+# def onclick():
+#     dd = date_dialog()
+#     print(dd)
 
 
-date_dialog_button = Button(Interface, text="Date d'Effet", command=date_dialog)
-date_dialog_button.place(x=paramx + 250, y=paramy + 95)
+# date_dialog_button = Button(Interface, text="Date d'Effet", command=date_dialog())
+# date_dialog_button.place(x=paramx + 250, y=paramy + 95)
+
 
 label2 = Label(Interface, text='Saisir le délai entre les opérations de l\'automate en secondes :')
 label2.place(x=paramx + 250, y=paramy + 120)
