@@ -1,10 +1,12 @@
 import datetime
+import hashlib
 import os
 import sys
 import time
 from pathlib import Path
 from tkinter import *
 from tkinter import filedialog, messagebox
+import tkinter as tk
 
 import pandas as pd
 from pynput.keyboard import Controller
@@ -182,14 +184,14 @@ def main():
 def create_opposant():
     delay = 1
 
-    while True:
-        numero_creancier_opposant = EnterTable7.get()
-        if numero_creancier_opposant.isnumeric():  ##vérifie que ça soit un numéro
-            numero_creancier_opposant = int(numero_creancier_opposant)
-            break
-        else:
-            messagebox.OK('Saisie incorrecte, réessayez')
-            exit()
+    # while True:
+    #     numero_creancier_opposant = EnterTable7.get()
+    #     if numero_creancier_opposant.isnumeric():  ##vérifie que ça soit un numéro
+    #         numero_creancier_opposant = int(numero_creancier_opposant)
+    #         break
+    #     else:
+    #         messagebox.OK('Saisie incorrecte, réessayez')
+    #         exit()
 
     while True:
         montant_Creance = EnterTable8.get()
@@ -201,7 +203,7 @@ def create_opposant():
             exit()
 
     while True:
-        jour_d_effet = EnterTable8.get()
+        jour_d_effet = EnterTable9.get().split('/')[0]
         if jour_d_effet.isnumeric():  ##vérifie que ça soit un numéro
             jour_d_effet = jour_d_effet
             break
@@ -210,7 +212,7 @@ def create_opposant():
             exit()
 
     while True:
-        mois_d_effet = EnterTable7.get()
+        mois_d_effet = EnterTable9.get().split('/')[1]
         if mois_d_effet.isnumeric():  ##vérifie que ça soit un numéro
             mois_d_effet = mois_d_effet
             break
@@ -219,7 +221,7 @@ def create_opposant():
             exit()
 
     while True:
-        annee_d_effet = EnterTable7.get()
+        annee_d_effet = EnterTable9.get().split('/')[2]
         if annee_d_effet.isnumeric():  ##vérifie que ça soit un numéro
             annee_d_effet = annee_d_effet
             break
@@ -232,6 +234,9 @@ def create_opposant():
 
     ## Saisie de numéro de dossier:
     numeroDossier = EnterTable6.get()
+
+    ## Saisie de la référence de jugement:
+    reference_de_jugement = EnterTable10.get()
 
     ## Lancement webdriver Selenium
     s = Service(resource_path("geckodriver"))
@@ -297,12 +302,13 @@ def create_opposant():
     ## Saisie du numéro de dossier créancier
     time.sleep(delay)
     WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputYrdos211NumeroDeDossier')))
-    wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(numero_creancier_opposant)
+    # wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(numero_creancier_opposant)
+    wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys('203268')
     wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(Keys.TAB)
 
     ## Saisie de la suite
     time.sleep(delay)
-    WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33gsuitYa33G002ReponseSuite')))
+    WebDriverWait(wd, 40).until(EC.presence_of_element_located((By.ID, 'inputB33gsuitYa33G002ReponseSuite')))
     wd.find_element(By.ID, 'inputB33gsuitYa33G002ReponseSuite').send_keys('S')
     wd.find_element(By.ID, 'inputB33gsuitYa33G002ReponseSuite').send_keys(Keys.TAB)
 
@@ -362,31 +368,85 @@ def create_opposant():
     wd.find_element(By.ID, 'inputB33ginf2Ya33GdtefDateEffetAnnee').send_keys(annee_d_effet)
     wd.find_element(By.ID, 'inputB33ginf2Ya33GdtefDateEffetAnnee').send_keys(Keys.TAB)
 
+    ## Saisie de la référence de jugement
 
-# class CalendarDialog():
-#     """Dialog box that displays a calendar and returns the selected date"""
-#
-#     def __init__(self):
-#         self.result = None
-#
-#     def body(self, master):
-#         master = Toplevel(Interface)
-#         master.title("Choisir une date")
-#         master.geometry('400x400')
-#         master.config(bg="white")
-#
-#         now = datetime.datetime.today()
-#         # Add Calendar
-#         cal = Calendar(master, selectmode='day', locale='fr_FR', year=now.year, month=now.month, day=now.day)
-#         cal.pack(pady=50)
-#
-#         # Button(pop, text="📆", font=30, activeforeground='red', command=cal.get_date())
-#         # EnterTable12.pack(pady=50)
-#         label = Label(master, text="La date choisie est : ")
-#         label.pack()
-#
-#     def apply(self):
-#         self.result = self.cal.selection
+    time.sleep(delay)
+    WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GjuvlJugementValidite')))
+    wd.find_element(By.ID, 'inputB33ginf2Ya33GjuvlJugementValidite').send_keys(reference_de_jugement)
+    wd.find_element(By.ID, 'inputB33ginf2Ya33GjuvlJugementValidite').send_keys(Keys.TAB)
+
+    ## Saisie de la date d'exécution de jugement
+
+    time.sleep(delay)
+    WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdjuvDateExecutionJugementJour')))
+    wd.find_element(By.ID, 'inputB33ginf2Ya33GdjuvDateExecutionJugementJour').send_keys(Keys.TAB)
+
+    time.sleep(delay)
+    WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdjuvDateExecutionJugementMois')))
+    wd.find_element(By.ID, 'inputB33ginf2Ya33GdjuvDateExecutionJugementMois').send_keys(Keys.TAB)
+
+    time.sleep(delay)
+    WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdjuvDateExecutionJugementAnnee')))
+    wd.find_element(By.ID, 'inputB33ginf2Ya33GdjuvDateExecutionJugementAnnee').send_keys(Keys.TAB)
+
+    ## Saisie de la date de renouvellement
+
+    time.sleep(delay)
+    WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementJour')))
+    wd.find_element(By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementJour').send_keys(Keys.TAB)
+
+    time.sleep(delay)
+    WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementMois')))
+    wd.find_element(By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementMois').send_keys(Keys.TAB)
+
+    time.sleep(delay)
+    WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementAnnee')))
+    wd.find_element(By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementAnnee').send_keys(Keys.TAB)
+
+    ## Validation de la non saisie des dates
+
+    time.sleep(delay)
+    WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementAnnee')))
+    wd.find_element(By.ID, 'inputBrep9081Rep9082ReponseUtilisateurON').send_keys('O')
+    wd.find_element(By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementAnnee').send_keys(Keys.TAB)
+
+    ## Validation de la suite
+
+    time.sleep(delay)
+    WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33gsuprYa33G007ReponseSuitePrec')))
+    wd.find_element(By.ID, 'inputB33gsuprYa33G007ReponseSuitePrec').send_keys('S')
+    wd.find_element(By.ID, 'inputB33gsuprYa33G007ReponseSuitePrec').send_keys(Keys.TAB)
+
+    ## Validation de la saisie de l'opposition
+
+    time.sleep(delay)
+    WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33gvlcrYa33GvalcValidationCreation')))
+    wd.find_element(By.ID, 'inputB33gvlcrYa33GvalcValidationCreation').send_keys('O')
+    wd.find_element(By.ID, 'inputB33gvlcrYa33GvalcValidationCreation').send_keys(Keys.TAB)
+
+    ## Vérification du message
+
+    # time.sleep(delay)
+    # WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-info-summary')))
+    # message_de_succes = wd.find_element(By.CLASS_NAME, 'ui-messages-info-summary')
+    # assert (message_de_succes == "MESSAGE ACQUITTE")
+    # print("tout est bon !")
+    # time.sleep(delay)
+
+    ## Saisie de la fin de saisie
+
+    time.sleep(delay)
+    WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33gnouvYa33GnvopNouvelleOpposition')))
+    wd.find_element(By.ID, 'inputB33gnouvYa33GnvopNouvelleOpposition').send_keys('N')
+    wd.find_element(By.ID, 'inputB33gnouvYa33GnvopNouvelleOpposition').send_keys(Keys.TAB)
+
+    ## Validation de la sortie du formulaire
+
+    time.sleep(delay)
+    WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+    wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+
+    # wd.quit()
 
 
 # Procédure pour
@@ -415,8 +475,7 @@ EnterTable7 = StringVar()
 EnterTable8 = StringVar()
 EnterTable9 = StringVar()
 EnterTable10 = StringVar()
-EnterTable11 = StringVar()
-EnterTable12 = StringVar()
+
 paramx = 10
 paramy = 170
 label1 = Label(Interface, text='Création Opposition', font=('Arial', 15), fg='Black', bg='#ffffff')
@@ -444,51 +503,26 @@ montantCreance.place(x=paramx + 500, y=paramy + 45)
 
 labelDateEffet = Label(Interface, text="Saisir la date d'effet :")
 labelDateEffet.place(x=paramx + 250, y=paramy + 70)
-# jour_d_effet = Entry(Interface, textvariable=EnterTable9, justify='center', width=4)
-# jour_d_effet.place(x=paramx + 500, y=paramy + 70)
-# labelSlash = Label(Interface, text="/")
-# labelSlash.place(x=paramx + 515, y=paramy + 70)
-# mois_d_effet = Entry(Interface, textvariable=EnterTable10, justify='center', width=4)
-# mois_d_effet.place(x=paramx + 525, y=paramy + 70)
-# labelSlash1 = Label(Interface, text="/")
-# labelSlash1.place(x=paramx + 540, y=paramy + 70)
-# annee_d_effet = Entry(Interface, textvariable=EnterTable11, justify='center', width=7)
-# annee_d_effet.place(x=paramx + 555, y=paramy + 70)
+
 now = datetime.datetime.today()
-date_d_effet = DateEntry(Interface, selectmode='day', textvariable=EnterTable12, locale='fr_FR', year=now.year,
+date_d_effet = DateEntry(Interface, selectmode='day', textvariable=EnterTable9, locale='fr_FR', year=now.year,
                          month=now.month, day=now.day)
-date_d_effet.pack(pady=100)
-l1 = Label(Interface, bg='yellow')
-l1.config(text=date_d_effet.selection_get())
-l1.pack(pady=120)
-# def date_dialog():
-#     global pop
-#     pop = Toplevel(Interface)
-#     pop.title("Choisir une date")
-#     pop.geometry('400x400')
-#     pop.config(bg="white")
-#
-#     now = datetime.datetime.today()
-#     # Add Calendar
-#     cal = DateEntry(pop, selectmode='day', locale='fr_FR', year=now.year, month=now.month, day=now.day)
-#     cal.pack(pady=50)
-#
-#     # Button(pop, text="📆", font=30, activeforeground='red', command=cal.get_date())
-#     # EnterTable12.pack(pady=50)
-#     label = Label(pop, text="La date choisie est : ")
-#     label.pack()
-#     result = cal.get_date()
-#     print(result)
+date_d_effet.place(x=paramx + 500, y=paramy + 70)
+
+label_reference_de_jugement = Label(Interface, text="Référence jugement Validité :")
+label_reference_de_jugement.place(x=paramx + 250, y=paramy + 100)
+reference_de_jugement = Entry(Interface, textvariable=EnterTable10, justify='center')
+reference_de_jugement.place(x=paramx + 500, y=paramy + 100)
+
+def my_upd(i):
+    i: int
+    l1 = Label(Interface, bg='yellow')
+    l1.config(text=EnterTable9.get().split('/')[i])
+    l1.place(x=paramx + 650 + i * 20, y=paramy + 70)
 
 
-# def onclick():
-#     dd = date_dialog()
-#     print(dd)
-
-
-# date_dialog_button = Button(Interface, text="Date d'Effet", command=date_dialog())
-# date_dialog_button.place(x=paramx + 250, y=paramy + 95)
-
+for i in [0, 1, 2]:
+    EnterTable9.trace('w', my_upd(i))
 
 label2 = Label(Interface, text='Saisir le délai entre les opérations de l\'automate en secondes :')
 label2.place(x=paramx + 250, y=paramy + 120)
