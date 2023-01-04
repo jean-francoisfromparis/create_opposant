@@ -1,14 +1,13 @@
-import datetime
-import hashlib
+import csv
 import os
 import sys
 import time
+from datetime import datetime
 from pathlib import Path
 from tkinter import *
-from tkinter import filedialog, messagebox
-import tkinter as tk
-
+from tkinter import filedialog, messagebox, messagebox as msg, ttk
 import pandas as pd
+from pandastable import Table
 from pynput.keyboard import Controller
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -17,7 +16,7 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from tkcalendar import Calendar, DateEntry
+from tkcalendar import DateEntry
 from webdriver_manager.firefox import GeckoDriverManager
 
 keyboard = Controller()
@@ -87,7 +86,7 @@ def main():
     wd_options = Options()
     wd_options.set_preference('detach', True)
     wd.get(
-        'https://portailmetierpriv.ira.appli.impots/cas/login?service=http%3A%2F%2Fmedoc.ia.dgfip%3A8141%2Fmedocweb%2Fcas%2Fvalidation')
+        'http://medoc.ia.dgfip:8141/medocweb/presentation/md2oagt/ouverturesessionagent/ecran/ecOuvertureSessionAgent.jsf')
 
     ## Saisir utilisateur
     time.sleep(delay)
@@ -136,13 +135,15 @@ def main():
         wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(Keys.ENTER)
 
         ## Saisie du choix Lister
+        time.sleep(delay)
+        time.sleep(delay)
+        time.sleep(delay)
         WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33gmenuYa33Gch1ChoixCMAI')))
 
         wd.find_element(By.ID, 'inputB33gmenuYa33Gch1ChoixCMAI').send_keys('I')
         wd.find_element(By.ID, 'inputB33gmenuYa33Gch1ChoixCMAI').send_keys(Keys.TAB)
 
         ## Récupération d'un des oppositions
-
         time.sleep(delay)
         webtable_df1 = \
             pd.read_html(
@@ -156,29 +157,76 @@ def main():
         time.sleep(delay)
         WebDriverWait(wd, 20).until(
             EC.presence_of_element_located((By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]')))
-        if EC.presence_of_element_located((By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]')):
-            webtable_df2 = \
-                pd.read_html(
-                    wd.find_element(By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]').get_attribute('outerHTML'))[1]
+    if EC.presence_of_element_located((By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]')):
+        webtable_df2 = \
+            pd.read_html(
+                wd.find_element(By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]').get_attribute('outerHTML'))[1]
         time.sleep(delay)
-        # WebDriverWait(wd, 20).until(
-        #     EC.presence_of_element_located((By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]')))
-        # if EC.presence_of_element_located((By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]')):
-        #     webtable_df3 = \
-        #         pd.read_html(
-        #             wd.find_element(By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]').get_attribute('outerHTML'))[1]
 
-        webtable_df = pd.concat([webtable_df1, webtable_df2])
-        webtable_df.to_csv('temp_data.csv')
-        # Printing the URL
-        print(webtable_df)
+    WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33gnaviY33GnavichChoixSurB33Gnavi')))
 
-        # wd.quit()
+    if EC.presence_of_element_located((By.ID, 'inputB33gnaviY33GnavichChoixSurB33Gnavi')):
+        wd.find_element(By.ID, 'inputB33gnaviY33GnavichChoixSurB33Gnavi').send_keys('S')
+        wd.find_element(By.ID, 'inputB33gnaviY33GnavichChoixSurB33Gnavi').send_keys(Keys.ENTER)
+        time.sleep(delay)
+        time.sleep(delay)
+        WebDriverWait(wd, 20).until(
+            EC.presence_of_element_located((By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]')))
 
-        ## Incrémentation des lignes du tableau
-        # line += 1
+    if EC.presence_of_element_located((By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]')):
+        webtable_df3 = \
+            pd.read_html(
+                wd.find_element(By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]').get_attribute('outerHTML'))[1]
+    time.sleep(delay)
+    time.sleep(delay)
 
-    # wd.quit()
+    webtable_df = pd.concat([webtable_df1, webtable_df2, webtable_df3])
+    if len(webtable_df) > 0:
+        webtable_df.to_csv(
+            EnterTable6.get() + '_liste_créances_' + datetime.now().strftime('%Y-%m-%d-%H-%M_') + '.csv')
+    # Printing the URL
+    indice = pd.to_numeric(webtable_df['Unnamed: 0']).fillna(0).astype(int)
+    FRP = pd.to_numeric(webtable_df['Unnamed: 1']).fillna(0).astype(int)
+    name = webtable_df['Unnamed: 2']
+    credit = pd.to_numeric(webtable_df['Unnamed: 3']).fillna(0)
+    montant = webtable_df['Unnamed: 10']
+    levee = webtable_df['Unnamed: 16']
+    fields = {'id': indice, 'FRP': FRP, 'DENOMINATION': name, ' CREDIT D\'IMPOT': credit, 'Montant': montant,
+              'LEVEE': levee}
+    table = pd.DataFrame(fields)
+    filename = EnterTable6.get() + '_liste_créances_' + datetime.now().strftime('%Y-%m-%d-%H-%M') + '.csv'
+    table.to_csv(filename, columns=fields, index=FALSE)
+
+    try:
+        time.sleep(delay)
+        time.sleep(delay)
+        time.sleep(delay)
+        liste = csv.reader(open(filename), delimiter=',')
+
+        for rows in liste:
+            print(rows)
+
+        # if (len(liste) == 0):
+        #     msg.showinfo('Aucune données', 'Aucune données')
+        # else:
+        #     pass
+
+        # Now display the DF in 'Table' object
+        # under'pandastable' module
+
+        tabControl.add(tab3, text='liste des oppositions')
+
+        table1 = Table(tab3, dataframe=table, read_only=True, index=FALSE)
+        table1.place(y=120)
+        table1.show()
+
+    except FileNotFoundError as e:
+        print(e)
+        msg.showerror('Error in opening file', e)
+    ## Validation de la sortie du formulaire
+    time.sleep(delay)
+    WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+    wd.find_element(By.ID, 'barre_outils:touche_f2').click()
 
 
 def create_opposant():
@@ -378,15 +426,18 @@ def create_opposant():
     ## Saisie de la date d'exécution de jugement
 
     time.sleep(delay)
-    WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdjuvDateExecutionJugementJour')))
+    WebDriverWait(wd, 20).until(
+        EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdjuvDateExecutionJugementJour')))
     wd.find_element(By.ID, 'inputB33ginf2Ya33GdjuvDateExecutionJugementJour').send_keys(Keys.TAB)
 
     time.sleep(delay)
-    WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdjuvDateExecutionJugementMois')))
+    WebDriverWait(wd, 20).until(
+        EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdjuvDateExecutionJugementMois')))
     wd.find_element(By.ID, 'inputB33ginf2Ya33GdjuvDateExecutionJugementMois').send_keys(Keys.TAB)
 
     time.sleep(delay)
-    WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdjuvDateExecutionJugementAnnee')))
+    WebDriverWait(wd, 20).until(
+        EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdjuvDateExecutionJugementAnnee')))
     wd.find_element(By.ID, 'inputB33ginf2Ya33GdjuvDateExecutionJugementAnnee').send_keys(Keys.TAB)
 
     ## Saisie de la date de renouvellement
@@ -400,13 +451,15 @@ def create_opposant():
     wd.find_element(By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementMois').send_keys(Keys.TAB)
 
     time.sleep(delay)
-    WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementAnnee')))
+    WebDriverWait(wd, 20).until(
+        EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementAnnee')))
     wd.find_element(By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementAnnee').send_keys(Keys.TAB)
 
     ## Validation de la non saisie des dates
 
     time.sleep(delay)
-    WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementAnnee')))
+    WebDriverWait(wd, 20).until(
+        EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementAnnee')))
     wd.find_element(By.ID, 'inputBrep9081Rep9082ReponseUtilisateurON').send_keys('O')
     wd.find_element(By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementAnnee').send_keys(Keys.TAB)
 
@@ -464,6 +517,23 @@ def open_file():
 Interface = Tk()
 Interface.geometry('1000x600')
 Interface.title('Création Opposition')
+paramx = 10
+paramy = 170
+
+tabControl = ttk.Notebook(Interface)
+tab1 = Frame(tabControl, bg='#C7DDC5')
+label1 = Label(tab1, text='Afficher un créancier', font=('Arial', 15), fg='Black', bg='#ffffff', relief="sunken")
+label1.place(x=400, y=paramx)
+
+creancierButton = Button(tab1, text='Afficher le créancier', command=main)
+creancierButton.place(x=paramx + 250, y=paramy + 40)
+
+tab2 = Frame(tabControl, bg='#E3EBD0')
+tabControl.add(tab1, text='Afficher un créancier')
+tabControl.add(tab2, text='Créer une opposition')
+tabControl.pack(expand=1, fill="both")
+
+tab3 = Frame(tabControl, bg='#E3EBD0')
 
 EnterTable1 = StringVar()
 EnterTable2 = StringVar()
@@ -476,47 +546,41 @@ EnterTable8 = StringVar()
 EnterTable9 = StringVar()
 EnterTable10 = StringVar()
 
-paramx = 10
-paramy = 170
-label1 = Label(Interface, text='Création Opposition', font=('Arial', 15), fg='Black', bg='#ffffff')
-label1.place(x=400, y=1)
-labelNumeroDossier = Label(Interface, text='Numéro Dossier Opposant:')
-labelNumeroDossier.place(x=250, y=100)
-entryNumeroDossier = Entry(Interface, textvariable=EnterTable6, justify='center')
-entryNumeroDossier.place(x=paramx + 400, y=100)
+labelNumeroDossier = Label(tab1, text='Numéro Dossier Opposant:', relief="sunken")
+labelNumeroDossier.place(x=250, y=paramy - 30)
+entryNumeroDossier = Entry(tab1, textvariable=EnterTable6, justify='center')
+entryNumeroDossier.place(x=paramx + 400, y=paramy - 30)
 
-creancierButton = Button(Interface, text='Afficher le créancier', command=main)
-creancierButton.place(x=paramx + 250, y=paramy - 20)
-
-creerOpposition = Button(Interface, text='Créer une Opposition', command=create_opposant)
+creerOpposition = Button(tab2, text='Créer une Opposition', command=create_opposant)
 creerOpposition.place(x=paramx + 450, y=paramy - 20)
 
-labelNumeroDossierCreancierOpposant = Label(Interface, text="Saisir le numéro d\'un créancier opposant :")
+labelNumeroDossierCreancierOpposant = Label(tab2, text="Saisir le numéro d\'un créancier opposant :")
 labelNumeroDossierCreancierOpposant.place(x=paramx + 250, y=paramy + 20)
-NumeroDossierCreancierOpposant = Entry(Interface, textvariable=EnterTable7, justify='center')
+NumeroDossierCreancierOpposant = Entry(tab2, textvariable=EnterTable7, justify='center')
 NumeroDossierCreancierOpposant.place(x=paramx + 500, y=paramy + 20)
 
-labelMontantCreance = Label(Interface, text="Saisir le montant de la créance :")
+labelMontantCreance = Label(tab2, text="Saisir le montant de la créance :")
 labelMontantCreance.place(x=paramx + 250, y=paramy + 45)
-montantCreance = Entry(Interface, textvariable=EnterTable8, justify='center')
+montantCreance = Entry(tab2, textvariable=EnterTable8, justify='center')
 montantCreance.place(x=paramx + 500, y=paramy + 45)
 
-labelDateEffet = Label(Interface, text="Saisir la date d'effet :")
+labelDateEffet = Label(tab2, text="Saisir la date d'effet :")
 labelDateEffet.place(x=paramx + 250, y=paramy + 70)
 
-now = datetime.datetime.today()
-date_d_effet = DateEntry(Interface, selectmode='day', textvariable=EnterTable9, locale='fr_FR', year=now.year,
+now = datetime.today()
+date_d_effet = DateEntry(tab2, selectmode='day', textvariable=EnterTable9, locale='fr_FR', year=now.year,
                          month=now.month, day=now.day)
 date_d_effet.place(x=paramx + 500, y=paramy + 70)
 
-label_reference_de_jugement = Label(Interface, text="Référence jugement Validité :")
+label_reference_de_jugement = Label(tab2, text="Référence jugement Validité :")
 label_reference_de_jugement.place(x=paramx + 250, y=paramy + 100)
-reference_de_jugement = Entry(Interface, textvariable=EnterTable10, justify='center')
+reference_de_jugement = Entry(tab2, textvariable=EnterTable10, justify='center')
 reference_de_jugement.place(x=paramx + 500, y=paramy + 100)
+
 
 def my_upd(i):
     i: int
-    l1 = Label(Interface, bg='yellow')
+    l1 = Label(tab2, bg='yellow')
     l1.config(text=EnterTable9.get().split('/')[i])
     l1.place(x=paramx + 650 + i * 20, y=paramy + 70)
 
@@ -524,34 +588,58 @@ def my_upd(i):
 for i in [0, 1, 2]:
     EnterTable9.trace('w', my_upd(i))
 
-label2 = Label(Interface, text='Saisir le délai entre les opérations de l\'automate en secondes :')
-label2.place(x=paramx + 250, y=paramy + 120)
-entry1 = Entry(Interface, textvariable=EnterTable1, justify='center')
-entry1.place(x=paramx + 600, y=paramy + 120)
-label3 = Label(Interface, text='Saisir la ligne du début: ')
-label3.place(x=paramx + 250, y=paramy + 155)
-entry2 = Entry(Interface, textvariable=EnterTable2, justify='center')
-entry2.place(x=paramx + 600, y=paramy + 155)
-label4 = Label(Interface, text='Saisir le nombre de lignes à traiter: ')
-label4.place(x=paramx + 250, y=paramy + 185)
-entry3 = Entry(Interface, textvariable=EnterTable3, justify='center')
-entry3.place(x=paramx + 600, y=paramy + 185)
+# label2 = Label(tab1, text='Saisir le délai entre les opérations de l\'automate en secondes :',relief="sunken")
+# label2.place(x=paramx + 250, y=paramy + 120)
+# entry1 = Entry(tab1, textvariable=EnterTable1, justify='center')
+# entry1.place(x=paramx + 600, y=paramy + 120)
+# label3 = Label(tab1, text='Saisir la ligne du début: ',relief="sunken")
+# label3.place(x=paramx + 250, y=paramy + 155)
+# entry2 = Entry(tab1, textvariable=EnterTable2, justify='center')
+# entry2.place(x=paramx + 600, y=paramy + 155)
+# label4 = Label(tab1, text='Saisir le nombre de lignes à traiter: ',relief="sunken")
+# label4.place(x=paramx + 250, y=paramy + 185)
+# entry3 = Entry(tab1, textvariable=EnterTable3, justify='center')
+# entry3.place(x=paramx + 600, y=paramy + 185)
+
+label2 = Label(tab2, text='Saisir le délai entre les opérations de l\'automate en secondes :', relief="sunken")
+label2.place(x=paramx + 250, y=paramy + 150)
+entry1 = Entry(tab2, textvariable=EnterTable1, justify='center')
+entry1.place(x=paramx + 600, y=paramy + 150)
+label3 = Label(tab2, text='Saisir la ligne du début: ', relief="sunken")
+label3.place(x=paramx + 250, y=paramy + 185)
+entry2 = Entry(tab2, textvariable=EnterTable2, justify='center')
+entry2.place(x=paramx + 600, y=paramy + 185)
+label4 = Label(tab2, text='Saisir le nombre de lignes à traiter: ', relief="sunken")
+label4.place(x=paramx + 250, y=paramy + 220)
+entry3 = Entry(tab2, textvariable=EnterTable3, justify='center')
+entry3.place(x=paramx + 600, y=paramy + 220)
 
 # login et mot de passe
-label5 = Label(Interface, text='Login:')
-label5.place(x=250, y=50)
-entry4 = Entry(Interface, textvariable=EnterTable4, justify='center')
-entry4.place(x=300, y=50)
-label6 = Label(Interface, text='Mot de passe: ')
-label6.place(x=500, y=50)
-entry5 = Entry(Interface, textvariable=EnterTable5, justify='center')
-entry5.place(x=600, y=50)
+label5 = Label(tab1, text='Login:', relief="sunken")
+label5.place(x=250, y=70)
+entry4 = Entry(tab1, textvariable=EnterTable4, justify='center')
+entry4.place(x=300, y=70)
+label6 = Label(tab1, text='Mot de passe: ', relief="sunken")
+label6.place(x=500, y=70)
+entry5 = Entry(tab1, textvariable=EnterTable5, justify='center')
+entry5.place(x=600, y=70)
 
-label_path = Label(Interface)
-label_path.place(x=360, y=200)
-button1 = Button(Interface, text='Lancer le programme', command=main)
-button1.place(x=350, y=560)
-QUIT = Button(Interface, text='Quitter', fg='Red', command=Interface.destroy)
-QUIT.place(x=550, y=560)
+label5 = Label(tab2, text='Login:', relief="sunken")
+label5.place(x=250, y=70)
+entry4 = Entry(tab2, textvariable=EnterTable4, justify='center')
+entry4.place(x=300, y=70)
+label6 = Label(tab2, text='Mot de passe: ', relief="sunken")
+label6.place(x=500, y=70)
+entry5 = Entry(tab2, textvariable=EnterTable5, justify='center')
+entry5.place(x=600, y=70)
+
+button2 = Button(tab2, text='Choisir le fichier d\'entrée', command=open_file)
+button2.place(x=paramx + 240, y=paramy - 50)
+label_path = Label(tab2)
+label_path.place(x=paramx + 490, y=paramy - 50)
+# button1 = Button(Interface, text='Lancer le programme', command=main)
+# button1.place(x=350, y=560)
+# QUIT = Button(Interface, text='Quitter', fg='Red', command=Interface.destroy)
+# QUIT.place(x=550, y=560)
 
 Interface.mainloop()
