@@ -7,8 +7,10 @@ from pathlib import Path
 from tkinter import *
 from tkinter import filedialog, messagebox, messagebox as msg, ttk
 import pandas as pd
+import requests
 from PIL import Image, ImageTk
 import pyexcel_ods3 as pe
+from bs4 import BeautifulSoup
 from pandastable import Table
 from pynput.keyboard import Controller
 from selenium import webdriver
@@ -147,7 +149,101 @@ def main():
         wd.find_element(By.ID, 'inputB33gmenuYa33Gch1ChoixCMAI').send_keys('I')
         wd.find_element(By.ID, 'inputB33gmenuYa33Gch1ChoixCMAI').send_keys(Keys.TAB)
 
-        ## Récupération d'un des oppositions
+        ## Récupération du tableau des oppositions en js
+        time.sleep(delay)
+        time.sleep(delay)
+        time.sleep(delay)
+
+        currentUrl = wd.current_url
+        compteur = 0
+        k = 0
+        while True:
+            if currentUrl == 'http://medoc.ia.dgfip:8141/medocweb/presentation/transactions/redevable/pa33g/ecran' \
+                             '/Pa33GTx317.jsf':
+                time.sleep(delay)
+                time.sleep(delay)
+                time.sleep(delay)
+                globals()[f"webtable_df{k}"] = pd.read_html(
+                    wd.find_element(By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]').get_attribute('outerHTML'))[
+                    1]
+                webtable_df1 = \
+                    pd.read_html(
+                        wd.find_element(By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]').get_attribute('outerHTML'))[
+                        1]
+                time.sleep(delay)
+                time.sleep(delay)
+                time.sleep(delay)
+                # dataTable = pd.concat([globals()[f"webtable_df{k}"]], ignore_index=True)
+                time.sleep(delay)
+                time.sleep(delay)
+                time.sleep(delay)
+                # print("dataTable au tour" + str(k) + ": \n", globals()[f"webtable_df{k}"])
+
+                index_list = globals()[f"webtable_df{k}"]['Unnamed: 0'].isnull().values.any()
+                if index_list:
+                    print(index_list)
+                    print("fin: " + str(compteur))
+                    time.sleep(delay)
+                    time.sleep(delay)
+                    WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+                    wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+                    dataTable = pd.DataFrame()
+                    for k in range(0, compteur + 1):
+                        time.sleep(delay)
+                        time.sleep(delay)
+                        dataTable = dataTable.append([globals()[f"webtable_df{k}"]], ignore_index=True)
+                        # print("dataTable au tour" + str(k + 1) + ": \n", globals()[f"webtable_df{k}"])
+                        time.sleep(delay)
+                        time.sleep(delay)
+                    print("dataTable à la fin: \n", dataTable)
+                    indice = pd.to_numeric(dataTable['Unnamed: 0']).fillna(0).astype(int)
+                    FRP = pd.to_numeric(dataTable['Unnamed: 1']).fillna(0).astype(int)
+                    name = dataTable['Unnamed: 2']
+                    credit = pd.to_numeric(dataTable['Unnamed: 3']).fillna(0)
+                    montant = dataTable['Unnamed: 10']
+                    levee = dataTable['Unnamed: 16']
+                    fields = {'id': indice, 'FRP': FRP, 'DENOMINATION': name, ' CREDIT D\'IMPOT': credit,
+                              'Montant': montant,
+                              'LEVEE': levee}
+                    table = pd.DataFrame(fields)
+                    filename = EnterTable6.get() + '_liste_créances_' + datetime.now().strftime(
+                        '%Y-%m-%d-%H-%M-%S') + '.csv'
+                    table.to_csv(filename, columns=fields, index=FALSE)
+
+                    try:
+                        time.sleep(delay)
+                        time.sleep(delay)
+                        time.sleep(delay)
+                        liste = csv.reader(open(filename), delimiter=',')
+
+                        tabControl.add(tab3, text='liste des oppositions')
+
+                        table1 = Table(tab3, dataframe=table, read_only=True, index=FALSE)
+                        table1.place(y=120)
+                        table1.show()
+
+                    except FileNotFoundError as e:
+                        print(e)
+                        msg.showerror('Error in opening file', e)
+                    ## Validation de la sortie du formulaire
+                    time.sleep(delay)
+                    WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+                    wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+                    wd.quit()
+
+                else:
+                    time.sleep(delay)
+                    time.sleep(delay)
+                    time.sleep(delay)
+                    dataTable = pd.concat([globals()[f"webtable_df{k}"]], ignore_index=True)
+                    wd.find_element(By.ID, 'inputB33gnaviY33GnavichChoixSurB33Gnavi').send_keys('S')
+                    wd.find_element(By.ID, 'inputB33gnaviY33GnavichChoixSurB33Gnavi').send_keys(Keys.ENTER)
+                    print("Avant: " + str(compteur))
+                    compteur += 1
+                    k += 1
+                    print("après: " + str(compteur))
+
+        ## Récupération des oppositions
         time.sleep(delay)
         webtable_df1 = \
             pd.read_html(
@@ -364,7 +460,6 @@ def create_opposant():
 
     ## Boucle sur le fichier selon le nombre de lignes indiquées
     for i in range(line_amount):
-
         ## Création d'un Redevable
         ## Arriver à la transactionv 3-17
 
@@ -451,7 +546,6 @@ def create_opposant():
         # annee_d_effet = date_d_effet[2]
         # print("jour : " + jour_d_effet + " mois : " + mois_d_effet + " année : " + annee_d_effet)
 
-
         time.sleep(delay)
         WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtefDateEffetJour')))
         wd.find_element(By.ID, 'inputB33ginf2Ya33GdtefDateEffetJour').send_keys(date_d_effet.day)
@@ -498,11 +592,13 @@ def create_opposant():
         ## Saisie de la date de renouvellement
 
         time.sleep(delay)
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementJour')))
+        WebDriverWait(wd, 20).until(
+            EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementJour')))
         wd.find_element(By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementJour').send_keys(Keys.TAB)
 
         time.sleep(delay)
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementMois')))
+        WebDriverWait(wd, 20).until(
+            EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementMois')))
         wd.find_element(By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementMois').send_keys(Keys.TAB)
 
         time.sleep(delay)
@@ -582,9 +678,11 @@ label1 = Label(tab1, text='Afficher un créancier', font=('Arial', 15), fg='Blac
 label1.place(x=400, y=paramx)
 
 creancierButton = Button(tab1, text='Afficher le créancier', command=main)
-creancierButton.place(x=paramx + 250, y=paramy + 40)
+creancierButton.place(x=paramx + 240, y=paramy + 40)
 
 tab2 = Frame(tabControl, bg='#E3EBD0')
+label2 = Label(tab2, text='Créer des oppositions', font=('Arial', 15), fg='Black', bg='#ffffff', relief="sunken")
+label2.place(x=400, y=paramx)
 tabControl.add(tab1, text='Afficher un créancier')
 tabControl.add(tab2, text='Créer une opposition')
 tabControl.pack(expand=1, fill="both")
@@ -612,7 +710,7 @@ EnterTable10 = StringVar()
 labelNumeroDossier = Label(tab1, text='Numéro Dossier Opposant:', relief="sunken")
 labelNumeroDossier.place(x=250, y=paramy - 30)
 entryNumeroDossier = Entry(tab1, textvariable=EnterTable6, justify='center')
-entryNumeroDossier.place(x=paramx + 400, y=paramy - 30)
+entryNumeroDossier.place(width=225, x=paramx + 490, y=paramy - 30)
 
 creerOpposition = Button(tab2, text='Créer une Opposition', relief="ridge", command=create_opposant)
 creerOpposition.place(x=paramx + 240, y=paramy + 300)
@@ -672,11 +770,11 @@ creerOpposition.place(x=paramx + 240, y=paramy + 300)
 label3 = Label(tab2, text='Saisir la ligne du début: ', relief="sunken")
 label3.place(x=paramx + 240, y=paramy + 45)
 entry2 = Entry(tab2, textvariable=EnterTable2, justify='center')
-entry2.place(x=paramx + 600, y=paramy + 45)
+entry2.place(width=225, x=paramx + 490, y=paramy + 45)
 label4 = Label(tab2, text='Saisir le nombre de lignes à traiter: ', relief="sunken")
 label4.place(x=paramx + 240, y=paramy + 105)
 entry3 = Entry(tab2, textvariable=EnterTable3, justify='center')
-entry3.place(x=paramx + 600, y=paramy + 105)
+entry3.place(width=225, x=paramx + 490, y=paramy + 105)
 
 # login et mot de passe
 label5 = Label(tab1, text='Login:', relief="sunken")
