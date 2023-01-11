@@ -13,7 +13,7 @@ import pyexcel_ods3 as pe
 from PIL import Image, ImageTk
 from pandas.io.formats import info
 from pandas_ods_reader import read_ods
-from pandastable import Table
+from pandastable import Table, config
 from pyexcel_ods import save_data
 from pynput.keyboard import Controller
 from selenium import webdriver
@@ -542,7 +542,12 @@ def create_opposant():
             tabControl.add(tab4, text='liste des oppositions')
             table1 = Table(tab4, dataframe=table, read_only=True, index=FALSE)
             table1.place(y=120)
+
+            options = {'colheadercolor': 'green', 'floatprecision': 0}
+            config.apply_options(options, table1)
+            table1.autoResizeColumns()
             table1.show()
+
 
         except FileNotFoundError as e:
             print(e)
@@ -592,8 +597,10 @@ tab4 = Frame(tabControl, bg='#E3EBD0')
 img = Image.open('C:/Users/meddb-jean-francoi01/Documents/Application de Creation d\'Opposant/close-button.png')
 img_resize = img.resize((30, 30), Image.LANCZOS)
 closeIcon = ImageTk.PhotoImage(img_resize)
-closeButton = Button(Interface, image=closeIcon, command=lambda: tabControl.forget(tab3, tab4))
-closeButton.pack(side=LEFT)
+closeButton1 = Button(tab3, image=closeIcon, command=lambda: tabControl.forget(tab3))
+closeButton1.pack(side=LEFT)
+closeButton2 = Button(tab4, image=closeIcon, command=lambda: tabControl.forget(tab4))
+closeButton2.pack(side=LEFT)
 
 EnterTable1 = StringVar()
 EnterTable2 = StringVar()
