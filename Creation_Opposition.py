@@ -6,12 +6,15 @@ from datetime import datetime
 from pathlib import Path
 from tkinter import *
 from tkinter import filedialog, messagebox, messagebox as msg, ttk
+from tkinter.messagebox import showinfo
+
 import pandas as pd
-import requests
-from PIL import Image, ImageTk
 import pyexcel_ods3 as pe
-from bs4 import BeautifulSoup
+from PIL import Image, ImageTk
+from pandas.io.formats import info
+from pandas_ods_reader import read_ods
 from pandastable import Table
+from pyexcel_ods import save_data
 from pynput.keyboard import Controller
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -19,7 +22,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from tkcalendar import DateEntry
 from webdriver_manager.firefox import GeckoDriverManager
 
 keyboard = Controller()
@@ -39,45 +41,9 @@ def main():
     # Délai entre opérations automate. Pour des numéros non entiers il faut utiliser le point pas la virgule
     delay = 1
 
-    # Prend la ligne du fichier depuis laquelle commencer à lire
-    # while True:
-    #     line = EnterTable2.get()
-    #     if line.isnumeric():  ##vérifie que ça soit un numéro
-    #         line = int(line)  ##ajuste l'indice
-    #         break
-    #     else:
-    #         messagebox.OK('Saisie incorrecte, réessayez')
-    #         exit()
-
-    # Combien de lignes du fichier traiter
-    line_amount = 1
-    # while True:
-    #     line_amount = EnterTable3.get()
-    #     if line_amount.isnumeric():
-    #         line_amount = int(line_amount)
-    #         break
-    #     else:
-    #         messagebox.OK('Saisie incorrecte, réessayez')
-    #         exit()
-
-    # Prend les données depuis le fichier, crée une liste de listes (ou "array"), oú chaque liste est
-    # une ligne du fichier Calc. Il faut faire ça parce que pyxcel_ods prend les données sous forme
-    # de dictionnaire.
-    # donnees_entree = pe.get_data()
-    # data = [i for i in donnees_entree['Database']]
-
-    # Condition qui vérifie que chaque cellule de la colonne rib, à part le header, est vide, d'après le besoin case
-    # vide = rang 1, si l'item correspondant au rang est vide il prend la valeur "1" utilisable dans la boucle
-    # d'automatisation. Cette condition sert à s'assurer que l'on aura une valeur pour le rang, s'il n'y a pas de
-    # valeur la liste est vide et ça génère une erreur taille_data donne le nombre d'items+1 dans le dico,
-    # puisque python boucle à partir de 0, dans notre cas, c'est le nombre de listes qui est de 11 (10 + liste
-    # headers) C'est pour cela que je boucle de 0 à taille_data - 2 pour ne pas inclure la liste des headers
-    # taille_data = len(data) last_item_index0 = len(data[0]) - 1 last_item_index1 = len(data[1]) - 1 for i in range(
-    # taille_data - 2): if last_item_index0 != len(data[i + 1]) - 1: data[i + 1].append(str(1))
     # ########################################
 
     # ##Saisie nom utilisateur et mot de passe
-    # login = pe.get_data('C:/Users/meddb-el-farouki01/Desktop/Remboursement_DGE/Programme/login.ods')['Database'][0]
     login = EnterTable4.get()
     mot_de_passe = EnterTable5.get()
 
@@ -85,7 +51,7 @@ def main():
     numeroDossier = EnterTable6.get()
 
     wd_options = Options()
-    # wd_options.headless = True
+    wd_options.headless = True
 
     wd_options.set_preference('detach', True)
     wd = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=wd_options)
@@ -122,47 +88,47 @@ def main():
 
     ## Boucle sur le fichier selon le nombre de lignes indiquées
 
-    for i in range(line_amount):
-        ## Création d'un Redevable
-        ## Arriver à la transaction 3-17
+    ## Création d'un Redevable
+    ## Arriver à la transaction 3-17
 
-        time.sleep(delay)
-        wd.find_element(By.ID, 'inputBmenuxBrmenx07CodeSaisieDirecte').send_keys('3')
-        wd.find_element(By.ID, 'inputBmenuxBrmenx07CodeSaisieDirecte').send_keys(Keys.ENTER)
-        time.sleep(delay)
-        WebDriverWait(wd, 20).until(
-            EC.presence_of_element_located((By.ID, 'bmenuxtableMenus:16:outputBmenuxBrmenx04LibelleLigneProposee')))
-        wd.find_element(By.ID, 'bmenuxtableMenus:16:outputBmenuxBrmenx04LibelleLigneProposee').click()
+    time.sleep(delay)
+    wd.find_element(By.ID, 'inputBmenuxBrmenx07CodeSaisieDirecte').send_keys('3')
+    wd.find_element(By.ID, 'inputBmenuxBrmenx07CodeSaisieDirecte').send_keys(Keys.ENTER)
+    time.sleep(delay)
+    WebDriverWait(wd, 20).until(
+        EC.presence_of_element_located((By.ID, 'bmenuxtableMenus:16:outputBmenuxBrmenx04LibelleLigneProposee')))
+    wd.find_element(By.ID, 'bmenuxtableMenus:16:outputBmenuxBrmenx04LibelleLigneProposee').click()
 
-        ## Saisie numéro de Dossier
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputYrdos211NumeroDeDossier')))
+    ## Saisie numéro de Dossier
+    WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputYrdos211NumeroDeDossier')))
 
-        wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(numeroDossier)
-        wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(Keys.ENTER)
+    wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(numeroDossier)
+    wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(Keys.ENTER)
 
-        ## Saisie du choix Lister
-        time.sleep(delay)
-        time.sleep(delay)
-        time.sleep(delay)
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33gmenuYa33Gch1ChoixCMAI')))
+    ## Saisie du choix Lister
+    time.sleep(delay)
+    time.sleep(delay)
+    time.sleep(delay)
+    WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33gmenuYa33Gch1ChoixCMAI')))
 
-        wd.find_element(By.ID, 'inputB33gmenuYa33Gch1ChoixCMAI').send_keys('I')
-        wd.find_element(By.ID, 'inputB33gmenuYa33Gch1ChoixCMAI').send_keys(Keys.TAB)
+    wd.find_element(By.ID, 'inputB33gmenuYa33Gch1ChoixCMAI').send_keys('I')
+    wd.find_element(By.ID, 'inputB33gmenuYa33Gch1ChoixCMAI').send_keys(Keys.TAB)
 
-        ## Récupération du tableau des oppositions en js
-        time.sleep(delay)
-        time.sleep(delay)
-        time.sleep(delay)
+    ## Récupération du tableau des oppositions
+    time.sleep(delay)
+    time.sleep(delay)
+    time.sleep(delay)
 
-        currentUrl = wd.current_url
-        compteur = 0
-        k = 0
-        while True:
-            if currentUrl == 'http://medoc.ia.dgfip:8141/medocweb/presentation/transactions/redevable/pa33g/ecran' \
-                             '/Pa33GTx317.jsf':
-                time.sleep(delay)
-                time.sleep(delay)
-                time.sleep(delay)
+    currentUrl = wd.current_url
+    compteur = 0
+    k = 0
+    while True:
+        if currentUrl == 'http://medoc.ia.dgfip:8141/medocweb/presentation/transactions/redevable/pa33g/ecran' \
+                         '/Pa33GTx317.jsf':
+            time.sleep(delay)
+            time.sleep(delay)
+            time.sleep(delay)
+            try:
                 globals()[f"webtable_df{k}"] = pd.read_html(
                     wd.find_element(By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]').get_attribute('outerHTML'))[
                     1]
@@ -215,9 +181,7 @@ def main():
                         time.sleep(delay)
                         time.sleep(delay)
                         liste = csv.reader(open(filename), delimiter=',')
-
                         tabControl.add(tab3, text='liste des oppositions')
-
                         table1 = Table(tab3, dataframe=table, read_only=True, index=FALSE)
                         table1.place(y=120)
                         table1.show()
@@ -242,97 +206,11 @@ def main():
                     compteur += 1
                     k += 1
                     print("après: " + str(compteur))
-
-        ## Récupération des oppositions
-        time.sleep(delay)
-        webtable_df1 = \
-            pd.read_html(
-                wd.find_element(By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]').get_attribute('outerHTML'))[1]
-
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33gnaviY33GnavichChoixSurB33Gnavi')))
-
-        wd.find_element(By.ID, 'inputB33gnaviY33GnavichChoixSurB33Gnavi').send_keys('S')
-        wd.find_element(By.ID, 'inputB33gnaviY33GnavichChoixSurB33Gnavi').send_keys(Keys.ENTER)
-        time.sleep(delay)
-        WebDriverWait(wd, 20).until(
-            EC.presence_of_element_located((By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]')))
-
-        WebDriverWait(wd, 20).until(
-            EC.presence_of_element_located((By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]')))
-    if EC.presence_of_element_located((By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]')):
-        webtable_df2 = \
-            pd.read_html(
-                wd.find_element(By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]').get_attribute('outerHTML'))[1]
-        time.sleep(delay)
-    else:
-        time.sleep(delay)
-        time.sleep(delay)
-        WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
-        wd.find_element(By.ID, 'barre_outils:touche_f2').click()
-
-    WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33gnaviY33GnavichChoixSurB33Gnavi')))
-
-    if EC.presence_of_element_located((By.ID, 'inputB33gnaviY33GnavichChoixSurB33Gnavi')):
-        wd.find_element(By.ID, 'inputB33gnaviY33GnavichChoixSurB33Gnavi').send_keys('S')
-        wd.find_element(By.ID, 'inputB33gnaviY33GnavichChoixSurB33Gnavi').send_keys(Keys.ENTER)
-        time.sleep(delay)
-        time.sleep(delay)
-        WebDriverWait(wd, 20).until(
-            EC.presence_of_element_located((By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]')))
-    else:
-        time.sleep(delay)
-        time.sleep(delay)
-        WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
-        wd.find_element(By.ID, 'barre_outils:touche_f2').click()
-
-    if EC.presence_of_element_located((By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]')):
-        webtable_df3 = \
-            pd.read_html(
-                wd.find_element(By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]').get_attribute('outerHTML'))[1]
-        time.sleep(delay)
-        time.sleep(delay)
-    else:
-        time.sleep(delay)
-        time.sleep(delay)
-        WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
-        wd.find_element(By.ID, 'barre_outils:touche_f2').click()
-
-    webtable_df = pd.concat([webtable_df1, webtable_df2, webtable_df3])
-    # if len(webtable_df) > 0:
-    #     webtable_df.to_csv(
-    #         EnterTable6.get() + '_liste_créances_' + datetime.now().strftime('%Y-%m-%d-%H-%M-%S') + '.csv')
-    # Printing the URL
-    indice = pd.to_numeric(webtable_df['Unnamed: 0']).fillna(0).astype(int)
-    FRP = pd.to_numeric(webtable_df['Unnamed: 1']).fillna(0).astype(int)
-    name = webtable_df['Unnamed: 2']
-    credit = pd.to_numeric(webtable_df['Unnamed: 3']).fillna(0)
-    montant = webtable_df['Unnamed: 10']
-    levee = webtable_df['Unnamed: 16']
-    fields = {'id': indice, 'FRP': FRP, 'DENOMINATION': name, ' CREDIT D\'IMPOT': credit, 'Montant': montant,
-              'LEVEE': levee}
-    table = pd.DataFrame(fields)
-    filename = EnterTable6.get() + '_liste_créances_' + datetime.now().strftime('%Y-%m-%d-%H-%M-%S') + '.csv'
-    table.to_csv(filename, columns=fields, index=FALSE)
-
-    try:
-        time.sleep(delay)
-        time.sleep(delay)
-        time.sleep(delay)
-        liste = csv.reader(open(filename), delimiter=',')
-
-        tabControl.add(tab3, text='liste des oppositions')
-
-        table1 = Table(tab3, dataframe=table, read_only=True, index=FALSE)
-        table1.place(y=120)
-        table1.show()
-
-    except FileNotFoundError as e:
-        print(e)
-        msg.showerror('Error in opening file', e)
-    ## Validation de la sortie du formulaire
-    time.sleep(delay)
-    WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
-    wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+            finally:
+                WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+                wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+                wd.quit()
+                showinfo("Affichage opposition", "L'opposant " + numeroDossier + " n'a pas d'opposition en cours ")
 
 
 def create_opposant():
@@ -649,6 +527,26 @@ def create_opposant():
         time.sleep(delay)
         WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
         wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+
+        ## Marquage tâche faîte dans le fichier
+        filename = 'donnees_creation_opposition_sortie' + datetime.now().strftime('_%Y-%m-%d') + '.ods'
+        donnees_creation_opposition_sortie = pe.get_data(File_path)
+        donnees_creation_opposition_sortie['Feuille1'][line].append('X')
+        save_data(filename, donnees_creation_opposition_sortie)
+        try:
+            time.sleep(delay)
+            time.sleep(delay)
+            time.sleep(delay)
+            sheet = "Feuille1"
+            table = read_ods(filename, sheet)
+            tabControl.add(tab4, text='liste des oppositions')
+            table1 = Table(tab4, dataframe=table, read_only=True, index=FALSE)
+            table1.place(y=120)
+            table1.show()
+
+        except FileNotFoundError as e:
+            print(e)
+            msg.showerror('Error in opening file', e)
         line += 1
     wd.quit()
 
@@ -688,12 +586,13 @@ tabControl.add(tab2, text='Créer une opposition')
 tabControl.pack(expand=1, fill="both")
 
 tab3 = Frame(tabControl, bg='#E3EBD0')
+tab4 = Frame(tabControl, bg='#E3EBD0')
 
 # Etablissement de l'image de fermeture
 img = Image.open('C:/Users/meddb-jean-francoi01/Documents/Application de Creation d\'Opposant/close-button.png')
 img_resize = img.resize((30, 30), Image.LANCZOS)
 closeIcon = ImageTk.PhotoImage(img_resize)
-closeButton = Button(Interface, image=closeIcon, command=lambda: tabControl.forget(tab3))
+closeButton = Button(Interface, image=closeIcon, command=lambda: tabControl.forget(tab3, tab4))
 closeButton.pack(side=LEFT)
 
 EnterTable1 = StringVar()

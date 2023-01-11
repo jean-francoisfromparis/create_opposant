@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9e4b049d-c425-4292-81a7-b4ed3fe028d1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/617382_liste_créances_2023-01-11-09-27-41.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/617382_liste_créances_2023-01-11-11-27-27.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Creation_Opposition.py" beforeDir="false" afterPath="$PROJECT_DIR$/Creation_Opposition.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Donnees_creation_opposition-2.ods" beforeDir="false" afterPath="$PROJECT_DIR$/Donnees_creation_opposition-2.ods" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/geckodriver.log" beforeDir="false" afterPath="$PROJECT_DIR$/geckodriver.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
