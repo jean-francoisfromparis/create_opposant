@@ -152,8 +152,8 @@ def main():
             time.sleep(delay)
             try:
                 globals()[f"webtable_df{k}"] = pd.read_html(
-                wd.find_element(By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]').get_attribute('outerHTML'))[
-                1]
+                    wd.find_element(By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]').get_attribute('outerHTML'))[
+                    1]
                 webtable_df1 = \
                     pd.read_html(
                         wd.find_element(By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]').get_attribute('outerHTML'))[
@@ -235,7 +235,8 @@ def main():
                         WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
                         wd.find_element(By.ID, 'barre_outils:touche_f2').click()
                         wd.quit()
-                        showinfo("Affichage opposition", "L'opposant " + numeroDossier + " n'a pas d'opposition en cours ")
+                        showinfo("Affichage opposition",
+                                 "L'opposant " + numeroDossier + " n'a pas d'opposition en cours ")
             except:
                 WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
                 wd.find_element(By.ID, 'barre_outils:touche_f2').click()
