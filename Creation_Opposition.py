@@ -51,7 +51,7 @@ def main():
     numeroDossier = EnterTable6.get()
 
     wd_options = Options()
-    wd_options.headless = True
+    # wd_options.headless = True
 
     wd_options.set_preference('detach', True)
     wd = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=wd_options)
@@ -105,6 +105,28 @@ def main():
     wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(numeroDossier)
     wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(Keys.ENTER)
 
+    # try:
+    #     WebDriverWait(wd, 20).until(EC.text_to_be_present_in_element((By.CLASS_NAME, 'ui-messages-error-summary'),
+    #                                                                  'DOSSIER DEJA UTILISE PAR UN AUTRE POSTE  - '
+    #                                                                  'ATTENTE OU ABANDON -                 '))
+    #     showinfo("Affichage opposition", "Le dossier de l'opposant " + numeroDossier + " est déjà utilisé et doit être "
+    #                                                                                    "purgé ")
+    #     WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+    #     wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+    #     wd.quit()
+    # except FileNotFoundError as e:
+    #     print(e)
+    #     msg.showerror('Error in opening file', e)
+    # finally:
+    #     pass
+    # if EC.text_to_be_present_in_element((By.CLASS_NAME, 'ui-messages-error-summary'),
+    #                                                                 'DOSSIER DEJA UTILISE PAR UN AUTRE POSTE  - '
+    #                                                                 'ATTENTE OU ABANDON -                 '):
+    #     showinfo("Affichage opposition", "Le dossier de l'opposant " + numeroDossier + " est déjà utilisé et doit être "
+    #                                                                                    "purgé ")
+    # else:
+    #     pass
+
     ## Saisie du choix Lister
     time.sleep(delay)
     time.sleep(delay)
@@ -130,8 +152,8 @@ def main():
             time.sleep(delay)
             try:
                 globals()[f"webtable_df{k}"] = pd.read_html(
-                    wd.find_element(By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]').get_attribute('outerHTML'))[
-                    1]
+                wd.find_element(By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]').get_attribute('outerHTML'))[
+                1]
                 webtable_df1 = \
                     pd.read_html(
                         wd.find_element(By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]').get_attribute('outerHTML'))[
@@ -144,10 +166,12 @@ def main():
                 time.sleep(delay)
                 time.sleep(delay)
                 # print("dataTable au tour" + str(k) + ": \n", globals()[f"webtable_df{k}"])
-
+                last_index = globals()[f"webtable_df{k}"]['Unnamed: 0']
                 index_list = globals()[f"webtable_df{k}"]['Unnamed: 0'].isnull().values.any()
                 if index_list:
                     print(index_list)
+                    print(last_index)
+                    print(globals()[f"webtable_df{k}"].dtypes)
                     print("fin: " + str(compteur))
                     time.sleep(delay)
                     time.sleep(delay)
@@ -196,21 +220,34 @@ def main():
                     wd.quit()
 
                 else:
+                    # time.sleep(delay)
                     time.sleep(delay)
                     time.sleep(delay)
-                    time.sleep(delay)
-                    dataTable = pd.concat([globals()[f"webtable_df{k}"]], ignore_index=True)
-                    wd.find_element(By.ID, 'inputB33gnaviY33GnavichChoixSurB33Gnavi').send_keys('S')
-                    wd.find_element(By.ID, 'inputB33gnaviY33GnavichChoixSurB33Gnavi').send_keys(Keys.ENTER)
-                    print("Avant: " + str(compteur))
-                    compteur += 1
-                    k += 1
-                    print("après: " + str(compteur))
-            finally:
+                    if not globals()[f"webtable_df{k}"].empty:
+                        dataTable = pd.concat([globals()[f"webtable_df{k}"]], ignore_index=True)
+                        wd.find_element(By.ID, 'inputB33gnaviY33GnavichChoixSurB33Gnavi').send_keys('S')
+                        wd.find_element(By.ID, 'inputB33gnaviY33GnavichChoixSurB33Gnavi').send_keys(Keys.ENTER)
+                        print("Avant: " + str(compteur))
+                        compteur += 1
+                        k += 1
+                        print("après: " + str(compteur))
+                    else:
+                        WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+                        wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+                        wd.quit()
+                        showinfo("Affichage opposition", "L'opposant " + numeroDossier + " n'a pas d'opposition en cours ")
+            except:
                 WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
                 wd.find_element(By.ID, 'barre_outils:touche_f2').click()
                 wd.quit()
                 showinfo("Affichage opposition", "L'opposant " + numeroDossier + " n'a pas d'opposition en cours ")
+                break
+
+    # finally:
+    #     WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+    #     wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+    #     wd.quit()
+    #     showinfo("Affichage opposition", "L'opposant " + numeroDossier + " n'a pas d'opposition en cours ")
 
 
 def create_opposant():
@@ -240,6 +277,7 @@ def create_opposant():
     ## une ligne du fichier Calc. Il faut faire ça parce que pyxcel_ods prend les données sous forme
     ## de dictionaire.
     donnees_creation_opposition = pe.get_data(File_path)
+    donnees_creation_opposition_sortie = pe.get_data(File_path)
     data = [i for i in donnees_creation_opposition['Feuille1']]
 
     # Condition qui vérifie que chaque cellule de la colonne rib, à part le header, est vide,
@@ -529,9 +567,11 @@ def create_opposant():
         wd.find_element(By.ID, 'barre_outils:touche_f2').click()
 
         ## Marquage tâche faîte dans le fichier
-        filename = 'donnees_creation_opposition_sortie' + datetime.now().strftime('_%Y-%m-%d') + '.ods'
-        donnees_creation_opposition_sortie = pe.get_data(File_path)
         donnees_creation_opposition_sortie['Feuille1'][line].append('X')
+        line += 1
+
+        filename = 'donnees_creation_opposition_sortie' + datetime.now().strftime('_%Y-%m-%d') + '.ods'
+
         save_data(filename, donnees_creation_opposition_sortie)
         try:
             time.sleep(delay)
@@ -548,11 +588,9 @@ def create_opposant():
             table1.autoResizeColumns()
             table1.show()
 
-
         except FileNotFoundError as e:
             print(e)
             msg.showerror('Error in opening file', e)
-        line += 1
     wd.quit()
 
 
@@ -571,23 +609,24 @@ def open_file():
 # Procédure pour la gestion de l'interface Tkinter
 Interface = Tk()
 Interface.geometry('1000x600')
-Interface.title('Création Opposition')
+Interface.title('SATD DGE')
 paramx = 10
 paramy = 170
 
 tabControl = ttk.Notebook(Interface)
 tab1 = Frame(tabControl, bg='#C7DDC5')
-label1 = Label(tab1, text='Afficher un créancier', font=('Arial', 15), fg='Black', bg='#ffffff', relief="sunken")
+label1 = Label(tab1, text='Afficher la liste des oppositions', font=('Arial', 15), fg='Black', bg='#ffffff',
+               relief="sunken")
 label1.place(x=400, y=paramx)
 
-creancierButton = Button(tab1, text='Afficher le créancier', command=main)
+creancierButton = Button(tab1, text='Afficher la liste', command=main)
 creancierButton.place(x=paramx + 240, y=paramy + 40)
 
 tab2 = Frame(tabControl, bg='#E3EBD0')
 label2 = Label(tab2, text='Créer des oppositions', font=('Arial', 15), fg='Black', bg='#ffffff', relief="sunken")
 label2.place(x=400, y=paramx)
-tabControl.add(tab1, text='Afficher un créancier')
-tabControl.add(tab2, text='Créer une opposition')
+tabControl.add(tab1, text='Liste des oppositions')
+tabControl.add(tab2, text='Création des oppositions')
 tabControl.pack(expand=1, fill="both")
 
 tab3 = Frame(tabControl, bg='#E3EBD0')
@@ -597,9 +636,9 @@ tab4 = Frame(tabControl, bg='#E3EBD0')
 img = Image.open('C:/Users/meddb-jean-francoi01/Documents/Application de Creation d\'Opposant/close-button.png')
 img_resize = img.resize((30, 30), Image.LANCZOS)
 closeIcon = ImageTk.PhotoImage(img_resize)
-closeButton1 = Button(tab3, image=closeIcon, command=lambda: tabControl.forget(tab3))
+closeButton1 = Button(Interface, image=closeIcon, command=lambda: tabControl.forget(tab3))
 closeButton1.pack(side=LEFT)
-closeButton2 = Button(tab4, image=closeIcon, command=lambda: tabControl.forget(tab4))
+closeButton2 = Button(Interface, image=closeIcon, command=lambda: tabControl.forget(tab4))
 closeButton2.pack(side=LEFT)
 
 EnterTable1 = StringVar()
@@ -618,7 +657,7 @@ labelNumeroDossier.place(x=250, y=paramy - 30)
 entryNumeroDossier = Entry(tab1, textvariable=EnterTable6, justify='center')
 entryNumeroDossier.place(width=225, x=paramx + 490, y=paramy - 30)
 
-creerOpposition = Button(tab2, text='Créer une Opposition', relief="ridge", command=create_opposant)
+creerOpposition = Button(tab2, text='Créer les Oppositions', relief="ridge", command=create_opposant)
 creerOpposition.place(x=paramx + 240, y=paramy + 300)
 
 # labelNumeroDossierCreancierOpposant = Label(tab2, text="Saisir le numéro d\'un créancier opposant :")
@@ -683,19 +722,19 @@ entry3 = Entry(tab2, textvariable=EnterTable3, justify='center')
 entry3.place(width=225, x=paramx + 490, y=paramy + 105)
 
 # login et mot de passe
-label5 = Label(tab1, text='Login:', relief="sunken")
+label5 = Label(tab1, text='Identifiant:', relief="sunken")
 label5.place(x=250, y=70)
 entry4 = Entry(tab1, textvariable=EnterTable4, justify='center')
-entry4.place(x=300, y=70)
+entry4.place(x=340, y=70)
 label6 = Label(tab1, text='Mot de passe: ', relief="sunken")
 label6.place(x=500, y=70)
 entry5 = Entry(tab1, textvariable=EnterTable5, justify='center')
 entry5.place(x=600, y=70)
 
-label5 = Label(tab2, text='Login:', relief="sunken")
+label5 = Label(tab2, text='Identifiant:', relief="sunken")
 label5.place(x=250, y=70)
 entry4 = Entry(tab2, textvariable=EnterTable4, justify='center')
-entry4.place(x=300, y=70)
+entry4.place(x=340, y=70)
 label6 = Label(tab2, text='Mot de passe: ', relief="sunken")
 label6.place(x=500, y=70)
 entry5 = Entry(tab2, textvariable=EnterTable5, justify='center')
