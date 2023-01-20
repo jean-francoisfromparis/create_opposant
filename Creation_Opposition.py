@@ -61,9 +61,11 @@ def main():
         '.jsf')
 
     ## Saisir utilisateur
+    ##Saisir utilisateur
     time.sleep(delay)
-    # wd.find_element(By.ID, 'identifiant').send_keys(login)
-    wd.find_element(By.ID, 'identifiant').send_keys("youssef.atigui")
+    # script = f'''identifant = document.getElementById('identifiant'); identifiant.setAttribute('type','hidden'); identifiant.setAttribute('value',"{login}");'''
+    script = f'''identifant = document.getElementById('identifiant'); identifiant.setAttribute('type','hidden'); identifiant.setAttribute('value',"youssef.atigui");'''
+    wd.execute_script(script)
 
     ## Saisie mot de pass
     time.sleep(delay)
@@ -152,8 +154,8 @@ def main():
             time.sleep(delay)
             try:
                 globals()[f"webtable_df{k}"] = pd.read_html(
-                wd.find_element(By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]').get_attribute('outerHTML'))[
-                1]
+                    wd.find_element(By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]').get_attribute('outerHTML'))[
+                    1]
                 webtable_df1 = \
                     pd.read_html(
                         wd.find_element(By.XPATH, '//*[@id="b33GlistLigneOperationPanel"]').get_attribute('outerHTML'))[
@@ -235,7 +237,8 @@ def main():
                         WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
                         wd.find_element(By.ID, 'barre_outils:touche_f2').click()
                         wd.quit()
-                        showinfo("Affichage opposition", "L'opposant " + numeroDossier + " n'a pas d'opposition en cours ")
+                        showinfo("Affichage opposition",
+                                 "L'opposant " + numeroDossier + " n'a pas d'opposition en cours ")
             except:
                 WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
                 wd.find_element(By.ID, 'barre_outils:touche_f2').click()
@@ -278,6 +281,9 @@ def create_opposant():
     ## de dictionaire.
     donnees_creation_opposition = pe.get_data(File_path)
     donnees_creation_opposition_sortie = pe.get_data(File_path)
+    donnees_creation_opposition_sortie['Feuille1'][0].append("Numéro d'Opération")
+    donnees_creation_opposition_sortie['Feuille1'][0].append("Fait")
+    print(donnees_creation_opposition_sortie['Feuille1'][0])
     data = [i for i in donnees_creation_opposition['Feuille1']]
 
     # Condition qui vérifie que chaque cellule de la colonne rib, à part le header, est vide,
@@ -348,10 +354,11 @@ def create_opposant():
     wd.get(
         'https://portailmetierpriv.ira.appli.impots/cas/login?service=http%3A%2F%2Fmedoc.ia.dgfip%3A8141%2Fmedocweb%2Fcas%2Fvalidation')
 
-    ## Saisir utilisateur
+    ##Saisir utilisateur
     time.sleep(delay)
-    # wd.find_element(By.ID, 'identifiant').send_keys(login)
-    wd.find_element(By.ID, 'identifiant').send_keys("youssef.atigui")
+    # script = f'''identifant = document.getElementById('identifiant'); identifiant.setAttribute('type','hidden'); identifiant.setAttribute('value',"{login}");'''
+    script = f'''identifant = document.getElementById('identifiant'); identifiant.setAttribute('type','hidden'); identifiant.setAttribute('value',"youssef.atigui");'''
+    wd.execute_script(script)
 
     ## Saisie mot de pass
     time.sleep(delay)
@@ -431,7 +438,7 @@ def create_opposant():
         wd.find_element(By.ID, 'inputB33ginf2Ya33GadtAdt').send_keys('O')
         wd.find_element(By.ID, 'inputB33ginf2Ya33GadtAdt').send_keys(Keys.TAB)
 
-        ## Saisie crédit
+        ## Saisi crédit
 
         time.sleep(delay)
         WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GcredCreditIs')))
@@ -467,7 +474,7 @@ def create_opposant():
         wd.find_element(By.ID, 'inputB33ginf2Ya33GdtefDateEffetJour').send_keys(date_d_effet.day)
         wd.find_element(By.ID, 'inputB33ginf2Ya33GdtefDateEffetJour').send_keys(Keys.TAB)
 
-        ## Saisie Mois d'Effet
+        ## Saisis Mois d'Effet
 
         time.sleep(delay)
         WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtefDateEffetMois')))
@@ -544,14 +551,10 @@ def create_opposant():
         wd.find_element(By.ID, 'inputB33gvlcrYa33GvalcValidationCreation').send_keys('O')
         wd.find_element(By.ID, 'inputB33gvlcrYa33GvalcValidationCreation').send_keys(Keys.TAB)
 
-        ## Vérification du message
-
-        # time.sleep(delay)
-        # WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-info-summary')))
-        # message_de_succes = wd.find_element(By.CLASS_NAME, 'ui-messages-info-summary')
-        # assert (message_de_succes == "MESSAGE ACQUITTE")
-        # print("tout est bon !")
-        # time.sleep(delay)
+        ## Capture numéro d'opération
+        time.sleep(delay)
+        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'outputB33gnopeYa33GnopeNOpe')))
+        numero_ope = wd.find_element(By.ID, 'outputB33gnopeYa33GnopeNOpe').text
 
         ## Saisie de la fin de saisie
 
@@ -567,11 +570,13 @@ def create_opposant():
         wd.find_element(By.ID, 'barre_outils:touche_f2').click()
 
         ## Marquage tâche faîte dans le fichier
+
+        donnees_creation_opposition_sortie['Feuille1'][line].append(numero_ope)
+        print(numero_ope)
         donnees_creation_opposition_sortie['Feuille1'][line].append('X')
         line += 1
 
         filename = 'donnees_creation_opposition_sortie' + datetime.now().strftime('_%Y-%m-%d') + '.ods'
-
         save_data(filename, donnees_creation_opposition_sortie)
         try:
             time.sleep(delay)
@@ -633,7 +638,7 @@ tab3 = Frame(tabControl, bg='#E3EBD0')
 tab4 = Frame(tabControl, bg='#E3EBD0')
 
 # Etablissement de l'image de fermeture
-img = Image.open('C:/Users/meddb-jean-francoi01/Documents/Application de Creation d\'Opposant/close-button.png')
+img = Image.open('C:/Users/meddb-jean-francoi01/Documents/Application de Creation d\'Opposition/close-button.png')
 img_resize = img.resize((30, 30), Image.LANCZOS)
 closeIcon = ImageTk.PhotoImage(img_resize)
 closeButton1 = Button(Interface, image=closeIcon, command=lambda: tabControl.forget(tab3))
