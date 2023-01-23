@@ -12,6 +12,7 @@ from tkinter.ttk import Progressbar
 
 import pandas as pd
 import pyexcel_ods3 as pe
+import odswriter as ods
 from PIL import Image, ImageTk
 from pandas.io.formats import info
 from pandas_ods_reader import read_ods
@@ -57,7 +58,8 @@ def main():
     numeroDossier = EnterTable6.get()
 
     wd_options = Options()
-    # wd_options.headless = True
+
+    wd_options.headless = True
 
     wd_options.set_preference('detach', True)
     wd = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=wd_options)
@@ -265,6 +267,11 @@ def create_opposant():
     # Etablissement du progressBar
 
     pb = progressbar(tab2)
+    progressbar_label = Label(tab2, text=f"Le travail commence : {pb['value']}%")
+    progressbar_label.place(x=250, y=370)
+    tab2.update()
+
+    time.sleep(delay)
 
     ##Prend la ligne du fichier depuis laquelle commencer à lire
     while True:
@@ -357,7 +364,10 @@ def create_opposant():
     # reference_de_jugement = EnterTable10.get()
 
     wd_options = Options()
-    # wd_options.headless = True
+    if headless():
+        wd_options.headless = True
+    else:
+        wd_options.headless = FALSE
 
     wd_options.set_preference('detach', True)
     wd = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=wd_options)
@@ -394,6 +404,9 @@ def create_opposant():
     ## Boucle sur le fichier selon le nombre de lignes indiquées
     for i in range(line_amount):
 
+        progressbar_label = Label(tab2, text=f"Le travail est en cours: {pb['value']}%")
+        progressbar_label.place(x=250, y=370)
+        tab2.update()
         ## Création d'un Redevable
         ## Arriver à la transactionv 3-17
 
@@ -589,16 +602,20 @@ def create_opposant():
         ## Incrementation ProgressBar
         pb['value'] += 90 / line_amount
         progress = pb['value']
-        pb.update()
         progressbar_label = Label(tab2, text=f"Le travail est en cours: {pb['value']}%")
         progressbar_label.place(x=250, y=370)
+        pb.update()
 
         time.sleep(1)
 
         line += 1
 
         filename = 'donnees_creation_opposition_sortie' + datetime.now().strftime('_%Y-%m-%d') + '.ods'
+        filename1 = 'donnees_creation_opposition_sortie1' + datetime.now().strftime('_%Y-%m-%d') + '.ods'
         save_data(filename, donnees_creation_opposition_sortie)
+        with ods.writer(open(filename1, "wb")) as odsfile:
+            odsfile.writerow(donnees_creation_opposition_sortie)
+
         try:
             time.sleep(delay)
             time.sleep(delay)
@@ -630,6 +647,16 @@ def open_file():
         filepath = filepath.replace(os.sep, "/")
         label_path.configure(text="Le fichier sélectionné est : " + Path(filepath).stem)
         File_path = filepath
+
+
+def headless():
+    return True
+
+
+def combine_command():
+    headless()
+    time.sleep(3)
+    create_opposant()
 
 
 # Procédure pour la progress bar
@@ -753,6 +780,9 @@ label4 = Label(tab2, text='Saisir le nombre de lignes à traiter: ', relief="sun
 label4.place(x=paramx + 240, y=paramy + 105)
 entry3 = Entry(tab2, textvariable=EnterTable3, justify='center')
 entry3.place(width=225, x=paramx + 490, y=paramy + 105)
+
+browser_button = Button(tab2, text='Créer les Oppositions sans navigateur !', relief="ridge", command=combine_command)
+browser_button.place(x=paramx + 240, y=paramy + 250)
 
 # login et mot de passe sur tab1 à tab3
 label5 = Label(tab1, text='Identifiant:', relief="sunken")
