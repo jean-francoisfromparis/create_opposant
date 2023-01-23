@@ -1,3 +1,4 @@
+import _thread
 import csv
 import os
 import sys
@@ -7,6 +8,7 @@ from pathlib import Path
 from tkinter import *
 from tkinter import filedialog, messagebox, messagebox as msg, ttk
 from tkinter.messagebox import showinfo
+from tkinter.ttk import Progressbar
 
 import pandas as pd
 import pyexcel_ods3 as pe
@@ -254,7 +256,11 @@ def main():
 
 
 def create_opposant():
-    delay = 1
+    delay = 2
+
+    # Etablissement du progressBar
+
+    pb = progressbar(tab2)
 
     ##Prend la ligne du fichier depuis laquelle commencer à lire
     while True:
@@ -383,6 +389,11 @@ def create_opposant():
 
     ## Boucle sur le fichier selon le nombre de lignes indiquées
     for i in range(line_amount):
+        ## Incrementation ProgressBar
+        pb['value'] += 100 / line_amount
+        pb.update()
+        time.sleep(1)
+
         ## Création d'un Redevable
         ## Arriver à la transactionv 3-17
 
@@ -609,6 +620,34 @@ def open_file():
         filepath = filepath.replace(os.sep, "/")
         label_path.configure(text="Le fichier sélectionné est : " + Path(filepath).stem)
         File_path = filepath
+
+
+# Procédure pour la progress bar
+def progressbar(parent):
+    pb = Progressbar(parent, length=500, mode='determinate', maximum=100, value=0)
+    pb.place(x=250, y=350)
+    return pb
+
+
+# Procédure pour l'update de la progressbar
+def run(pb):
+    pb.update()
+
+
+# Procédure pour tester la progressBar
+
+def test(val, pb):
+    for i in range(val):
+        print(i)
+        time.sleep(0.01)
+    pb.stop()
+
+
+# Procédure d'integration du thread
+
+def double(pb):
+    _thread.start_new_thread(run, (pb,))
+    _thread.start_new_thread(test, (200, pb))
 
 
 # Procédure pour la gestion de l'interface Tkinter
