@@ -29,6 +29,10 @@ from webdriver_manager.firefox import GeckoDriverManager
 keyboard = Controller()
 
 
+def __init__(self, progress):
+    self.progress = progress
+
+
 # Fonction pour retrouver le chemin d'accès
 def resource_path(relative_path):
     try:
@@ -45,7 +49,7 @@ def main():
 
     # ########################################
 
-    # ##Saisie nom utilisateur et mot de passe
+    # ##Saisie du nom utilisateur et mot de passe
     login = EnterTable4.get()
     mot_de_passe = EnterTable5.get()
 
@@ -256,7 +260,7 @@ def main():
 
 
 def create_opposant():
-    delay = 2
+    delay = 3
 
     # Etablissement du progressBar
 
@@ -389,10 +393,6 @@ def create_opposant():
 
     ## Boucle sur le fichier selon le nombre de lignes indiquées
     for i in range(line_amount):
-        ## Incrementation ProgressBar
-        pb['value'] += 100 / line_amount
-        pb.update()
-        time.sleep(1)
 
         ## Création d'un Redevable
         ## Arriver à la transactionv 3-17
@@ -585,6 +585,16 @@ def create_opposant():
         donnees_creation_opposition_sortie['Feuille1'][line].append(numero_ope)
         print(numero_ope)
         donnees_creation_opposition_sortie['Feuille1'][line].append('X')
+
+        ## Incrementation ProgressBar
+        pb['value'] += 90 / line_amount
+        progress = pb['value']
+        pb.update()
+        progressbar_label = Label(tab2, text=f"Le travail est en cours: {pb['value']}%")
+        progressbar_label.place(x=250, y=370)
+
+        time.sleep(1)
+
         line += 1
 
         filename = 'donnees_creation_opposition_sortie' + datetime.now().strftime('_%Y-%m-%d') + '.ods'
@@ -624,30 +634,9 @@ def open_file():
 
 # Procédure pour la progress bar
 def progressbar(parent):
-    pb = Progressbar(parent, length=500, mode='determinate', maximum=100, value=0)
+    pb = Progressbar(parent, length=500, mode='determinate', maximum=100, value=10)
     pb.place(x=250, y=350)
     return pb
-
-
-# Procédure pour l'update de la progressbar
-def run(pb):
-    pb.update()
-
-
-# Procédure pour tester la progressBar
-
-def test(val, pb):
-    for i in range(val):
-        print(i)
-        time.sleep(0.01)
-    pb.stop()
-
-
-# Procédure d'integration du thread
-
-def double(pb):
-    _thread.start_new_thread(run, (pb,))
-    _thread.start_new_thread(test, (200, pb))
 
 
 # Procédure pour la gestion de l'interface Tkinter
@@ -765,7 +754,7 @@ label4.place(x=paramx + 240, y=paramy + 105)
 entry3 = Entry(tab2, textvariable=EnterTable3, justify='center')
 entry3.place(width=225, x=paramx + 490, y=paramy + 105)
 
-# login et mot de passe
+# login et mot de passe sur tab1 à tab3
 label5 = Label(tab1, text='Identifiant:', relief="sunken")
 label5.place(x=250, y=70)
 entry4 = Entry(tab1, textvariable=EnterTable4, justify='center')
@@ -788,9 +777,5 @@ button2 = Button(tab2, text='Choisir le fichier d\'entrée', command=open_file)
 button2.place(x=paramx + 240, y=paramy - 30)
 label_path = Label(tab2)
 label_path.place(x=paramx + 490, y=paramy - 30)
-# button1 = Button(Interface, text='Lancer le programme', command=main)
-# button1.place(x=350, y=560)
-# QUIT = Button(Interface, text='Quitter', fg='Red', command=Interface.destroy)
-# QUIT.place(x=550, y=560)
 
 Interface.mainloop()
