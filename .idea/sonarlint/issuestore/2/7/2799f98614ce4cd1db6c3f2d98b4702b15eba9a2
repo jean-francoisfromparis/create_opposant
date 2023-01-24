@@ -1,32 +1,36 @@
 
-vpython:S1192¼"XDefine a constant instead of duplicating this literal 'barre_outils:touche_f2' 10 times.(ªô÷øÿÿÿÿ
-špython:S1192m"}Define a constant instead of duplicating this literal 'bmenuxtableMenus:16:outputBmenuxBrmenx04LibelleLigneProposee' 4 times.(¾‚İÇùÿÿÿÿ
-ipython:S1192³"KDefine a constant instead of duplicating this literal 'Unnamed: 0' 3 times.(½Òÿäüÿÿÿÿ
+vpython:S1192Ã"XDefine a constant instead of duplicating this literal 'barre_outils:touche_f2' 10 times.(ªô÷øÿÿÿÿ
+rpython:S1192G"UDefine a constant instead of duplicating this literal "Service Interrompu !" 3 times.(êìŒÄûÿÿÿÿ
+špython:S1192t"}Define a constant instead of duplicating this literal 'bmenuxtableMenus:16:outputBmenuxBrmenx04LibelleLigneProposee' 4 times.(¾‚İÇùÿÿÿÿ
+ipython:S1192º"KDefine a constant instead of duplicating this literal 'Unnamed: 0' 3 times.(½Òÿäüÿÿÿÿ
+Špython:S1192G"mDefine a constant instead of duplicating this literal "Le service est indisponible\n pour l'instant" 3 times.(êìŒÄûÿÿÿÿ
 _python:S2208"GImport only needed names or import the module and then use its members.(ï€¢
-rpython:S117š"[Rename this local variable "currentUrl" to match the regular expression ^[_a-z][a-z0-9_]*$.(¨Û‚
-wpython:S117¾"ZRename this local variable "dataTable" to match the regular expression ^[_a-z][a-z0-9_]*$.(ã«æÁúÿÿÿÿ
+rpython:S117¡"[Rename this local variable "currentUrl" to match the regular expression ^[_a-z][a-z0-9_]*$.(¨Û‚
+wpython:S117Å"ZRename this local variable "dataTable" to match the regular expression ^[_a-z][a-z0-9_]*$.(ã«æÁúÿÿÿÿ
 tpython:S117:"^Rename this local variable "numeroDossier" to match the regular expression ^[_a-z][a-z0-9_]*$.(ß©/
-Mpython:S14817"0Remove the unused local variable "mot_de_passe".(·…şîşÿÿÿÿ
-Gpython:S1481Ù")Remove the unused local variable "liste".(Ãè ùÿÿÿÿ
 Fpython:S14816")Remove the unused local variable "login".(é“®Œÿÿÿÿÿ
-Npython:S1481§"0Remove the unused local variable "webtable_df1".(Ãª¦Œıÿÿÿÿ
-kpython:S3776/"TRefactor this function to reduce its Cognitive Complexity from 23 to the 15 allowed.(œŸ²_
-;python:S125J"Remove this commented out code.(Ù™àúÿÿÿÿ
-Upython:S5754ú"<Specify an exception class to catch or reraise the exception(ˆÊÉ·
-<python:S125®"Remove this commented out code.(®Øî†øÿÿÿÿ
-Npython:S1481æ"0Remove the unused local variable "mot_de_passe".(·…şîşÿÿÿÿ
-Gpython:S1481å")Remove the unused local variable "login".(é“®Œÿÿÿÿÿ
-Mpython:S1481»"4Remove the unused local variable "last_item_index1".(óÕçÕ
-Epython:S1481Ü",Remove the unused local variable "progress".(ÖğŒÂ
-mpython:S3776ˆ"TRefactor this function to reduce its Cognitive Complexity from 16 to the 15 allowed.(é×Ø®
-6python:S125Á"Remove this commented out code.(¿şşs
-6python:S125Ê"Remove this commented out code.(¿şşs
-<python:S125û"Remove this commented out code.(Ù™àúÿÿÿÿ
-<python:S125ë"Remove this commented out code.(èÃûÿÿÿÿ
-Dpython:S5806„"+Rename this variable; it shadows a builtin.(å¿ıŒ
-<python:S125Ó"Remove this commented out code.(ñáîøÿÿÿÿ
-<python:S125İ"Remove this commented out code.(²Ö—úÿÿÿÿ
-<python:S125à"Remove this commented out code.(¡¹ïèúÿÿÿÿ
-<python:S125å"Remove this commented out code.(ÓİÑ‚ıÿÿÿÿ
-7python:S125ö"Remove this commented out code.(‹ãÀî
-<python:S125ƒ"Remove this commented out code.(ŞõÙèüÿÿÿÿ
+Mpython:S14817"0Remove the unused local variable "mot_de_passe".(·…şîşÿÿÿÿ
+Gpython:S1481à")Remove the unused local variable "liste".(Ãè ùÿÿÿÿ
+Npython:S1481®"0Remove the unused local variable "webtable_df1".(Ãª¦Œıÿÿÿÿ
+kpython:S3776/"TRefactor this function to reduce its Cognitive Complexity from 25 to the 15 allowed.(œŸ²_
+;python:S125M"Remove this commented out code.(Ù™àúÿÿÿÿ
+Upython:S5754"<Specify an exception class to catch or reraise the exception(ˆÊÉ·
+<python:S125µ"Remove this commented out code.(®Øî†øÿÿÿÿ
+Ipython:S1481õ"+Remove the unused local variable "columns".(ä™µÖûÿÿÿÿ
+Mpython:S1481Â"4Remove the unused local variable "last_item_index1".(óÕçÕ
+Npython:S1481í"0Remove the unused local variable "mot_de_passe".(·…şîşÿÿÿÿ
+Gpython:S1481ì")Remove the unused local variable "login".(é“®Œÿÿÿÿÿ
+Epython:S1481å",Remove the unused local variable "progress".(ÖğŒÂ
+mpython:S3776"TRefactor this function to reduce its Cognitive Complexity from 17 to the 15 allowed.(é×Ø®
+6python:S125È"Remove this commented out code.(¿şşs
+6python:S125Ñ"Remove this commented out code.(¿şşs
+<python:S125‚"Remove this commented out code.(Ù™àúÿÿÿÿ
+<python:S125õ"Remove this commented out code.(èÃûÿÿÿÿ
+7python:S125ñ"Remove this commented out code.(ğ†Ğ
+Dpython:S5806•"+Rename this variable; it shadows a builtin.(å¿ıŒ
+<python:S125ä"Remove this commented out code.(ñáîøÿÿÿÿ
+<python:S125î"Remove this commented out code.(²Ö—úÿÿÿÿ
+<python:S125ñ"Remove this commented out code.(¡¹ïèúÿÿÿÿ
+<python:S125ö"Remove this commented out code.(ÓİÑ‚ıÿÿÿÿ
+7python:S125‡"Remove this commented out code.(‹ãÀî
+<python:S125”"Remove this commented out code.(ŞõÙèüÿÿÿÿ

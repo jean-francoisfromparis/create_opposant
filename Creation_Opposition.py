@@ -14,12 +14,12 @@ import pandas as pd
 import pyexcel_ods3 as pe
 import odswriter as ods
 from PIL import Image, ImageTk
-from pandas.io.formats import info
 from pandas_ods_reader import read_ods
 from pandastable import Table, config
 from pyexcel_ods import save_data
 from pynput.keyboard import Controller
 from selenium import webdriver
+from selenium.common import TimeoutException, WebDriverException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.firefox.options import Options
@@ -63,10 +63,13 @@ def main():
 
     wd_options.set_preference('detach', True)
     wd = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=wd_options)
-
-    wd.get(
+    try:
+        wd.get(
         'http://medoc.ia.dgfip:8141/medocweb/presentation/md2oagt/ouverturesessionagent/ecran/ecOuvertureSessionAgent'
         '.jsf')
+    except WebDriverException:
+        messagebox.showinfo("Service Interrompu !", "Le service est indisponible\n pour l'instant")
+        wd.close()
 
     ## Saisir utilisateur
     ##Saisir utilisateur
@@ -83,7 +86,11 @@ def main():
     time.sleep(delay)
     wd.find_element(By.ID, 'secret_tmp').send_keys(Keys.RETURN)
 
-    WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'ligneServiceHabilitation')))
+    try:
+        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'ligneServiceHabilitation')))
+    except TimeoutException:
+        messagebox.showinfo("Service Interrompu !", "Le service est indisponible\n pour l'instant")
+        wd.close()
 
     ## Saisir service
     wd.find_element(By.ID, 'nomServiceChoisi').send_keys('0070100')
@@ -280,7 +287,7 @@ def create_opposant():
             line = int(line)  ##ajuste l'indice
             break
         else:
-            messagebox.OK('Saisie incorrecte, réessayez')
+            messagebox.showerror("Erreur de saisie",'Saisie incorrecte, réessayez')
             exit()
 
     ##Combien de lignes du fichier traiter
@@ -290,7 +297,7 @@ def create_opposant():
             line_amount = int(line_amount)
             break
         else:
-            messagebox.OK('Saisie incorrecte, réessayez')
+            messagebox.showerror("Erreur de saisie",'Saisie incorrecte, réessayez')
             exit()
 
     ## Prend les données depuis le fichier, crée une liste de listes (ou "array"), oú chaque liste est
@@ -300,7 +307,7 @@ def create_opposant():
     donnees_creation_opposition_sortie = pe.get_data(File_path)
     donnees_creation_opposition_sortie['Feuille1'][0].append("Numéro d'Opération")
     donnees_creation_opposition_sortie['Feuille1'][0].append("Fait")
-    print(donnees_creation_opposition_sortie['Feuille1'][0])
+    # print(donnees_creation_opposition_sortie['Feuille1'][0])
     data = [i for i in donnees_creation_opposition['Feuille1']]
 
     # Condition qui vérifie que chaque cellule de la colonne rib, à part le header, est vide,
@@ -387,8 +394,11 @@ def create_opposant():
 
     time.sleep(delay)
     wd.find_element(By.ID, 'secret_tmp').send_keys(Keys.RETURN)
-
-    WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'ligneServiceHabilitation')))
+    try:
+        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'ligneServiceHabilitation')))
+    except TimeoutException:
+        messagebox.showinfo("Service Interrompu !", "Le service est indisponible\n pour l'instant")
+        wd.close()
 
     ## Saisir service
     wd.find_element(By.ID, 'nomServiceChoisi').send_keys('0070100')
@@ -420,7 +430,7 @@ def create_opposant():
 
         ## Saisie numéro de Dossier
         WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputYrdos211NumeroDeDossier')))
-
+        ## TODO: ajouter un try pour échapper vers F2 et message de plantage
         # wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(numeroDossier)
         wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(data[line][0])
         wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(Keys.ENTER)
@@ -594,9 +604,8 @@ def create_opposant():
         wd.find_element(By.ID, 'barre_outils:touche_f2').click()
 
         ## Marquage tâche faîte dans le fichier
-
+        print(type(donnees_creation_opposition_sortie['Feuille1'][line][3]))
         donnees_creation_opposition_sortie['Feuille1'][line].append(numero_ope)
-        print(numero_ope)
         donnees_creation_opposition_sortie['Feuille1'][line].append('X')
 
         ## Incrementation ProgressBar
@@ -613,8 +622,16 @@ def create_opposant():
         filename = 'donnees_creation_opposition_sortie' + datetime.now().strftime('_%Y-%m-%d') + '.ods'
         filename1 = 'donnees_creation_opposition_sortie1' + datetime.now().strftime('_%Y-%m-%d') + '.ods'
         save_data(filename, donnees_creation_opposition_sortie)
-        with ods.writer(open(filename1, "wb")) as odsfile:
-            odsfile.writerow(donnees_creation_opposition_sortie)
+        # with ods.writer(open(filename1, "wb")) as odsfile:
+        #     odsfile.writerow(donnees_creation_opposition_sortie)
+        #     odsfile.close()
+        sheet_name = "Feuille1"
+        columns = donnees_creation_opposition_sortie[sheet_name][0]
+
+        df = pd.DataFrame(donnees_creation_opposition_sortie[sheet_name])
+        print(df)
+        with pd.ExcelWriter(filename1, date_format='DD-MM-YYYY', datetime_format='DD-MM-YYYY') as writer:
+            df.to_excel(writer, sheet_name=sheet_name)
 
         try:
             time.sleep(delay)
@@ -717,7 +734,7 @@ labelNumeroDossier.place(x=250, y=paramy - 30)
 entryNumeroDossier = Entry(tab1, textvariable=EnterTable6, justify='center')
 entryNumeroDossier.place(width=225, x=paramx + 490, y=paramy - 30)
 
-creerOpposition = Button(tab2, text='Créer les Oppositions', relief="ridge", command=create_opposant)
+creerOpposition = Button(tab2, text='Créer les Oppositions avec navigateur', relief="ridge", command=create_opposant)
 creerOpposition.place(x=paramx + 240, y=paramy + 300)
 
 # labelNumeroDossierCreancierOpposant = Label(tab2, text="Saisir le numéro d\'un créancier opposant :")
