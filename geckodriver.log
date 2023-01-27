@@ -20274,3 +20274,341 @@ JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Un
 JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvAPICall
 JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvAddListener
 JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvAPICall
+1674570048298	geckodriver	INFO	Listening on 127.0.0.1:55744
+1674570048796	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--remote-debugging-port" "55745" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileTsiBnu"
+*** You are running in headless mode.
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1674570049655	Marionette	INFO	Marionette enabled
+1674570049660	Marionette	INFO	Listening on port 55752
+WebDriver BiDi listening on ws://localhost:55745
+Read port: 55752
+1674570049751	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileTsiBnu\\search.json.mozlz4", (void 0)))
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+DevTools listening on ws://localhost:55745/devtools/browser/0904c2a6-c2dc-4dd9-86da-4fb40ed066c3
+1674570054628	Marionette	WARN	Ignoring event 'pageshow' because document has an invalid readyState of 'uninitialized'.
+1674828505093	geckodriver	INFO	Listening on 127.0.0.1:63348
+1674828505613	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--remote-debugging-port" "63349" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofiledlkW2a"
+*** You are running in headless mode.
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1674828506531	Marionette	INFO	Marionette enabled
+1674828506535	Marionette	INFO	Listening on port 63356
+WebDriver BiDi listening on ws://localhost:63349
+Read port: 63356
+1674828506766	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofiledlkW2a\\search.json.mozlz4", (void 0)))
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+DevTools listening on ws://localhost:63349/devtools/browser/513cc3e2-96ed-4cd2-b563-260e763063d9
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+1674829283650	geckodriver	INFO	Listening on 127.0.0.1:55032
+1674829284155	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--remote-debugging-port" "55033" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofilelKALaT"
+*** You are running in headless mode.
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1674829285327	Marionette	INFO	Marionette enabled
+1674829285336	Marionette	INFO	Listening on port 55040
+WebDriver BiDi listening on ws://localhost:55033
+Read port: 55040
+1674829285569	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofilelKALaT\\search.json.mozlz4", (void 0)))
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+DevTools listening on ws://localhost:55033/devtools/browser/ef55fc36-5ccd-4e43-a48c-040e28de417a
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+1674829729674	geckodriver	INFO	Listening on 127.0.0.1:57190
+1674829730200	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--remote-debugging-port" "57191" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofilevafkJt"
+*** You are running in headless mode.
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1674829731024	Marionette	INFO	Marionette enabled
+1674829731028	Marionette	INFO	Listening on port 57198
+WebDriver BiDi listening on ws://localhost:57191
+Read port: 57198
+1674829731136	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofilevafkJt\\search.json.mozlz4", (void 0)))
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+DevTools listening on ws://localhost:57191/devtools/browser/e7279bdc-781c-42cf-884d-0eb919eea8a7
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+1674830025888	Marionette	INFO	Stopped listening on port 57198
+1674831364882	geckodriver	INFO	Listening on 127.0.0.1:58804
+1674831365398	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--remote-debugging-port" "58805" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileJJAJzM"
+*** You are running in headless mode.
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1674831366279	Marionette	INFO	Marionette enabled
+1674831366283	Marionette	INFO	Listening on port 58812
+WebDriver BiDi listening on ws://localhost:58805
+Read port: 58812
+1674831366544	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileJJAJzM\\search.json.mozlz4", (void 0)))
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+DevTools listening on ws://localhost:58805/devtools/browser/8fc47ef3-6b3a-4a58-8f03-f2d3c74c66d0
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+1674831940370	geckodriver	INFO	Listening on 127.0.0.1:58936
+1674831940874	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--remote-debugging-port" "58937" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileOl3CrB"
+*** You are running in headless mode.
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1674831941803	Marionette	INFO	Marionette enabled
+1674831941807	Marionette	INFO	Listening on port 58944
+WebDriver BiDi listening on ws://localhost:58937
+Read port: 58944
+1674831942033	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileOl3CrB\\search.json.mozlz4", (void 0)))
+console.error: CustomizableUI: 
+  unable to normalize widget
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 165: TypeError: prin.addonPolicy.extension is undefined
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvCreateProxyContext
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 165: TypeError: prin.addonPolicy.extension is undefined
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 165: TypeError: prin.addonPolicy.extension is undefined
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvAPICall
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 165: TypeError: prin.addonPolicy.extension is undefined
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvCreateProxyContext
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 165: TypeError: prin.addonPolicy.extension is undefined
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 165: TypeError: prin.addonPolicy.extension is undefined
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvAPICall
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvConduitClosed
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvConduitClosed
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvAddListener
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvAddListener
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvAPICall
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvAPICall
+DevTools listening on ws://localhost:58937/devtools/browser/1b5dd2c3-cfef-4f5c-bb1f-cc9f68f5208c
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+1674832236144	Marionette	INFO	Stopped listening on port 58944
+1674832630816	geckodriver	INFO	Listening on 127.0.0.1:53138
+1674832631327	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--remote-debugging-port" "53139" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileyJUqJZ"
+*** You are running in headless mode.
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1674832632267	Marionette	INFO	Marionette enabled
+1674832632271	Marionette	INFO	Listening on port 53146
+WebDriver BiDi listening on ws://localhost:53139
+Read port: 53146
+1674832632474	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileyJUqJZ\\search.json.mozlz4", (void 0)))
+console.error: CustomizableUI: 
+  unable to normalize widget
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 165: TypeError: prin.addonPolicy.extension is undefined
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvCreateProxyContext
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 165: TypeError: prin.addonPolicy.extension is undefined
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 165: TypeError: prin.addonPolicy.extension is undefined
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvAPICall
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvConduitClosed
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 165: TypeError: prin.addonPolicy.extension is undefined
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvCreateProxyContext
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 165: TypeError: prin.addonPolicy.extension is undefined
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 165: TypeError: prin.addonPolicy.extension is undefined
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvAPICall
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvConduitClosed
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvAddListener
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvAPICall
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvAddListener
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvAPICall
+DevTools listening on ws://localhost:53139/devtools/browser/f5e23e84-b125-48a7-979f-6abefd0d8d74
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+1674832927758	Marionette	INFO	Stopped listening on port 53146
+!!! error running onStopped callback: TypeError: callback is not a function
+1674833973465	geckodriver	INFO	Listening on 127.0.0.1:63008
+1674833973956	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--remote-debugging-port" "63009" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileaZ6wGw"
+*** You are running in headless mode.
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1674833975466	Marionette	INFO	Marionette enabled
+1674833975474	Marionette	INFO	Listening on port 63022
+Read port: 63022
+WebDriver BiDi listening on ws://localhost:63009
+1674833975678	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileaZ6wGw\\search.json.mozlz4", (void 0)))
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+DevTools listening on ws://localhost:63009/devtools/browser/011b68d0-3864-45f0-a833-94b60bf0f1fe
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+1674834366448	geckodriver	INFO	Listening on 127.0.0.1:52358
+1674834366986	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--remote-debugging-port" "52359" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileufpKY8"
+*** You are running in headless mode.
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1674834367860	Marionette	INFO	Marionette enabled
+1674834367864	Marionette	INFO	Listening on port 52366
+WebDriver BiDi listening on ws://localhost:52359
+Read port: 52366
+1674834367950	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileufpKY8\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://localhost:52359/devtools/browser/17cd7611-7f97-435e-843a-714e772fd4f3
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+1674834660122	Marionette	INFO	Stopped listening on port 52366
+1674835243852	geckodriver	INFO	Listening on 127.0.0.1:52440
+1674835244386	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--remote-debugging-port" "52441" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileKtQwBX"
+*** You are running in headless mode.
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1674835245318	Marionette	INFO	Marionette enabled
+1674835245334	Marionette	INFO	Listening on port 52448
+WebDriver BiDi listening on ws://localhost:52441
+Read port: 52448
+1674835245434	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileKtQwBX\\search.json.mozlz4", (void 0)))
+console.error: CustomizableUI: 
+  unable to normalize widget
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 165: TypeError: prin.addonPolicy.extension is undefined
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvCreateProxyContext
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 165: TypeError: prin.addonPolicy.extension is undefined
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 165: TypeError: prin.addonPolicy.extension is undefined
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvAPICall
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 165: TypeError: prin.addonPolicy.extension is undefined
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvCreateProxyContext
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 165: TypeError: prin.addonPolicy.extension is undefined
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 165: TypeError: prin.addonPolicy.extension is undefined
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvAPICall
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvConduitClosed
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvConduitClosed
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvAddListener
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvAddListener
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvAPICall
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvAPICall
+DevTools listening on ws://localhost:52441/devtools/browser/2055f8f1-74d0-4bd2-a11e-2b096ad34ab8
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+1674835538550	Marionette	INFO	Stopped listening on port 52448
+1674835678910	geckodriver	INFO	Listening on 127.0.0.1:58650
+1674835679426	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--remote-debugging-port" "58651" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofilevJ10l2"
+*** You are running in headless mode.
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1674835680394	Marionette	INFO	Marionette enabled
+1674835680399	Marionette	INFO	Listening on port 58658
+Read port: 58658
+WebDriver BiDi listening on ws://localhost:58651
+1674835680496	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofilevJ10l2\\search.json.mozlz4", (void 0)))
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+DevTools listening on ws://localhost:58651/devtools/browser/4f1332a8-8b17-4fea-874c-40490bf064a0
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+JavaScript error: resource://gre/modules/LoginManagerParent.jsm, line 136: TypeError: gRecipeManager is null
+1674835974321	Marionette	INFO	Stopped listening on port 58658
+1674836515297	geckodriver	INFO	Listening on 127.0.0.1:50513
+1674836515806	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--remote-debugging-port" "50514" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofiledqUzrI"
+*** You are running in headless mode.
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1674836516733	Marionette	INFO	Marionette enabled
+1674836516738	Marionette	INFO	Listening on port 50521
+WebDriver BiDi listening on ws://localhost:50514
+Read port: 50521
+1674836516944	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofiledqUzrI\\search.json.mozlz4", (void 0)))
+JavaScript error: resource://gre/modules/addons/XPIInstall.jsm, line 1036: NS_ERROR_FILE_IS_LOCKED: Component returned failure code: 0x8052000e (NS_ERROR_FILE_IS_LOCKED) [nsIFile.remove]
+DevTools listening on ws://localhost:50514/devtools/browser/2a61f7ca-732a-4409-a944-7064a51fe857
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+1674836809715	Marionette	INFO	Stopped listening on port 50521

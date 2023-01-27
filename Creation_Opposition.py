@@ -65,8 +65,8 @@ def main():
     wd = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=wd_options)
     try:
         wd.get(
-        'http://medoc.ia.dgfip:8141/medocweb/presentation/md2oagt/ouverturesessionagent/ecran/ecOuvertureSessionAgent'
-        '.jsf')
+            'http://medoc.ia.dgfip:8141/medocweb/presentation/md2oagt/ouverturesessionagent/ecran/ecOuvertureSessionAgent'
+            '.jsf')
     except WebDriverException:
         messagebox.showinfo("Service Interrompu !", "Le service est indisponible\n pour l'instant")
         wd.close()
@@ -274,7 +274,7 @@ def create_opposant():
     # Etablissement du progressBar
 
     pb = progressbar(tab2)
-    progressbar_label = Label(tab2, text=f"Le travail commence : {pb['value']}%")
+    progressbar_label = Label(tab2, text=f"Le travail commence. L'automate se connecte...")
     progressbar_label.place(x=250, y=370)
     tab2.update()
 
@@ -287,7 +287,7 @@ def create_opposant():
             line = int(line)  ##ajuste l'indice
             break
         else:
-            messagebox.showerror("Erreur de saisie",'Saisie incorrecte, réessayez')
+            messagebox.showerror("Erreur de saisie", 'Saisie incorrecte, réessayez')
             exit()
 
     ##Combien de lignes du fichier traiter
@@ -297,7 +297,7 @@ def create_opposant():
             line_amount = int(line_amount)
             break
         else:
-            messagebox.showerror("Erreur de saisie",'Saisie incorrecte, réessayez')
+            messagebox.showerror("Erreur de saisie", 'Saisie incorrecte, réessayez')
             exit()
 
     ## Prend les données depuis le fichier, crée une liste de listes (ou "array"), oú chaque liste est
@@ -307,7 +307,9 @@ def create_opposant():
     donnees_creation_opposition_sortie = pe.get_data(File_path)
     donnees_creation_opposition_sortie['Feuille1'][0].append("Numéro d'Opération")
     donnees_creation_opposition_sortie['Feuille1'][0].append("Fait")
-    # print(donnees_creation_opposition_sortie['Feuille1'][0])
+    df = pd.DataFrame(columns=["FRP société", "FRP opposant", "Montant", "Date d’effet = date réception SATD",
+                               "Numéro d'Opération", "Fait"])
+    final_df = pd.DataFrame()
     data = [i for i in donnees_creation_opposition['Feuille1']]
 
     # Condition qui vérifie que chaque cellule de la colonne rib, à part le header, est vide,
@@ -364,10 +366,10 @@ def create_opposant():
     login = EnterTable4.get()
     mot_de_passe = EnterTable5.get()
 
-    ## Saisie de numéro de dossier:
+    ## Saisie de numéro de dossier :
     # numeroDossier = EnterTable6.get()
 
-    ## Saisie de la référence de jugement:
+    ## Saisie de la référence de jugement :
     # reference_de_jugement = EnterTable10.get()
 
     wd_options = Options()
@@ -379,12 +381,14 @@ def create_opposant():
     wd_options.set_preference('detach', True)
     wd = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=wd_options)
     wd.get(
-        'https://portailmetierpriv.ira.appli.impots/cas/login?service=http%3A%2F%2Fmedoc.ia.dgfip%3A8141%2Fmedocweb%2Fcas%2Fvalidation')
+        'https://portailmetierpriv.ira.appli.impots/cas/login?service=http%3A%2F%2Fmedoc.ia.dgfip%3A8141%2Fmedocweb'
+        '%2Fcas%2Fvalidation')
 
     ##Saisir utilisateur
     time.sleep(delay)
     # script = f'''identifant = document.getElementById('identifiant'); identifiant.setAttribute('type','hidden'); identifiant.setAttribute('value',"{login}");'''
-    script = f'''identifant = document.getElementById('identifiant'); identifiant.setAttribute('type','hidden'); identifiant.setAttribute('value',"youssef.atigui");'''
+    script = f'''identifant = document.getElementById('identifiant'); identifiant.setAttribute('type','hidden'); 
+    identifiant.setAttribute('value',"youssef.atigui"); '''
     wd.execute_script(script)
 
     ## Saisie mot de pass
@@ -410,10 +414,9 @@ def create_opposant():
     wd.find_element(By.ID, 'habilitation').send_keys('1')
     time.sleep(delay)
     wd.find_element(By.ID, 'habilitation').send_keys(Keys.ENTER)
-
+    progressbar_label.destroy()
     ## Boucle sur le fichier selon le nombre de lignes indiquées
     for i in range(line_amount):
-
         progressbar_label = Label(tab2, text=f"Le travail est en cours: {pb['value']}%")
         progressbar_label.place(x=250, y=370)
         tab2.update()
@@ -452,6 +455,7 @@ def create_opposant():
         print(data[line][1])
 
         ## Saisie de la suite
+
         time.sleep(delay)
         time.sleep(delay)
         WebDriverWait(wd, 40).until(EC.presence_of_element_located((By.ID, 'inputB33gsuitYa33G002ReponseSuite')))
@@ -460,6 +464,7 @@ def create_opposant():
 
         ## SAISIE DES REFERENCES DE L'OPPOSITION
         ## Transport de créance
+
         time.sleep(delay)
         WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GtrcrTransportCreance')))
         wd.find_element(By.ID, 'inputB33ginf2Ya33GtrcrTransportCreance').send_keys('N')
@@ -494,28 +499,24 @@ def create_opposant():
         wd.find_element(By.ID, 'inputB33ginf2Ya33GmtMontant').send_keys(Keys.TAB)
         print(data[line][2])
 
-        ## Saisie Date d'Effet
+        ## Saisie de la Date d'Effet
 
         date_d_effet = data[line][3]
         print(date_d_effet.day)
-        # jour_d_effet = date_d_effet[0]
-        # mois_d_effet = date_d_effet[1]
-        # annee_d_effet = date_d_effet[2]
-        # print("jour : " + jour_d_effet + " mois : " + mois_d_effet + " année : " + annee_d_effet)
 
         time.sleep(delay)
         WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtefDateEffetJour')))
         wd.find_element(By.ID, 'inputB33ginf2Ya33GdtefDateEffetJour').send_keys(date_d_effet.day)
         wd.find_element(By.ID, 'inputB33ginf2Ya33GdtefDateEffetJour').send_keys(Keys.TAB)
 
-        ## Saisis Mois d'Effet
+        ## Saisie du Mois d'Effet
 
         time.sleep(delay)
         WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtefDateEffetMois')))
         wd.find_element(By.ID, 'inputB33ginf2Ya33GdtefDateEffetMois').send_keys(date_d_effet.month)
         wd.find_element(By.ID, 'inputB33ginf2Ya33GdtefDateEffetMois').send_keys(Keys.TAB)
 
-        ## Saisie Année d'Effet
+        ## Saisie de l'Année d'Effet
 
         time.sleep(delay)
         WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtefDateEffetAnnee')))
@@ -529,6 +530,7 @@ def create_opposant():
         wd.find_element(By.ID, 'inputB33ginf2Ya33GjuvlJugementValidite').send_keys(data[line][4])
         wd.find_element(By.ID, 'inputB33ginf2Ya33GjuvlJugementValidite').send_keys(Keys.TAB)
         print(data[line][4])
+
         ## Saisie de la date d'exécution de jugement
 
         time.sleep(delay)
@@ -586,6 +588,7 @@ def create_opposant():
         wd.find_element(By.ID, 'inputB33gvlcrYa33GvalcValidationCreation').send_keys(Keys.TAB)
 
         ## Capture numéro d'opération
+
         time.sleep(delay)
         WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'outputB33gnopeYa33GnopeNOpe')))
         numero_ope = wd.find_element(By.ID, 'outputB33gnopeYa33GnopeNOpe').text
@@ -604,53 +607,79 @@ def create_opposant():
         wd.find_element(By.ID, 'barre_outils:touche_f2').click()
 
         ## Marquage tâche faîte dans le fichier
+
         print(type(donnees_creation_opposition_sortie['Feuille1'][line][3]))
         donnees_creation_opposition_sortie['Feuille1'][line].append(numero_ope)
         donnees_creation_opposition_sortie['Feuille1'][line].append('X')
+        df["FRP société"] = [data[line][0]]
+        df["FRP opposant"] = [data[line][1]]
+        df["Montant"] = [data[line][2]]
+        df["Date d’effet = date réception SATD"] = [date_d_effet]
+        df["Numéro d'Opération"] = [numero_ope]
+        df["Fait"] = ["X"]
+        final_df = pd.concat([final_df, df], axis=0)
+        df_reset = final_df.set_index('FRP société')
 
         ## Incrementation ProgressBar
+
         pb['value'] += 90 / line_amount
+        progressbar_label.destroy()
         progress = pb['value']
         progressbar_label = Label(tab2, text=f"Le travail est en cours: {pb['value']}%")
         progressbar_label.place(x=250, y=370)
         pb.update()
-
-        time.sleep(1)
-
         line += 1
 
-        filename = 'donnees_creation_opposition_sortie' + datetime.now().strftime('_%Y-%m-%d') + '.ods'
-        filename1 = 'donnees_creation_opposition_sortie1' + datetime.now().strftime('_%Y-%m-%d') + '.ods'
-        save_data(filename, donnees_creation_opposition_sortie)
-        # with ods.writer(open(filename1, "wb")) as odsfile:
-        #     odsfile.writerow(donnees_creation_opposition_sortie)
-        #     odsfile.close()
-        sheet_name = "Feuille1"
-        columns = donnees_creation_opposition_sortie[sheet_name][0]
+    filename = 'donnees_creation_opposition_sortie' + datetime.now().strftime('_%Y-%m-%d') + '.ods'
+    filename1 = 'donnees_creation_opposition_sortie1' + datetime.now().strftime('_%Y-%m-%d') + '.ods'
+    save_data(filename, donnees_creation_opposition_sortie)
+    # with ods.writer(open(filename1, "wb")) as odsfile:
+    #     odsfile.writerow(donnees_creation_opposition_sortie)
+    #     odsfile.close()
+    sheet_name = "Feuille1"
+    columns = donnees_creation_opposition_sortie[sheet_name][0]
 
-        df = pd.DataFrame(donnees_creation_opposition_sortie[sheet_name])
-        print(df)
-        with pd.ExcelWriter(filename1, date_format='DD-MM-YYYY', datetime_format='DD-MM-YYYY') as writer:
-            df.to_excel(writer, sheet_name=sheet_name)
+    df = pd.DataFrame(donnees_creation_opposition_sortie[sheet_name])
+    print(final_df)
+    # with pd.ExcelWriter(filename1, date_format='DD-MM-YYYY', datetime_format='DD-MM-YYYY') as writer:
+    #     df.to_excel(writer, sheet_name=sheet_name)
 
-        try:
-            time.sleep(delay)
-            time.sleep(delay)
-            time.sleep(delay)
-            sheet = "Feuille1"
-            table = read_ods(filename, sheet)
-            tabControl.add(tab4, text='liste des oppositions')
-            table1 = Table(tab4, dataframe=table, read_only=True, index=FALSE)
-            table1.place(y=120)
+    writer = pd.ExcelWriter('donnees_sortie.xlsx', engine='xlsxwriter')
+    final_df.to_excel(writer, sheet_name)
+    writer_book = writer.sheets[sheet_name]
+    workbook = writer.book
+    writer_book.set_column('B:B', 13)
+    writer_book.set_column('C:C', 13)
+    writer_book.set_column('D:D', 20)
+    date_format = workbook.add_format({'num_format': 'dd/mm/yy'})
+    writer_book.set_column('E:E', 30, date_format)
+    writer_book.set_column('F:F', 20)
+    done_format = workbook.add_format({'bold': True, 'bg_color': 'cyan'})
+    writer_book.conditional_format('G1:G500', {'type': 'cell',
+                                               'criteria': '!=',
+                                               'value': 'X',
+                                               'format': done_format})
+    writer.close()
+    try:
+        time.sleep(delay)
+        time.sleep(delay)
+        time.sleep(delay)
+        sheet = "Feuille1"
+        tabControl.add(tab4, text='liste des oppositions')
+        table1 = Table(tab4, dataframe=final_df, read_only=True, index=FALSE)
+        table1.place(y=120)
 
-            options = {'colheadercolor': 'green', 'floatprecision': 0}
-            config.apply_options(options, table1)
-            table1.autoResizeColumns()
-            table1.show()
+        table1.autoResizeColumns()
+        table1.show()
 
-        except FileNotFoundError as e:
-            print(e)
-            msg.showerror('Error in opening file', e)
+    except FileNotFoundError as e:
+        print(e)
+        messagebox.showerror('Erreur de tableau', 'Il n\'y a pas de tableau à afficher')
+    progressbar_label.destroy()
+    progressbar_label = Label(tab2,
+                              text=f"Le travail est maintenant fini! A bientôt")
+    progressbar_label.place(x=250, y=340)
+    tab1.update()
     wd.quit()
 
 
