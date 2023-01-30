@@ -26,6 +26,7 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.firefox import GeckoDriverManager
+from selenium.webdriver.common.action_chains import ActionChains
 
 keyboard = Controller()
 
@@ -268,14 +269,15 @@ def main():
     #     showinfo("Affichage opposition", "L'opposant " + numeroDossier + " n'a pas d'opposition en cours ")
 
 
-def create_opposant():
+def create_opposant(headless):
     delay = 3
 
     # Etablissement du progressBar
 
     pb = progressbar(tab2)
     progressbar_label = Label(tab2, text=f"Le travail commence. L'automate se connecte...")
-    progressbar_label.place(x=250, y=370)
+    label_y = 340
+    progressbar_label.place(x=250, y=label_y)
     tab2.update()
 
     time.sleep(delay)
@@ -373,10 +375,8 @@ def create_opposant():
     # reference_de_jugement = EnterTable10.get()
 
     wd_options = Options()
-    if headless():
-        wd_options.headless = True
-    else:
-        wd_options.headless = FALSE
+    wd_options.headless = headless
+
 
     wd_options.set_preference('detach', True)
     wd = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=wd_options)
@@ -418,7 +418,7 @@ def create_opposant():
     ## Boucle sur le fichier selon le nombre de lignes indiquées
     for i in range(line_amount):
         progressbar_label = Label(tab2, text=f"Le travail est en cours: {pb['value']}%")
-        progressbar_label.place(x=250, y=370)
+        progressbar_label.place(x=250, y=label_y)
         tab2.update()
         ## Création d'un Redevable
         ## Arriver à la transactionv 3-17
@@ -624,9 +624,10 @@ def create_opposant():
 
         pb['value'] += 90 / line_amount
         progressbar_label.destroy()
+        tab2.update()
         progress = pb['value']
-        progressbar_label = Label(tab2, text=f"Le travail est en cours: {pb['value']}%")
-        progressbar_label.place(x=250, y=370)
+        progressbar_label = Label(tab2, text=f"Le travail est en cours : {pb['value']}%")
+        progressbar_label.place(x=250, y=label_y)
         pb.update()
         line += 1
 
@@ -676,11 +677,83 @@ def create_opposant():
         print(e)
         messagebox.showerror('Erreur de tableau', 'Il n\'y a pas de tableau à afficher')
     progressbar_label.destroy()
+    tab2.update()
     progressbar_label = Label(tab2,
                               text=f"Le travail est maintenant fini! A bientôt")
-    progressbar_label.place(x=250, y=340)
-    tab1.update()
+    progressbar_label.place(x=250, y=label_y)
     wd.quit()
+
+
+# Procédure de purge
+def purge():
+    # Délai entre opérations automate. Pour des numéros non entiers il faut utiliser le point pas la virgule
+    delay = 1
+
+    # ########################################
+
+    # ##Saisie du nom utilisateur et mot de passe
+    login = EnterTable4.get()
+    mot_de_passe = EnterTable5.get()
+
+    ## Saisie de numéro de dossier:
+    numeroDossier = EnterTable6.get()
+
+    wd_options = Options()
+
+    # wd_options.headless = True
+
+    wd_options.set_preference('detach', True)
+    wd = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=wd_options)
+    try:
+        wd.get('http://media.ira.appli.impots/mediamapi/index.xhtml')
+    except WebDriverException:
+        messagebox.showinfo("Service Interrompu !", "Le service est indisponible\n pour l'instant")
+        wd.close()
+
+    ## Saisir utilisateur
+    ##Saisir utilisateur
+    time.sleep(delay)
+    # script = f'''identifant = document.getElementById('identifiant'); identifiant.setAttribute('type','hidden'); identifiant.setAttribute('value',"{login}");'''
+    script = f'''identifant = document.getElementById('identifiant'); identifiant.setAttribute('type','hidden'); identifiant.setAttribute('value',"youssef.atigui");'''
+    wd.execute_script(script)
+
+    ## Saisie mot de pass
+    time.sleep(delay)
+    # wd.find_element(By.ID, 'secret_tmp').send_keys(mot_de_passe)
+    wd.find_element(By.ID, 'secret_tmp').send_keys("1")
+
+    time.sleep(delay)
+    wd.find_element(By.ID, 'secret_tmp').send_keys(Keys.RETURN)
+
+    # try:
+    #     WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'ligneServiceHabilitation')))
+    # except TimeoutException:
+    #     messagebox.showinfo("Service Interrompu !", "Le service est indisponible\n pour l'instant")
+    #     wd.close()
+    WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'j_idt146:j_idt147')))
+    menu_list = wd.find_element(By.ID, "j_idt146:j_idt147")
+    a = ActionChains(wd, 100)
+    WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.XPATH, '//*[@id="j_idt146:j_idt147"]/ul/li[1]')))
+    service = wd.find_element(By.XPATH, '//*[@id="j_idt146:j_idt147"]/ul/li[1]')
+    a.move_to_element(service).perform()
+    time.sleep(1)
+    purge_link_script = "document.evaluate('//*[@id=\"j_idt146:j_idt147\"]/ul/li[1]/ul/li[4]/a',document,null," \
+                        "XPathResult.FIRST_ORDERED_NODE_TYPE,null,).singleNodeValue.click()"
+    wd.execute_script(purge_link_script)
+
+    try:
+        WebDriverWait(wd, 20).until(
+            EC.presence_of_element_located((By.CLASS_NAME, 'zone_validation')))
+        purge_input = wd.find_element(By.CLASS_NAME, 'zone_validation')
+        purge_input.click()
+        nombre_de_verrou = wd.find_element(By.ID, 'formPurgerVerrouResultat:verrouPurger').text
+
+        messagebox.showinfo("Purge", f"La purge a été opérée. \n {nombre_de_verrou} \n Vous pouvez "
+                                     f"reprendre la création des oppositions. ")
+        wd.close()
+    except WebDriverException:
+        messagebox.showinfo("Purge", "La purge n'a pas pu être effectuée ")
+        wd.close()
 
 
 # Procédure pour
@@ -695,20 +768,11 @@ def open_file():
         File_path = filepath
 
 
-def headless():
-    return True
-
-
-def combine_command():
-    headless()
-    time.sleep(3)
-    create_opposant()
-
 
 # Procédure pour la progress bar
 def progressbar(parent):
     pb = Progressbar(parent, length=500, mode='determinate', maximum=100, value=10)
-    pb.place(x=250, y=350)
+    pb.place(x=250, y=320)
     return pb
 
 
@@ -763,7 +827,7 @@ labelNumeroDossier.place(x=250, y=paramy - 30)
 entryNumeroDossier = Entry(tab1, textvariable=EnterTable6, justify='center')
 entryNumeroDossier.place(width=225, x=paramx + 490, y=paramy - 30)
 
-creerOpposition = Button(tab2, text='Créer les Oppositions avec navigateur', relief="ridge", command=create_opposant)
+creerOpposition = Button(tab2, text='Créer les Oppositions avec navigateur', command=lambda: create_opposant(headless=False))
 creerOpposition.place(x=paramx + 240, y=paramy + 300)
 
 # labelNumeroDossierCreancierOpposant = Label(tab2, text="Saisir le numéro d\'un créancier opposant :")
@@ -827,7 +891,10 @@ label4.place(x=paramx + 240, y=paramy + 105)
 entry3 = Entry(tab2, textvariable=EnterTable3, justify='center')
 entry3.place(width=225, x=paramx + 490, y=paramy + 105)
 
-browser_button = Button(tab2, text='Créer les Oppositions sans navigateur !', relief="ridge", command=combine_command)
+purge_button = Button(tab2, text='Purger', command=purge)
+purge_button.place(x=paramx + 240, y=paramy + 200)
+headless = True
+browser_button = Button(tab2, text='Créer les Oppositions sans navigateur !', command=lambda: create_opposant(headless))
 browser_button.place(x=paramx + 240, y=paramy + 250)
 
 # login et mot de passe sur tab1 à tab3
