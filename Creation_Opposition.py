@@ -716,6 +716,8 @@ def purge():
     url = 'http://media.ira.appli.impots/mediamapi/index.xhtml'
     try:
         wd.get(url)
+        label_connexion = Label(tab2, text="Test de connexion :")
+        label_connexion.place(x=250, y=50)
     except WebDriverException:
         messagebox.showinfo("Service Interrompu !", "Le service est indisponible\n pour l'instant")
         wd.close()
