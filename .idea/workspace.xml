@@ -1,18 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="70ab0b16-4c84-4496-b73d-11dcc68f9ae0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/donnees_creation_opposition_sortie_2023-01-30.ods" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_01_2023_16_25_[Changes]1/donnees_creation_opposition_sortie_2023-01-20.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_01_2023_16_25_[Changes]1/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_01_2023_16_25__Changes_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/2/7/2799f98614ce4cd1db6c3f2d98b4702b15eba9a2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Creation_Opposition.py" beforeDir="false" afterPath="$PROJECT_DIR$/Creation_Opposition.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/donnees_sortie.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/donnees_sortie.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/geckodriver.log" beforeDir="false" afterPath="$PROJECT_DIR$/geckodriver.log" afterDir="false" />
-    </list>
+    <list default="true" id="70ab0b16-4c84-4496-b73d-11dcc68f9ae0" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
