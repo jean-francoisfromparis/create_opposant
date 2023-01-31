@@ -1,30 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9e4b049d-c425-4292-81a7-b4ed3fe028d1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase_[Changes]/shelved.patch" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/617382_liste_créances_2023-01-12-16-35-04.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/617382_liste_créances_2023-01-12-16-37-14.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/617382_liste_créances_2023-01-12-16-47-23.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/617382_liste_créances_2023-01-12-16-49-07.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/617382_liste_créances_2023-01-12-16-55-01.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/617382_liste_créances_2023-01-12-17-01-06.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/617382_liste_créances_2023-01-12-17-05-39.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/617382_liste_créances_2023-01-12-17-14-57.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/617382_liste_créances_2023-01-12-17-16-48.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/617382_liste_créances_2023-01-12-17-33-10.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/617382_liste_créances_2023-01-12-17-35-24.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/617382_liste_créances_2023-01-12-17-59-07.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/617382_liste_créances_2023-01-12-18-07-11.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/617382_liste_créances_2023-01-12-18-22-02.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/617382_liste_créances_2023-01-13-10-19-34.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/617382_liste_créances_2023-01-13-10-40-00.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/donnees_creation_opposition_sortie_2023-01-13.ods" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Creation_Opposition.py" beforeDir="false" afterPath="$PROJECT_DIR$/Creation_Opposition.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/geckodriver.log" beforeDir="false" afterPath="$PROJECT_DIR$/geckodriver.log" afterDir="false" />
-    </list>
+    <list default="true" id="70ab0b16-4c84-4496-b73d-11dcc68f9ae0" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -48,7 +25,7 @@
                 <list>
                   <RecentBranch>
                     <option name="branchName" value="feat/ods-import-correction" />
-                    <option name="lastUsedInstant" value="1673601385" />
+                    <option name="lastUsedInstant" value="1674231232" />
                   </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="feat/ods-import" />
@@ -112,7 +89,7 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="9e4b049d-c425-4292-81a7-b4ed3fe028d1" name="Changes" comment="" />
+      <changelist id="70ab0b16-4c84-4496-b73d-11dcc68f9ae0" name="Changes" comment="" />
       <created>1671650546999</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />

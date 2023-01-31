@@ -1,0 +1,64 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	
++++ b/.idea/workspace.xml	
+@@ -2,15 +2,12 @@
+ <project version="4">
+   <component name="ChangeListManager">
+     <list default="true" id="70ab0b16-4c84-4496-b73d-11dcc68f9ae0" name="Changes" comment="">
+-      <change afterPath="$PROJECT_DIR$/617382_liste_créances_2023-01-13-13-10-33.csv" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/Gestion_de_flux_sadt.py" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/donnees_entree.ods" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/donnees_creation_opposition_sortie_2023-01-20.xlsx" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_13_01_2023_11_27_[Changes]/shelved.patch" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_13_01_2023_11_27__Changes_.xml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase_[Changes]/shelved.patch" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" beforeDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Creation_Opposition.py" beforeDir="false" afterPath="$PROJECT_DIR$/Creation_Opposition.py" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/donnees_entree_bis.ods" beforeDir="false" afterPath="$PROJECT_DIR$/donnees_entree_bis.ods" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/donnees_sortie.csv" beforeDir="false" afterPath="$PROJECT_DIR$/donnees_sortie.csv" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/geckodriver.log" beforeDir="false" afterPath="$PROJECT_DIR$/geckodriver.log" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -35,7 +32,7 @@
+                 <list>
+                   <RecentBranch>
+                     <option name="branchName" value="feat/integration" />
+-                    <option name="lastUsedInstant" value="1673606200" />
++                    <option name="lastUsedInstant" value="1674225446" />
+                   </RecentBranch>
+                   <RecentBranch>
+                     <option name="branchName" value="feat/ods-import-correction" />
+@@ -103,7 +100,7 @@
+   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+   <component name="TaskManager">
+     <task active="true" id="Default" summary="Default task">
+-      <changelist id="9e4b049d-c425-4292-81a7-b4ed3fe028d1" name="Changes" comment="" />
++      <changelist id="70ab0b16-4c84-4496-b73d-11dcc68f9ae0" name="Changes" comment="" />
+       <created>1671650546999</created>
+       <option name="number" value="Default" />
+       <option name="presentableId" value="Default" />
+@@ -137,4 +134,15 @@
+   <component name="VcsManagerConfiguration">
+     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+   </component>
++  <component name="XDebuggerManager">
++    <breakpoint-manager>
++      <breakpoints>
++        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
++          <url>file://$PROJECT_DIR$/Creation_Opposition.py</url>
++          <line>259</line>
++          <option name="timeStamp" value="2" />
++        </line-breakpoint>
++      </breakpoints>
++    </breakpoint-manager>
++  </component>
+ </project>
+\ No newline at end of file
