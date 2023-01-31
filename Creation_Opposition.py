@@ -1,8 +1,10 @@
 import _thread
 import csv
+import http
 import os
 import sys
 import time
+import urllib
 from datetime import datetime
 from pathlib import Path
 from tkinter import *
@@ -12,10 +14,11 @@ from tkinter.ttk import Progressbar
 
 import pandas as pd
 import pyexcel_ods3 as pe
-import odswriter as ods
+import pyspeedtest
 from PIL import Image, ImageTk
 from pandas_ods_reader import read_ods
 from pandastable import Table, config
+from ping3 import ping
 from pyexcel_ods import save_data
 from pynput.keyboard import Controller
 from selenium import webdriver
@@ -377,7 +380,6 @@ def create_opposant(headless):
     wd_options = Options()
     wd_options.headless = headless
 
-
     wd_options.set_preference('detach', True)
     wd = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=wd_options)
     wd.get(
@@ -684,12 +686,19 @@ def create_opposant(headless):
     wd.quit()
 
 
+def myping(host):
+    resp = ping(host)
+
+    if not resp:
+        return False
+    else:
+        return True
+
+
 # Procédure de purge
 def purge():
     # Délai entre opérations automate. Pour des numéros non entiers il faut utiliser le point pas la virgule
     delay = 1
-
-    # ########################################
 
     # ##Saisie du nom utilisateur et mot de passe
     login = EnterTable4.get()
@@ -704,8 +713,9 @@ def purge():
 
     wd_options.set_preference('detach', True)
     wd = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=wd_options)
+    url = 'http://media.ira.appli.impots/mediamapi/index.xhtml'
     try:
-        wd.get('http://media.ira.appli.impots/mediamapi/index.xhtml')
+        wd.get(url)
     except WebDriverException:
         messagebox.showinfo("Service Interrompu !", "Le service est indisponible\n pour l'instant")
         wd.close()
@@ -766,7 +776,42 @@ def open_file():
         filepath = filepath.replace(os.sep, "/")
         label_path.configure(text="Le fichier sélectionné est : " + Path(filepath).stem)
         File_path = filepath
-
+        df = pd.read_excel(filepath)
+        column = df.columns[0]
+        print(column)
+        print("-" * len(column))
+        nb_ligne = df.shape[0]
+        s = 's' if nb_ligne > 1 else ''
+        print('Votre fichier contient ' + str(nb_ligne) + ' ligne' + s + '.')
+    filename1 = 'donnees_creation_opposition_sortie' + datetime.now().strftime('_%Y-%m-%d') + '.ods'
+    filepath1 = os.path.abspath(filename1)
+    if filename1:
+        df1 = pd.read_excel(filepath1)
+        column1 = df1.columns[6]
+        print(column1)
+        nb_ligne1 = df1.shape[0]
+        s = 's' if nb_ligne1 > 1 else ''
+        sub_df1 = df1[df1['Fait'] == 'X']
+        print(len(sub_df1))
+        print(sub_df1)
+        # print(min(df.index[df1['Fait'] == 'X'].tolist()))
+        if min(df.index[df1['Fait'] == 'X'].tolist()) != 0 & min(df.index[df1['Fait'] == 'X'].tolist()):
+            premiere_partie = 'La première opposition du fichier n\'a pas été enregistré' if min(
+                df.index[df1['Fait'] == 'X'].tolist()) == 1 else 'Les ' + str(min(
+                df.index[df1['Fait'] == 'X'].tolist()) + 1) + 'premières oppositions du fichier n\'ont pas été ' \
+                                                              'enregistrées '
+        print('Vous avez déjà un fichier de sortie qui contient ' + str(nb_ligne1) + ' ligne' + s + '.\n'
+                                                                                                    'Une opération de '
+                                                                                                    'création '
+                                                                                                    'd\'opposition à '
+                                                                                                    'déjà été '
+                                                                                                    'lancée, '
+                                                                                                    'l\'opération \n '
+                                                                                                    's\'est arrêtée à '
+                                                                                                    'la ligne '
+              + str(min(df.index[df1['Fait'] == 'X'].tolist()) + 1) + '.\n'
+              + premiere_partie
+              )
 
 
 # Procédure pour la progress bar
@@ -827,7 +872,8 @@ labelNumeroDossier.place(x=250, y=paramy - 30)
 entryNumeroDossier = Entry(tab1, textvariable=EnterTable6, justify='center')
 entryNumeroDossier.place(width=225, x=paramx + 490, y=paramy - 30)
 
-creerOpposition = Button(tab2, text='Créer les Oppositions avec navigateur', command=lambda: create_opposant(headless=False))
+creerOpposition = Button(tab2, text='Créer les Oppositions avec navigateur',
+                         command=lambda: create_opposant(headless=False))
 creerOpposition.place(x=paramx + 240, y=paramy + 300)
 
 # labelNumeroDossierCreancierOpposant = Label(tab2, text="Saisir le numéro d\'un créancier opposant :")
