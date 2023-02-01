@@ -2,6 +2,7 @@ import _thread
 import csv
 import http
 import os
+import shutil
 import sys
 import time
 import urllib
@@ -312,7 +313,7 @@ def create_opposant(headless):
     donnees_creation_opposition_sortie = pe.get_data(File_path)
     donnees_creation_opposition_sortie['Feuille1'][0].append("Numéro d'Opération")
     donnees_creation_opposition_sortie['Feuille1'][0].append("Fait")
-    df = pd.DataFrame(columns=["FRP société", "FRP opposant", "Montant", "Date d’effet = date réception SATD",
+    df = pd.DataFrame(columns=["Indice","FRP société", "FRP opposant", "Montant", "Date d’effet = date réception SATD",
                                "Numéro d'Opération", "Fait"])
     final_df = pd.DataFrame()
     data = [i for i in donnees_creation_opposition['Feuille1']]
@@ -382,6 +383,7 @@ def create_opposant(headless):
 
     wd_options.set_preference('detach', True)
     wd = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=wd_options)
+    ## TODO Passer au service object
     wd.get(
         'https://portailmetierpriv.ira.appli.impots/cas/login?service=http%3A%2F%2Fmedoc.ia.dgfip%3A8141%2Fmedocweb'
         '%2Fcas%2Fvalidation')
@@ -419,9 +421,14 @@ def create_opposant(headless):
     progressbar_label.destroy()
     ## Boucle sur le fichier selon le nombre de lignes indiquées
     for i in range(line_amount):
-        progressbar_label = Label(tab2, text=f"Le travail est en cours: {pb['value']}%")
+        num_of_secs = 60
+        m, s = divmod(num_of_secs * abs(line_amount - line), 60)
+        min_sec_format = '{:02d}:{:02d}'.format(m, s)
+        progressbar_label = Label(tab2,
+                                  text=f"Le travail est en cours: {pb['value']}%  ~  il reste environ {min_sec_format}")
         progressbar_label.place(x=250, y=label_y)
         tab2.update()
+
         ## Création d'un Redevable
         ## Arriver à la transactionv 3-17
 
@@ -609,10 +616,9 @@ def create_opposant(headless):
         wd.find_element(By.ID, 'barre_outils:touche_f2').click()
 
         ## Marquage tâche faîte dans le fichier
-
-        print(type(donnees_creation_opposition_sortie['Feuille1'][line][3]))
-        donnees_creation_opposition_sortie['Feuille1'][line].append(numero_ope)
-        donnees_creation_opposition_sortie['Feuille1'][line].append('X')
+        # indice = donnees_creation_opposition['Feuille1'].index(data[line][0])
+        # print(indice)
+        df["Indice"] = [line]
         df["FRP société"] = [data[line][0]]
         df["FRP opposant"] = [data[line][1]]
         df["Montant"] = [data[line][2]]
@@ -628,26 +634,23 @@ def create_opposant(headless):
         progressbar_label.destroy()
         tab2.update()
         progress = pb['value']
-        progressbar_label = Label(tab2, text=f"Le travail est en cours : {pb['value']}%")
+        progressbar_label = Label(tab2,
+                                  text=f"Le travail est en cours : {pb['value']}% il reste environ {min_sec_format}")
         progressbar_label.place(x=250, y=label_y)
         pb.update()
+        tab2.update()
         line += 1
 
-    filename = 'donnees_creation_opposition_sortie' + datetime.now().strftime('_%Y-%m-%d') + '.ods'
-    filename1 = 'donnees_creation_opposition_sortie1' + datetime.now().strftime('_%Y-%m-%d') + '.ods'
-    save_data(filename, donnees_creation_opposition_sortie)
-    # with ods.writer(open(filename1, "wb")) as odsfile:
-    #     odsfile.writerow(donnees_creation_opposition_sortie)
-    #     odsfile.close()
+    filename = 'donnees_creation_opposition_sortie' + datetime.now().strftime('_%Y-%m-%d') + '.xlsx'
+    source_rep = os.getcwd()
+    destination_rep = source_rep + '/donne_sortie/donne_sortie' + datetime.now().strftime('_%Y-%m-%d')
+    if not os.path.exists(destination_rep):
+        os.makedirs(destination_rep)
+    # save_data(destination_rep+'/'+filename, donnees_creation_opposition_sortie)
     sheet_name = "Feuille1"
-    columns = donnees_creation_opposition_sortie[sheet_name][0]
-
-    df = pd.DataFrame(donnees_creation_opposition_sortie[sheet_name])
     print(final_df)
-    # with pd.ExcelWriter(filename1, date_format='DD-MM-YYYY', datetime_format='DD-MM-YYYY') as writer:
-    #     df.to_excel(writer, sheet_name=sheet_name)
 
-    writer = pd.ExcelWriter('donnees_sortie.xlsx', engine='xlsxwriter')
+    writer = pd.ExcelWriter(destination_rep+'/'+filename, engine='xlsxwriter')
     final_df.to_excel(writer, sheet_name)
     writer_book = writer.sheets[sheet_name]
     workbook = writer.book
@@ -667,11 +670,9 @@ def create_opposant(headless):
         time.sleep(delay)
         time.sleep(delay)
         time.sleep(delay)
-        sheet = "Feuille1"
         tabControl.add(tab4, text='liste des oppositions')
         table1 = Table(tab4, dataframe=final_df, read_only=True, index=FALSE)
         table1.place(y=120)
-
         table1.autoResizeColumns()
         table1.show()
 
@@ -684,15 +685,6 @@ def create_opposant(headless):
                               text=f"Le travail est maintenant fini! A bientôt")
     progressbar_label.place(x=250, y=label_y)
     wd.quit()
-
-
-def myping(host):
-    resp = ping(host)
-
-    if not resp:
-        return False
-    else:
-        return True
 
 
 # Procédure de purge
@@ -716,8 +708,7 @@ def purge():
     url = 'http://media.ira.appli.impots/mediamapi/index.xhtml'
     try:
         wd.get(url)
-        label_connexion = Label(tab2, text="Test de connexion :")
-        label_connexion.place(x=250, y=50)
+
     except WebDriverException:
         messagebox.showinfo("Service Interrompu !", "Le service est indisponible\n pour l'instant")
         wd.close()
@@ -725,8 +716,10 @@ def purge():
     ## Saisir utilisateur
     ##Saisir utilisateur
     time.sleep(delay)
-    # script = f'''identifant = document.getElementById('identifiant'); identifiant.setAttribute('type','hidden'); identifiant.setAttribute('value',"{login}");'''
-    script = f'''identifant = document.getElementById('identifiant'); identifiant.setAttribute('type','hidden'); identifiant.setAttribute('value',"youssef.atigui");'''
+    # script = f'''identifant = document.getElementById('identifiant'); identifiant.setAttribute('type','hidden');
+    # identifiant.setAttribute('value',"{login}");'''
+    script = f'''identifant = document.getElementById('identifiant'); identifiant.setAttribute('type','hidden'); 
+    identifiant.setAttribute('value',"youssef.atigui");'''
     wd.execute_script(script)
 
     ## Saisie mot de pass
@@ -767,6 +760,7 @@ def purge():
         messagebox.showinfo("Purge", "La purge n'a pas pu être effectuée ")
         wd.close()
 
+## TODO SATD-jj-mm-yy.ods
 
 # Procédure pour
 def open_file():
@@ -774,46 +768,83 @@ def open_file():
     global l1
     file = filedialog.askopenfile(mode='r', filetypes=[('Ods Files', '*.ods')])
     if file:
+
         filepath = os.path.abspath(file.name)
         filepath = filepath.replace(os.sep, "/")
+        name = os.path.basename(filepath)
+        source_rep = os.getcwd()
+        destination_rep = source_rep+'/archive_SATD/archive'+datetime.now().strftime('_%Y-%m-%d')
+        if not os.path.exists(destination_rep):
+            os.makedirs(destination_rep)
         label_path.configure(text="Le fichier sélectionné est : " + Path(filepath).stem)
         File_path = filepath
+        shutil.copyfile(filepath,destination_rep+'/'+name)
         df = pd.read_excel(filepath)
-        column = df.columns[0]
-        print(column)
-        print("-" * len(column))
         nb_ligne = df.shape[0]
         s = 's' if nb_ligne > 1 else ''
+        messagebox.showinfo("Création d'opposition", 'Votre fichier contient ' + str(nb_ligne) + ' ligne' + s + '.')
         print('Votre fichier contient ' + str(nb_ligne) + ' ligne' + s + '.')
-    filename1 = 'donnees_creation_opposition_sortie' + datetime.now().strftime('_%Y-%m-%d') + '.ods'
-    filepath1 = os.path.abspath(filename1)
-    if filename1:
+    filename1 = 'donnees_creation_opposition_sortie' + datetime.now().strftime('_%Y-%m-%d') + '.xlsx'
+    filepath1 = source_rep + '/donne_sortie/donne_sortie' + datetime.now().strftime('_%Y-%m-%d')+'/'+filename1
+    if filepath1:
         df1 = pd.read_excel(filepath1)
         column1 = df1.columns[6]
-        print(column1)
+        print(df1)
         nb_ligne1 = df1.shape[0]
         s = 's' if nb_ligne1 > 1 else ''
         sub_df1 = df1[df1['Fait'] == 'X']
-        print(len(sub_df1))
-        print(sub_df1)
-        # print(min(df.index[df1['Fait'] == 'X'].tolist()))
-        if min(df.index[df1['Fait'] == 'X'].tolist()) != 0 & min(df.index[df1['Fait'] == 'X'].tolist()):
+        if len(sub_df1) == 0:
+            messagebox.showinfo("Création d'opposition", "Aucune opération n'a été effectué pour l'instant !")
+        elif min(df.index[df1['Fait'] == 'X'].tolist()) != 0 & min(df.index[df1['Fait'] == 'X'].tolist()):
             premiere_partie = 'La première opposition du fichier n\'a pas été enregistré' if min(
                 df.index[df1['Fait'] == 'X'].tolist()) == 1 else 'Les ' + str(min(
                 df.index[df1['Fait'] == 'X'].tolist()) + 1) + 'premières oppositions du fichier n\'ont pas été ' \
                                                               'enregistrées '
-        print('Vous avez déjà un fichier de sortie qui contient ' + str(nb_ligne1) + ' ligne' + s + '.\n'
-                                                                                                    'Une opération de '
-                                                                                                    'création '
-                                                                                                    'd\'opposition à '
-                                                                                                    'déjà été '
-                                                                                                    'lancée, '
-                                                                                                    'l\'opération \n '
-                                                                                                    's\'est arrêtée à '
-                                                                                                    'la ligne '
-              + str(min(df.index[df1['Fait'] == 'X'].tolist()) + 1) + '.\n'
-              + premiere_partie
-              )
+            messagebox.showwarning(
+                "Création d'opposition", 'Vous avez déjà un fichier de sortie qui contient ' + str(nb_ligne1) + ' ligne'
+                                         + s + '.\n Une opération de création d\'opposition à déjà été lancée, '
+                                               'l\'opération \n s\'est arrêtée à la ligne '
+                                         + str(min(df.index[df1['Fait'] == 'X'].tolist()) + 1) + '.\n'
+                                         + premiere_partie)
+            print('Vous avez déjà un fichier de sortie qui contient ' + str(nb_ligne1) + ' ligne' + s +
+                  '.\n Une opération de création d\'opposition à déjà été lancée, l\'opération \n s\'est arrêtée à la '
+                  'ligne '
+                  + str(min(df.index[df1['Fait'] == 'X'].tolist()) + 1) + '.\n'
+                  + premiere_partie
+                  )
+        elif len(sub_df1) - len(df) != 0:
+            response = messagebox.askyesno(
+                "Création d'opposition", "Vous avez déjà effectué les opérations sur ce fichier. Mais plusieurs lignes"
+                                         " n'ont pas été enregistré. \n")
+            try:
+                time.sleep(2)
+                tab5 = Frame(tabControl, bg='#E3EBD0')
+                tabControl.add(tab5, text='liste des oppositions déjà effectué')
+                df1['Date d’effet = date réception SATD'] = df['Date d’effet = date réception SATD'].dt.strftime(
+                    '%d-%m-%Y')
+                table = Table(tab5, dataframe=df1, read_only=True, index=FALSE)
+                table.place(y=120)
+                table.autoResizeColumns()
+                table.show()
+
+            except FileNotFoundError as e:
+                print(e)
+                messagebox.showerror('Erreur de tableau', 'Il n\'y a pas de tableau à afficher')
+            if not response:
+                Interface.destroy()
+            else:
+                pass
+        else:
+            response = messagebox.askyesno(
+                "Création d'opposition", "Vous avez déjà effectué les opérations sur ce fichier."
+                                         "\n Voulez-vous continuer")
+            if not response:
+                Interface.destroy()
+            else:
+                pass
+
+    else:
+        messagebox.showinfo("Création d'opposition", "Aucune opération n'a été effectué pour l'instant !")
 
 
 # Procédure pour la progress bar

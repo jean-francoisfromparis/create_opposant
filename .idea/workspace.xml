@@ -2,9 +2,25 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="70ab0b16-4c84-4496-b73d-11dcc68f9ae0" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_01_2023_16_25__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_01_2023_16_25__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Creation_Opposition.py" beforeDir="false" afterPath="$PROJECT_DIR$/Creation_Opposition.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/donnees_creation_opposition_sortie1_2023-01-23.ods" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/donnees_creation_opposition_sortie1_2023-01-24.ods" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/donnees_creation_opposition_sortie1_2023-01-27.ods" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/donnees_creation_opposition_sortie_2023-01-23.ods" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/donnees_creation_opposition_sortie_2023-01-24.ods" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/donnees_creation_opposition_sortie_2023-01-27.ods" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/donnees_creation_opposition_sortie_2023-01-30.ods" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/donnees_creation_opposition_sortie_2023-01-31.ods" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/donnees_entree_bis.ods" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/donnees_sortie.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/donnees_sortie.xlsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/geckodriver.log" beforeDir="false" afterPath="$PROJECT_DIR$/geckodriver.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/screen-recorder-mon-dec-26-2022-15-55-38.webm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp_safety_file.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
