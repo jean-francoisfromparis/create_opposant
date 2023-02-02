@@ -318,13 +318,12 @@ def create_opposant(headless):
     final_df = pd.DataFrame()
     data = [i for i in donnees_creation_opposition['Feuille1']]
 
-    # Condition qui vérifie que chaque cellule de la colonne rib, à part le header, est vide,
-    # d'après le besoin case vide = rang 1, si l'item correspondant au rang est vide il prend la valeur "1" utilisable dans
-    # la boucle d'automatisation. Cette condition sert à s'assurer que l'on aura une valeur pour le rang, s'il n'y a
-    # pas de valeur la liste est vide et ça génère une erreur
-    # taille_data donne le nombre d'items+1 dans le dico, puisque python boucle à partir de 0,
-    #  dans notre cas c'est le nombre de listes, qui est de 11 ( 10 + liste headers)
-    # C'est pour cela que je boucle de 0 à taille_data - 2 pour ne pas inclure la liste des headers
+    # Condition qui vérifie que chaque cellule de la colonne rib, à part le header, est vide, d'après le besoin case
+    # vide = rang 1, si l'item correspondant au rang est vide il prend la valeur "1" utilisable dans la boucle
+    # d'automatisation. Cette condition sert à s'assurer que l'on aura une valeur pour le rang, s'il n'y a pas de
+    # valeur la liste est vide et ça génère une erreur taille_data donne le nombre d'items+1 dans le dico,
+    # puisque python boucle à partir de 0, dans notre cas, c'est le nombre de listes qui est de 11 (10 + liste
+    # headers) C'est pour cela que je boucle de 0 à taille_data - 2 pour ne pas inclure la liste des headers.
     taille_data = len(data)
     last_item_index0 = len(data[0]) - 1
     last_item_index1 = len(data[1]) - 1
@@ -618,7 +617,9 @@ def create_opposant(headless):
         wd.find_element(By.ID, 'barre_outils:touche_f2').click()
 
         ## Marquage tâche faîte dans le fichier
-        # indice = donnees_creation_opposition['Feuille1'].index(data[line][0])
+        donnees_creation_opposition_sortie['Feuille1'][line][3] = str(date_d_effet)
+        donnees_creation_opposition_sortie['Feuille1'][line].append(numero_ope)
+        donnees_creation_opposition_sortie['Feuille1'][line].append('X')
         # print(indice)
         df["Indice"] = [line]
         df["FRP société"] = [data[line][0]]
@@ -644,11 +645,12 @@ def create_opposant(headless):
         line += 1
 
     filename = 'donnees_creation_opposition_sortie' + datetime.now().strftime('_%Y-%m-%d') + '.xlsx'
+    filename_ods = 'donnees_creation_opposition_sortie' + datetime.now().strftime('_%Y-%m-%d') + '.ods'
     source_rep = os.getcwd()
     destination_rep = source_rep + '/donnees_sortie/donnees_sortie' + datetime.now().strftime('_%Y-%m-%d')
     if not os.path.exists(destination_rep):
         os.makedirs(destination_rep)
-    # save_data(destination_rep+'/'+filename, donnees_creation_opposition_sortie)
+    save_data(destination_rep + '/' + filename_ods, donnees_creation_opposition_sortie)
     sheet_name = "Feuille1"
     print(final_df)
 
@@ -772,7 +774,6 @@ def open_file():
     global l1
     file = filedialog.askopenfile(mode='r', filetypes=[('Ods Files', '*.ods')])
     if file:
-
         filepath = os.path.abspath(file.name)
         filepath = filepath.replace(os.sep, "/")
         name = os.path.basename(filepath)
@@ -788,7 +789,7 @@ def open_file():
         s = 's' if nb_ligne > 1 else ''
         messagebox.showinfo("Création d'opposition", 'Votre fichier contient ' + str(nb_ligne) + ' ligne' + s + '.')
         print('Votre fichier contient ' + str(nb_ligne) + ' ligne' + s + '.')
-    filename1 = 'donnees_creation_opposition_sortie' + datetime.now().strftime('_%Y-%m-%d') + '.xlsx'
+    filename1 = 'donnees_creation_opposition_sortie' + datetime.now().strftime('_%Y-%m-%d') + '.ods'
     filepath1 = source_rep + '/donnees_sortie/donnees_sortie' + datetime.now().strftime('_%Y-%m-%d') + '/' + filename1
     print(os.path.isfile(filepath1))
     if os.path.isfile(filepath1):
