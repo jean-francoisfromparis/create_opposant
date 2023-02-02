@@ -313,7 +313,7 @@ def create_opposant(headless):
     donnees_creation_opposition_sortie = pe.get_data(File_path)
     donnees_creation_opposition_sortie['Feuille1'][0].append("Numéro d'Opération")
     donnees_creation_opposition_sortie['Feuille1'][0].append("Fait")
-    df = pd.DataFrame(columns=["Indice","FRP société", "FRP opposant", "Montant", "Date d’effet = date réception SATD",
+    df = pd.DataFrame(columns=["Indice", "FRP société", "FRP opposant", "Montant", "Date d’effet = date réception SATD",
                                "Numéro d'Opération", "Fait"])
     final_df = pd.DataFrame()
     data = [i for i in donnees_creation_opposition['Feuille1']]
@@ -457,6 +457,7 @@ def create_opposant(headless):
 
         ## Saisie du numéro de dossier créancier
         time.sleep(delay)
+        time.sleep(delay)
         WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputYrdos211NumeroDeDossier')))
         # wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(numero_creancier_opposant)
         wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(data[line][1])
@@ -465,6 +466,7 @@ def create_opposant(headless):
 
         ## Saisie de la suite
 
+        time.sleep(delay)
         time.sleep(delay)
         time.sleep(delay)
         WebDriverWait(wd, 40).until(EC.presence_of_element_located((By.ID, 'inputB33gsuitYa33G002ReponseSuite')))
@@ -643,25 +645,26 @@ def create_opposant(headless):
 
     filename = 'donnees_creation_opposition_sortie' + datetime.now().strftime('_%Y-%m-%d') + '.xlsx'
     source_rep = os.getcwd()
-    destination_rep = source_rep + '/donne_sortie/donne_sortie' + datetime.now().strftime('_%Y-%m-%d')
+    destination_rep = source_rep + '/donnees_sortie/donnees_sortie' + datetime.now().strftime('_%Y-%m-%d')
     if not os.path.exists(destination_rep):
         os.makedirs(destination_rep)
     # save_data(destination_rep+'/'+filename, donnees_creation_opposition_sortie)
     sheet_name = "Feuille1"
     print(final_df)
 
-    writer = pd.ExcelWriter(destination_rep+'/'+filename, engine='xlsxwriter')
+    writer = pd.ExcelWriter(destination_rep + '/' + filename, engine='xlsxwriter')
     final_df.to_excel(writer, sheet_name)
     writer_book = writer.sheets[sheet_name]
     workbook = writer.book
     writer_book.set_column('B:B', 13)
     writer_book.set_column('C:C', 13)
     writer_book.set_column('D:D', 20)
-    date_format = workbook.add_format({'num_format': 'dd/mm/yy'})
-    writer_book.set_column('E:E', 30, date_format)
-    writer_book.set_column('F:F', 20)
+    # date_format = workbook.add_format({'num_format': 'dd/mm/yy'})
+    writer_book.set_column('E:E', 20)
+    writer_book.set_column('F:F', 35)
+    writer_book.set_column('G:G', 25)
     done_format = workbook.add_format({'bold': True, 'bg_color': 'cyan'})
-    writer_book.conditional_format('G1:G500', {'type': 'cell',
+    writer_book.conditional_format('H1:H500', {'type': 'cell',
                                                'criteria': '!=',
                                                'value': 'X',
                                                'format': done_format})
@@ -760,6 +763,7 @@ def purge():
         messagebox.showinfo("Purge", "La purge n'a pas pu être effectuée ")
         wd.close()
 
+
 ## TODO SATD-jj-mm-yy.ods
 
 # Procédure pour
@@ -773,26 +777,28 @@ def open_file():
         filepath = filepath.replace(os.sep, "/")
         name = os.path.basename(filepath)
         source_rep = os.getcwd()
-        destination_rep = source_rep+'/archive_SATD/archive'+datetime.now().strftime('_%Y-%m-%d')
+        destination_rep = source_rep + '/archive_SATD/archive' + datetime.now().strftime('_%Y-%m-%d')
         if not os.path.exists(destination_rep):
             os.makedirs(destination_rep)
         label_path.configure(text="Le fichier sélectionné est : " + Path(filepath).stem)
         File_path = filepath
-        shutil.copyfile(filepath,destination_rep+'/'+name)
+        shutil.copyfile(filepath, destination_rep + '/' + name)
         df = pd.read_excel(filepath)
         nb_ligne = df.shape[0]
         s = 's' if nb_ligne > 1 else ''
         messagebox.showinfo("Création d'opposition", 'Votre fichier contient ' + str(nb_ligne) + ' ligne' + s + '.')
         print('Votre fichier contient ' + str(nb_ligne) + ' ligne' + s + '.')
     filename1 = 'donnees_creation_opposition_sortie' + datetime.now().strftime('_%Y-%m-%d') + '.xlsx'
-    filepath1 = source_rep + '/donne_sortie/donne_sortie' + datetime.now().strftime('_%Y-%m-%d')+'/'+filename1
-    if filepath1:
+    filepath1 = source_rep + '/donnees_sortie/donnees_sortie' + datetime.now().strftime('_%Y-%m-%d') + '/' + filename1
+    print(os.path.isfile(filepath1))
+    if os.path.isfile(filepath1):
         df1 = pd.read_excel(filepath1)
         column1 = df1.columns[6]
         print(df1)
         nb_ligne1 = df1.shape[0]
         s = 's' if nb_ligne1 > 1 else ''
         sub_df1 = df1[df1['Fait'] == 'X']
+        print(sub_df1)
         if len(sub_df1) == 0:
             messagebox.showinfo("Création d'opposition", "Aucune opération n'a été effectué pour l'instant !")
         elif min(df.index[df1['Fait'] == 'X'].tolist()) != 0 & min(df.index[df1['Fait'] == 'X'].tolist()):
