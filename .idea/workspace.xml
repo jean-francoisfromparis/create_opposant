@@ -4,7 +4,6 @@
     <list default="true" id="70ab0b16-4c84-4496-b73d-11dcc68f9ae0" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Creation_Opposition.py" beforeDir="false" afterPath="$PROJECT_DIR$/Creation_Opposition.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/geckodriver.log" beforeDir="false" afterPath="$PROJECT_DIR$/geckodriver.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,7 +13,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="feat/ods-import" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -28,12 +27,8 @@
               <option name="branches">
                 <list>
                   <RecentBranch>
-                    <option name="branchName" value="feat/ods-import-correction" />
-                    <option name="lastUsedInstant" value="1674231232" />
-                  </RecentBranch>
-                  <RecentBranch>
-                    <option name="branchName" value="feat/ods-import" />
-                    <option name="lastUsedInstant" value="1672905308" />
+                    <option name="branchName" value="feat/connectivity-quality" />
+                    <option name="lastUsedInstant" value="1675335529" />
                   </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="main" />
@@ -112,7 +107,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="feat/ods-import" />
+                        <option value="main" />
                       </list>
                     </value>
                   </entry>

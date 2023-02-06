@@ -1,8 +1,11 @@
 import _thread
 import csv
+import http
 import os
+import shutil
 import sys
 import time
+import urllib
 from datetime import datetime
 from pathlib import Path
 from tkinter import *
@@ -12,10 +15,11 @@ from tkinter.ttk import Progressbar
 
 import pandas as pd
 import pyexcel_ods3 as pe
-import odswriter as ods
+import pyspeedtest
 from PIL import Image, ImageTk
 from pandas_ods_reader import read_ods
 from pandastable import Table, config
+from ping3 import ping
 from pyexcel_ods import save_data
 from pynput.keyboard import Controller
 from selenium import webdriver
@@ -269,7 +273,7 @@ def main():
     #     showinfo("Affichage opposition", "L'opposant " + numeroDossier + " n'a pas d'opposition en cours ")
 
 
-def create_opposant(headless):
+def create_opposition(headless):
     delay = 3
 
     # Etablissement du progressBar
@@ -304,23 +308,22 @@ def create_opposant(headless):
 
     ## Prend les données depuis le fichier, crée une liste de listes (ou "array"), oú chaque liste est
     ## une ligne du fichier Calc. Il faut faire ça parce que pyxcel_ods prend les données sous forme
-    ## de dictionaire.
+    ## de dictionnaire.
     donnees_creation_opposition = pe.get_data(File_path)
     donnees_creation_opposition_sortie = pe.get_data(File_path)
     donnees_creation_opposition_sortie['Feuille1'][0].append("Numéro d'Opération")
     donnees_creation_opposition_sortie['Feuille1'][0].append("Fait")
-    df = pd.DataFrame(columns=["FRP société", "FRP opposant", "Montant", "Date d’effet = date réception SATD",
+    df = pd.DataFrame(columns=["Indice", "FRP société", "FRP opposant", "Montant", "Date d’effet = date réception SATD",
                                "Numéro d'Opération", "Fait"])
     final_df = pd.DataFrame()
     data = [i for i in donnees_creation_opposition['Feuille1']]
 
-    # Condition qui vérifie que chaque cellule de la colonne rib, à part le header, est vide,
-    # d'après le besoin case vide = rang 1, si l'item correspondant au rang est vide il prend la valeur "1" utilisable dans
-    # la boucle d'automatisation. Cette condition sert à s'assurer que l'on aura une valeur pour le rang, s'il n'y a
-    # pas de valeur la liste est vide et ça génère une erreur
-    # taille_data donne le nombre d'items+1 dans le dico, puisque python boucle à partir de 0,
-    #  dans notre cas c'est le nombre de listes, qui est de 11 ( 10 + liste headers)
-    # C'est pour cela que je boucle de 0 à taille_data - 2 pour ne pas inclure la liste des headers
+    # Condition qui vérifie que chaque cellule de la colonne rib, à part le header, est vide, d'après le besoin case
+    # vide = rang 1, si l'item correspondant au rang est vide il prend la valeur "1" utilisable dans la boucle
+    # d'automatisation. Cette condition sert à s'assurer que l'on aura une valeur pour le rang, s'il n'y a pas de
+    # valeur la liste est vide et ça génère une erreur taille_data donne le nombre d'items+1 dans le dico,
+    # puisque python boucle à partir de 0, dans notre cas, c'est le nombre de listes qui est de 11 (10 + liste
+    # headers) C'est pour cela que je boucle de 0 à taille_data - 2 pour ne pas inclure la liste des headers.
     taille_data = len(data)
     last_item_index0 = len(data[0]) - 1
     last_item_index1 = len(data[1]) - 1
@@ -379,6 +382,7 @@ def create_opposant(headless):
 
     wd_options.set_preference('detach', True)
     wd = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=wd_options)
+    ## TODO Passer au service object
     wd.get(
         'https://portailmetierpriv.ira.appli.impots/cas/login?service=http%3A%2F%2Fmedoc.ia.dgfip%3A8141%2Fmedocweb'
         '%2Fcas%2Fvalidation')
@@ -416,9 +420,14 @@ def create_opposant(headless):
     progressbar_label.destroy()
     ## Boucle sur le fichier selon le nombre de lignes indiquées
     for i in range(line_amount):
-        progressbar_label = Label(tab2, text=f"Le travail est en cours: {pb['value']}%")
+        num_of_secs = 60
+        m, s = divmod(num_of_secs * abs(line_amount - line), 60)
+        min_sec_format = '{:02d}:{:02d}'.format(m, s)
+        progressbar_label = Label(tab2,
+                                  text=f"Le travail est en cours: {pb['value']}%  ~  il reste environ {min_sec_format}")
         progressbar_label.place(x=250, y=label_y)
         tab2.update()
+
         ## Création d'un Redevable
         ## Arriver à la transactionv 3-17
 
@@ -447,6 +456,7 @@ def create_opposant(headless):
 
         ## Saisie du numéro de dossier créancier
         time.sleep(delay)
+        time.sleep(delay)
         WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputYrdos211NumeroDeDossier')))
         # wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(numero_creancier_opposant)
         wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(data[line][1])
@@ -455,6 +465,7 @@ def create_opposant(headless):
 
         ## Saisie de la suite
 
+        time.sleep(delay)
         time.sleep(delay)
         time.sleep(delay)
         WebDriverWait(wd, 40).until(EC.presence_of_element_located((By.ID, 'inputB33gsuitYa33G002ReponseSuite')))
@@ -606,10 +617,11 @@ def create_opposant(headless):
         wd.find_element(By.ID, 'barre_outils:touche_f2').click()
 
         ## Marquage tâche faîte dans le fichier
-
-        print(type(donnees_creation_opposition_sortie['Feuille1'][line][3]))
+        donnees_creation_opposition_sortie['Feuille1'][line][3] = str(date_d_effet)
         donnees_creation_opposition_sortie['Feuille1'][line].append(numero_ope)
         donnees_creation_opposition_sortie['Feuille1'][line].append('X')
+        # print(indice)
+        df["Indice"] = [line]
         df["FRP société"] = [data[line][0]]
         df["FRP opposant"] = [data[line][1]]
         df["Montant"] = [data[line][2]]
@@ -625,37 +637,36 @@ def create_opposant(headless):
         progressbar_label.destroy()
         tab2.update()
         progress = pb['value']
-        progressbar_label = Label(tab2, text=f"Le travail est en cours : {pb['value']}%")
+        progressbar_label = Label(tab2,
+                                  text=f"Le travail est en cours : {pb['value']}% il reste environ {min_sec_format}")
         progressbar_label.place(x=250, y=label_y)
         pb.update()
+        tab2.update()
         line += 1
 
-    filename = 'donnees_creation_opposition_sortie' + datetime.now().strftime('_%Y-%m-%d') + '.ods'
-    filename1 = 'donnees_creation_opposition_sortie1' + datetime.now().strftime('_%Y-%m-%d') + '.ods'
-    save_data(filename, donnees_creation_opposition_sortie)
-    # with ods.writer(open(filename1, "wb")) as odsfile:
-    #     odsfile.writerow(donnees_creation_opposition_sortie)
-    #     odsfile.close()
+    filename = 'donnees_creation_opposition_sortie' + datetime.now().strftime('_%Y-%m-%d') + '.xlsx'
+    filename_ods = 'donnees_creation_opposition_sortie' + datetime.now().strftime('_%Y-%m-%d') + '.ods'
+    source_rep = os.getcwd()
+    destination_rep = source_rep + '/donnees_sortie/donnees_sortie' + datetime.now().strftime('_%Y-%m-%d')
+    if not os.path.exists(destination_rep):
+        os.makedirs(destination_rep)
+    save_data(destination_rep + '/' + filename_ods, donnees_creation_opposition_sortie)
     sheet_name = "Feuille1"
-    columns = donnees_creation_opposition_sortie[sheet_name][0]
-
-    df = pd.DataFrame(donnees_creation_opposition_sortie[sheet_name])
     print(final_df)
-    # with pd.ExcelWriter(filename1, date_format='DD-MM-YYYY', datetime_format='DD-MM-YYYY') as writer:
-    #     df.to_excel(writer, sheet_name=sheet_name)
 
-    writer = pd.ExcelWriter('donnees_sortie.xlsx', engine='xlsxwriter')
+    writer = pd.ExcelWriter(destination_rep + '/' + filename, engine='xlsxwriter')
     final_df.to_excel(writer, sheet_name)
     writer_book = writer.sheets[sheet_name]
     workbook = writer.book
     writer_book.set_column('B:B', 13)
     writer_book.set_column('C:C', 13)
     writer_book.set_column('D:D', 20)
-    date_format = workbook.add_format({'num_format': 'dd/mm/yy'})
-    writer_book.set_column('E:E', 30, date_format)
-    writer_book.set_column('F:F', 20)
+    # date_format = workbook.add_format({'num_format': 'dd/mm/yy'})
+    writer_book.set_column('E:E', 20)
+    writer_book.set_column('F:F', 35)
+    writer_book.set_column('G:G', 25)
     done_format = workbook.add_format({'bold': True, 'bg_color': 'cyan'})
-    writer_book.conditional_format('G1:G500', {'type': 'cell',
+    writer_book.conditional_format('H1:H500', {'type': 'cell',
                                                'criteria': '!=',
                                                'value': 'X',
                                                'format': done_format})
@@ -664,11 +675,9 @@ def create_opposant(headless):
         time.sleep(delay)
         time.sleep(delay)
         time.sleep(delay)
-        sheet = "Feuille1"
         tabControl.add(tab4, text='liste des oppositions')
         table1 = Table(tab4, dataframe=final_df, read_only=True, index=FALSE)
         table1.place(y=120)
-
         table1.autoResizeColumns()
         table1.show()
 
@@ -688,8 +697,6 @@ def purge():
     # Délai entre opérations automate. Pour des numéros non entiers il faut utiliser le point pas la virgule
     delay = 1
 
-    # ########################################
-
     # ##Saisie du nom utilisateur et mot de passe
     login = EnterTable4.get()
     mot_de_passe = EnterTable5.get()
@@ -703,8 +710,10 @@ def purge():
 
     wd_options.set_preference('detach', True)
     wd = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=wd_options)
+    url = 'http://media.ira.appli.impots/mediamapi/index.xhtml'
     try:
-        wd.get('http://media.ira.appli.impots/mediamapi/index.xhtml')
+        wd.get(url)
+
     except WebDriverException:
         messagebox.showinfo("Service Interrompu !", "Le service est indisponible\n pour l'instant")
         wd.close()
@@ -712,8 +721,10 @@ def purge():
     ## Saisir utilisateur
     ##Saisir utilisateur
     time.sleep(delay)
-    # script = f'''identifant = document.getElementById('identifiant'); identifiant.setAttribute('type','hidden'); identifiant.setAttribute('value',"{login}");'''
-    script = f'''identifant = document.getElementById('identifiant'); identifiant.setAttribute('type','hidden'); identifiant.setAttribute('value',"youssef.atigui");'''
+    # script = f'''identifant = document.getElementById('identifiant'); identifiant.setAttribute('type','hidden');
+    # identifiant.setAttribute('value',"{login}");'''
+    script = f'''identifant = document.getElementById('identifiant'); identifiant.setAttribute('type','hidden'); 
+    identifiant.setAttribute('value',"youssef.atigui");'''
     wd.execute_script(script)
 
     ## Saisie mot de pass
@@ -755,6 +766,8 @@ def purge():
         wd.close()
 
 
+## TODO SATD-jj-mm-yy.ods
+
 # Procédure pour
 def open_file():
     global File_path
@@ -763,8 +776,82 @@ def open_file():
     if file:
         filepath = os.path.abspath(file.name)
         filepath = filepath.replace(os.sep, "/")
+        name = os.path.basename(filepath)
+        source_rep = os.getcwd()
+        destination_rep = source_rep + '/archive_SATD/archive' + datetime.now().strftime('_%Y-%m-%d')
+        if not os.path.exists(destination_rep):
+            os.makedirs(destination_rep)
         label_path.configure(text="Le fichier sélectionné est : " + Path(filepath).stem)
         File_path = filepath
+        shutil.copyfile(filepath, destination_rep + '/' + name)
+        df = pd.read_excel(filepath)
+        nb_ligne = df.shape[0]
+        s = 's' if nb_ligne > 1 else ''
+        messagebox.showinfo("Création d'opposition", 'Votre fichier contient ' + str(nb_ligne) + ' ligne' + s + '.')
+        print('Votre fichier contient ' + str(nb_ligne) + ' ligne' + s + '.')
+    filename1 = 'donnees_creation_opposition_sortie' + datetime.now().strftime('_%Y-%m-%d') + '.ods'
+    filepath1 = source_rep + '/donnees_sortie/donnees_sortie' + datetime.now().strftime('_%Y-%m-%d') + '/' + filename1
+    print(os.path.isfile(filepath1))
+    if os.path.isfile(filepath1):
+        df1 = pd.read_excel(filepath1)
+        column1 = df1.columns[6]
+        print(df1)
+        nb_ligne1 = df1.shape[0]
+        s = 's' if nb_ligne1 > 1 else ''
+        sub_df1 = df1[df1['Fait'] == 'X']
+        print(sub_df1)
+        if len(sub_df1) == 0:
+            messagebox.showinfo("Création d'opposition", "Aucune opération n'a été effectué pour l'instant !")
+        elif min(df.index[df1['Fait'] == 'X'].tolist()) != 0 & min(df.index[df1['Fait'] == 'X'].tolist()):
+            premiere_partie = 'La première opposition du fichier n\'a pas été enregistré' if min(
+                df.index[df1['Fait'] == 'X'].tolist()) == 1 else 'Les ' + str(min(
+                df.index[df1['Fait'] == 'X'].tolist()) + 1) + 'premières oppositions du fichier n\'ont pas été ' \
+                                                              'enregistrées '
+            messagebox.showwarning(
+                "Création d'opposition", 'Vous avez déjà un fichier de sortie qui contient ' + str(nb_ligne1) + ' ligne'
+                                         + s + '.\n Une opération de création d\'opposition à déjà été lancée, '
+                                               'l\'opération \n s\'est arrêtée à la ligne '
+                                         + str(min(df.index[df1['Fait'] == 'X'].tolist()) + 1) + '.\n'
+                                         + premiere_partie)
+            print('Vous avez déjà un fichier de sortie qui contient ' + str(nb_ligne1) + ' ligne' + s +
+                  '.\n Une opération de création d\'opposition à déjà été lancée, l\'opération \n s\'est arrêtée à la '
+                  'ligne '
+                  + str(min(df.index[df1['Fait'] == 'X'].tolist()) + 1) + '.\n'
+                  + premiere_partie
+                  )
+        elif len(sub_df1) - len(df) != 0:
+            response = messagebox.askyesno(
+                "Création d'opposition", "Vous avez déjà effectué les opérations sur ce fichier. Mais plusieurs lignes"
+                                         " n'ont pas été enregistré. \n")
+            try:
+                time.sleep(2)
+                tab5 = Frame(tabControl, bg='#E3EBD0')
+                tabControl.add(tab5, text='liste des oppositions déjà effectué')
+                df1['Date d’effet = date réception SATD'] = df['Date d’effet = date réception SATD'].dt.strftime(
+                    '%d-%m-%Y')
+                table = Table(tab5, dataframe=df1, read_only=True, index=FALSE)
+                table.place(y=120)
+                table.autoResizeColumns()
+                table.show()
+
+            except FileNotFoundError as e:
+                print(e)
+                messagebox.showerror('Erreur de tableau', 'Il n\'y a pas de tableau à afficher')
+            if not response:
+                Interface.destroy()
+            else:
+                pass
+        else:
+            response = messagebox.askyesno(
+                "Création d'opposition", "Vous avez déjà effectué les opérations sur ce fichier."
+                                         "\n Voulez-vous continuer")
+            if not response:
+                Interface.destroy()
+            else:
+                pass
+
+    else:
+        messagebox.showinfo("Création d'opposition", "Aucune opération n'a été effectué pour l'instant !")
 
 
 # Procédure pour la progress bar
@@ -826,7 +913,7 @@ entryNumeroDossier = Entry(tab1, textvariable=EnterTable6, justify='center')
 entryNumeroDossier.place(width=225, x=paramx + 490, y=paramy - 30)
 
 creerOpposition = Button(tab2, text='Créer les Oppositions avec navigateur',
-                         command=lambda: create_opposant(headless=False))
+                         command=lambda: create_opposition(headless=False))
 creerOpposition.place(x=paramx + 240, y=paramy + 300)
 
 # labelNumeroDossierCreancierOpposant = Label(tab2, text="Saisir le numéro d\'un créancier opposant :")
@@ -893,7 +980,7 @@ entry3.place(width=225, x=paramx + 490, y=paramy + 105)
 purge_button = Button(tab2, text='Purger', command=purge)
 purge_button.place(x=paramx + 240, y=paramy + 200)
 headless = True
-browser_button = Button(tab2, text='Créer les Oppositions sans navigateur !', command=lambda: create_opposant(headless))
+browser_button = Button(tab2, text='Créer les Oppositions sans navigateur !', command=lambda: create_opposition(headless))
 browser_button.place(x=paramx + 240, y=paramy + 250)
 
 # login et mot de passe sur tab1 à tab3
