@@ -273,7 +273,7 @@ def main():
     #     showinfo("Affichage opposition", "L'opposant " + numeroDossier + " n'a pas d'opposition en cours ")
 
 
-def create_opposant(headless):
+def create_opposition(headless):
     delay = 3
 
     # Etablissement du progressBar
@@ -308,7 +308,7 @@ def create_opposant(headless):
 
     ## Prend les données depuis le fichier, crée une liste de listes (ou "array"), oú chaque liste est
     ## une ligne du fichier Calc. Il faut faire ça parce que pyxcel_ods prend les données sous forme
-    ## de dictionaire.
+    ## de dictionnaire.
     donnees_creation_opposition = pe.get_data(File_path)
     donnees_creation_opposition_sortie = pe.get_data(File_path)
     donnees_creation_opposition_sortie['Feuille1'][0].append("Numéro d'Opération")
@@ -913,7 +913,7 @@ entryNumeroDossier = Entry(tab1, textvariable=EnterTable6, justify='center')
 entryNumeroDossier.place(width=225, x=paramx + 490, y=paramy - 30)
 
 creerOpposition = Button(tab2, text='Créer les Oppositions avec navigateur',
-                         command=lambda: create_opposant(headless=False))
+                         command=lambda: create_opposition(headless=False))
 creerOpposition.place(x=paramx + 240, y=paramy + 300)
 
 # labelNumeroDossierCreancierOpposant = Label(tab2, text="Saisir le numéro d\'un créancier opposant :")
@@ -980,7 +980,7 @@ entry3.place(width=225, x=paramx + 490, y=paramy + 105)
 purge_button = Button(tab2, text='Purger', command=purge)
 purge_button.place(x=paramx + 240, y=paramy + 200)
 headless = True
-browser_button = Button(tab2, text='Créer les Oppositions sans navigateur !', command=lambda: create_opposant(headless))
+browser_button = Button(tab2, text='Créer les Oppositions sans navigateur !', command=lambda: create_opposition(headless))
 browser_button.place(x=paramx + 240, y=paramy + 250)
 
 # login et mot de passe sur tab1 à tab3
