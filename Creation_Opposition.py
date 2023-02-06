@@ -377,7 +377,6 @@ def create_opposant(headless):
     wd_options = Options()
     wd_options.headless = headless
 
-
     wd_options.set_preference('detach', True)
     wd = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=wd_options)
     wd.get(
@@ -768,7 +767,6 @@ def open_file():
         File_path = filepath
 
 
-
 # Procédure pour la progress bar
 def progressbar(parent):
     pb = Progressbar(parent, length=500, mode='determinate', maximum=100, value=10)
@@ -827,7 +825,8 @@ labelNumeroDossier.place(x=250, y=paramy - 30)
 entryNumeroDossier = Entry(tab1, textvariable=EnterTable6, justify='center')
 entryNumeroDossier.place(width=225, x=paramx + 490, y=paramy - 30)
 
-creerOpposition = Button(tab2, text='Créer les Oppositions avec navigateur', command=lambda: create_opposant(headless=False))
+creerOpposition = Button(tab2, text='Créer les Oppositions avec navigateur',
+                         command=lambda: create_opposant(headless=False))
 creerOpposition.place(x=paramx + 240, y=paramy + 300)
 
 # labelNumeroDossierCreancierOpposant = Label(tab2, text="Saisir le numéro d\'un créancier opposant :")
