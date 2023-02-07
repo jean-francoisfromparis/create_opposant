@@ -420,6 +420,8 @@ def create_opposition(headless):
     progressbar_label.destroy()
     ## Boucle sur le fichier selon le nombre de lignes indiquées
     for i in range(line_amount):
+        source_rep = os.getcwd()
+        destination_rep = source_rep + '/archive_SATD/archive' + datetime.now().strftime('_%Y-%m-%d')
         num_of_secs = 60
         m, s = divmod(num_of_secs * abs(line_amount - line), 60)
         min_sec_format = '{:02d}:{:02d}'.format(m, s)
