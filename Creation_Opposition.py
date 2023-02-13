@@ -1,11 +1,8 @@
-import _thread
 import csv
-import http
 import os
 import shutil
 import sys
 import time
-import urllib
 from datetime import datetime
 from pathlib import Path
 from tkinter import *
@@ -15,28 +12,26 @@ from tkinter.ttk import Progressbar
 
 import pandas as pd
 import pyexcel_ods3 as pe
-import pyspeedtest
 from PIL import Image, ImageTk
-from pandas_ods_reader import read_ods
-from pandastable import Table, config
-from ping3 import ping
+from pandastable import Table
 from pyexcel_ods import save_data
 from pynput.keyboard import Controller
 from selenium import webdriver
 from selenium.common import TimeoutException, WebDriverException
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from webdriver_manager.firefox import GeckoDriverManager
-from selenium.webdriver.common.action_chains import ActionChains
 
 keyboard = Controller()
 
 
 def __init__(self, progress):
     self.progress = progress
+    global delay
+    delay = 3
 
 
 # Fonction pour retrouver le chemin d'accès
@@ -65,9 +60,9 @@ def main():
     wd_options = Options()
 
     wd_options.headless = True
-
+    wd_options.binary_location = r'C:\Program Files\Mozilla Firefox\firefox.exe'
     wd_options.set_preference('detach', True)
-    wd = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=wd_options)
+    wd = webdriver.Firefox(options=wd_options)
     try:
         wd.get(
             'http://medoc.ia.dgfip:8141/medocweb/presentation/md2oagt/ouverturesessionagent/ecran/ecOuvertureSessionAgent'
@@ -310,9 +305,22 @@ def create_opposition(headless):
     ## une ligne du fichier Calc. Il faut faire ça parce que pyxcel_ods prend les données sous forme
     ## de dictionnaire.
     donnees_creation_opposition = pe.get_data(File_path)
+    source_rep = os.getcwd()
+    filename1 = 'donnees_creation_opposition_sortie' + datetime.now().strftime('_%Y-%m-%d') + '.ods'
+    filepath1 = source_rep + '/donnees_sortie/donnees_sortie' + datetime.now().strftime('_%Y-%m-%d') + '/' + filename1
+    # try:
+    #     if os.path.isfile(filepath1):
+    #         donnees_creation_opposition_sortie = pe.get_data(filepath1)
+    #         for j in range(1,nb_ligne1) :
+    #             print("la ligne à déjà été traitée : ", donnees_creation_opposition_sortie['Feuille1'][j][6])
+    #     else :
+    #         pass
+
     donnees_creation_opposition_sortie = pe.get_data(File_path)
+
     donnees_creation_opposition_sortie['Feuille1'][0].append("Numéro d'Opération")
     donnees_creation_opposition_sortie['Feuille1'][0].append("Fait")
+    donnees_creation_opposition_sortie['Feuille1'][0].append("Indice")
     df = pd.DataFrame(columns=["Indice", "FRP société", "FRP opposant", "Montant", "Date d’effet = date réception SATD",
                                "Numéro d'Opération", "Fait"])
     final_df = pd.DataFrame()
@@ -332,41 +340,6 @@ def create_opposition(headless):
             data[i + 1].append(str(1))
     #########################################
 
-    # while True:
-    #     montant_Creance = EnterTable8.get()
-    #     if montant_Creance.isnumeric():  ##vérifie que ça soit un numéro
-    #         montant_Creance = int(montant_Creance)
-    #         break
-    #     else:
-    #         messagebox.OK('Saisie incorrecte, réessayez')
-    #         exit()
-
-    # while True:
-    #     jour_d_effet = EnterTable9.get().split('/')[0]
-    #     if jour_d_effet.isnumeric():  ##vérifie que ça soit un numéro
-    #         jour_d_effet = jour_d_effet
-    #         break
-    #     else:
-    #         messagebox.OK('Saisie incorrecte, réessayez')
-    #         exit()
-    #
-    # while True:
-    #     mois_d_effet = EnterTable9.get().split('/')[1]
-    #     if mois_d_effet.isnumeric():  ##vérifie que ça soit un numéro
-    #         mois_d_effet = mois_d_effet
-    #         break
-    #     else:
-    #         messagebox.OK('Saisie incorrecte, réessayez')
-    #         exit()
-
-    # while True:
-    #     annee_d_effet = EnterTable9.get().split('/')[2]
-    #     if annee_d_effet.isnumeric():  ##vérifie que ça soit un numéro
-    #         annee_d_effet = annee_d_effet
-    #         break
-    #     else:
-    #         messagebox.OK('Saisie incorrecte, réessayez')
-    #         exit()
     ## Saisie du nom utilisateur et mot de passe
     login = EnterTable4.get()
     mot_de_passe = EnterTable5.get()
@@ -379,9 +352,10 @@ def create_opposition(headless):
 
     wd_options = Options()
     wd_options.headless = headless
-
+    wd_options.binary_location = r'C:\Program Files\Mozilla Firefox\firefox.exe'
     wd_options.set_preference('detach', True)
-    wd = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=wd_options)
+    wd = webdriver.Firefox(options=wd_options)
+    # wd = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=wd_options)
     ## TODO Passer au service object
     wd.get(
         'https://portailmetierpriv.ira.appli.impots/cas/login?service=http%3A%2F%2Fmedoc.ia.dgfip%3A8141%2Fmedocweb'
@@ -710,8 +684,12 @@ def purge():
 
     # wd_options.headless = True
 
+    # wd_options.set_preference('detach', True)
+    # wd = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=wd_options)
+    wd_options.headless = False
+    wd_options.binary_location = r'C:\Program Files\Mozilla Firefox\firefox.exe'
     wd_options.set_preference('detach', True)
-    wd = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=wd_options)
+    wd = webdriver.Firefox(options=wd_options)
     url = 'http://media.ira.appli.impots/mediamapi/index.xhtml'
     try:
         wd.get(url)
@@ -770,10 +748,125 @@ def purge():
 
 ## TODO SATD-jj-mm-yy.ods
 
+def create_opposant_2(headless):
+    delay = 3
+    # Etablissement du progressBar
+
+    pb = progressbar(tab2)
+    progressbar_label = Label(tab2, text=f"Le travail commence. L'automate se connecte...")
+    label_y = 340
+    progressbar_label.place(x=250, y=label_y)
+    tab2.update()
+    time.sleep(delay)
+
+    donnees_creation_opposition = pe.get_data(File_path)
+    source_rep = os.getcwd()
+    filename1 = 'donnees_creation_opposition_sortie' + datetime.now().strftime('_%Y-%m-%d') + '.ods'
+    filepath1 = source_rep + '/donnees_sortie/donnees_sortie' + datetime.now().strftime('_%Y-%m-%d') + '/' + filename1
+    connexion_create_opposition(headless)
+    if os.path.isfile(filepath1):
+        donnees_creation_opposition_sortie = pe.get_data(filepath1)
+    else:
+        donnees_creation_opposition_sortie = pe.get_data(File_path)
+
+        donnees_creation_opposition_sortie['Feuille1'][0].append("Numéro d'Opération")
+        donnees_creation_opposition_sortie['Feuille1'][0].append("Fait")
+        donnees_creation_opposition_sortie['Feuille1'][0].append("Indice")
+        df = pd.DataFrame(
+            columns=["Indice", "FRP société", "FRP opposant", "Montant", "Date d’effet = date réception SATD",
+                     "Numéro d'Opération", "Fait"])
+        final_df = pd.DataFrame()
+        data = [i for i in donnees_creation_opposition['Feuille1']]
+        # Condition qui vérifie que chaque cellule de la colonne rib, à part le header, est vide, d'après le besoin case
+        # vide = rang 1, si l'item correspondant au rang est vide il prend la valeur "1" utilisable dans la boucle
+        # d'automatisation. Cette condition sert à s'assurer que l'on aura une valeur pour le rang, s'il n'y a pas de
+        # valeur la liste est vide et ça génère une erreur taille_data donne le nombre d'items+1 dans le dico,
+        # puisque python boucle à partir de 0, dans notre cas, c'est le nombre de listes qui est de 11 (10 + liste
+        # headers) C'est pour cela que je boucle de 0 à taille_data - 2 pour ne pas inclure la liste des headers.
+        taille_data = len(data)
+        last_item_index0 = len(data[0]) - 1
+        last_item_index1 = len(data[1]) - 1
+        for i in range(taille_data - 2):
+            if last_item_index0 != len(data[i + 1]) - 1:
+                data[i + 1].append(str(1))
+
+
+def connexion_create_opposition(healess):
+    wd_options = Options()
+
+    # wd_options.headless = True
+
+    # wd_options.set_preference('detach', True)
+    # wd = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=wd_options)
+    wd_options.headless = False
+    wd_options.binary_location = r'C:\Program Files\Mozilla Firefox\firefox.exe'
+    wd_options.set_preference('detach', True)
+    wd = webdriver.Firefox(options=wd_options)
+    url = 'https://portailmetierpriv.ira.appli.impots/cas/login?service=http%3A%2F%2Fmedoc.ia.dgfip%3A8141%2Fmedocweb' \
+          '%2Fcas%2Fvalidation '
+    try:
+        wd.get(url)
+    except WebDriverException:
+        messagebox.showinfo("Service Interrompu !", "Le service est indisponible\n pour l'instant")
+        wd.close()
+        ##Saisir utilisateur
+    time.sleep(delay)
+    # script = f'''identifant = document.getElementById('identifiant'); identifiant.setAttribute('type','hidden'); identifiant.setAttribute('value',"{login}");'''
+    script = f'''identifant = document.getElementById('identifiant'); identifiant.setAttribute('type','hidden'); 
+      identifiant.setAttribute('value',"youssef.atigui"); '''
+    wd.execute_script(script)
+
+    ## Saisie mot de pass
+    time.sleep(delay)
+    # wd.find_element(By.ID, 'secret_tmp').send_keys(mot_de_passe)
+    wd.find_element(By.ID, 'secret_tmp').send_keys("1")
+
+    time.sleep(delay)
+    wd.find_element(By.ID, 'secret_tmp').send_keys(Keys.RETURN)
+    try:
+        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'ligneServiceHabilitation')))
+    except TimeoutException:
+        messagebox.showinfo("Service Interrompu !", "Le service est indisponible\n pour l'instant")
+        wd.close()
+        ##Saisir utilisateur
+        time.sleep(delay)
+        # script = f'''identifant = document.getElementById('identifiant'); identifiant.setAttribute('type','hidden'); identifiant.setAttribute('value',"{login}");'''
+        script = f'''identifant = document.getElementById('identifiant'); identifiant.setAttribute('type','hidden'); 
+        identifiant.setAttribute('value',"youssef.atigui"); '''
+        wd.execute_script(script)
+
+        ## Saisie mot de pass
+        time.sleep(delay)
+        # wd.find_element(By.ID, 'secret_tmp').send_keys(mot_de_passe)
+        wd.find_element(By.ID, 'secret_tmp').send_keys("1")
+
+        time.sleep(delay)
+        wd.find_element(By.ID, 'secret_tmp').send_keys(Keys.RETURN)
+        try:
+            WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'ligneServiceHabilitation')))
+        except TimeoutException:
+            messagebox.showinfo("Service Interrompu !", "Le service est indisponible\n pour l'instant")
+            wd.close()
+
+        ## Saisir service
+        wd.find_element(By.ID, 'nomServiceChoisi').send_keys('0070100')
+        time.sleep(delay)
+        wd.find_element(By.ID, 'nomServiceChoisi').send_keys(Keys.TAB)
+
+        ## Saisir habilitation
+        time.sleep(delay)
+        wd.find_element(By.ID, 'habilitation').send_keys('1')
+        time.sleep(delay)
+        wd.find_element(By.ID, 'habilitation').send_keys(Keys.ENTER)
+
+        ## Boucle sur le fichier selon le nombre de lignes indiquées
+
+
 # Procédure pour
 def open_file():
     global File_path
     global l1
+    global nb_ligne1
     file = filedialog.askopenfile(mode='r', filetypes=[('Ods Files', '*.ods')])
     if file:
         filepath = os.path.abspath(file.name)
@@ -982,7 +1075,8 @@ entry3.place(width=225, x=paramx + 490, y=paramy + 105)
 purge_button = Button(tab2, text='Purger', command=purge)
 purge_button.place(x=paramx + 240, y=paramy + 200)
 headless = True
-browser_button = Button(tab2, text='Créer les Oppositions sans navigateur !', command=lambda: create_opposition(headless))
+browser_button = Button(tab2, text='Créer les Oppositions sans navigateur !',
+                        command=lambda: create_opposition(headless))
 browser_button.place(x=paramx + 240, y=paramy + 250)
 
 # login et mot de passe sur tab1 à tab3

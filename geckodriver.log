@@ -23352,3 +23352,415 @@ console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message f
 console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
 console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
 1675343230675	Marionette	INFO	Stopped listening on port 63243
+1675762111235	geckodriver	INFO	Listening on 127.0.0.1:51010
+1675762111760	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--remote-debugging-port" "5101 ... "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileWNsNX2"
+*** You are running in headless mode.
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1675762112821	Marionette	INFO	Marionette enabled
+1675762112829	Marionette	INFO	Listening on port 51020
+WebDriver BiDi listening on ws://localhost:51011
+Read port: 51020
+1675762112944	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileWNsNX2\\search.json.mozlz4", (void 0)))
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+DevTools listening on ws://localhost:51011/devtools/browser/24da41e6-f799-44aa-99d8-90c69446792f
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+[Parent 2452, IPC I/O Parent] WARNING: file /builds/worker/checkouts/gecko/ipc/chromium/src/base/process_util_win.cc:167
+1675762215435	geckodriver	INFO	Listening on 127.0.0.1:51118
+1675762215953	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "51119" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileEnKX3S"
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1675762216741	Marionette	INFO	Marionette enabled
+1675762216746	Marionette	INFO	Listening on port 51126
+WebDriver BiDi listening on ws://localhost:51119
+Read port: 51126
+1675762216895	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileEnKX3S\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://localhost:51119/devtools/browser/c1fe194c-e2a9-4fd5-bd76-2151843a8457
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+[Parent 33616, IPC I/O Parent] WARNING: file /builds/worker/checkouts/gecko/ipc/chromium/src/base/process_util_win.cc:167
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://media.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://media.ira.appli.impots"
+1675762233894	Marionette	INFO	Stopped listening on port 51126
+1675762236502	geckodriver	INFO	Listening on 127.0.0.1:51190
+1675762236992	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--remote-debugging-port" "5119 ... "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileVzYrW6"
+*** You are running in headless mode.
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1675762237912	Marionette	INFO	Marionette enabled
+1675762237916	Marionette	INFO	Listening on port 51198
+WebDriver BiDi listening on ws://localhost:51191
+Read port: 51198
+1675762238172	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileVzYrW6\\search.json.mozlz4", (void 0)))
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+DevTools listening on ws://localhost:51191/devtools/browser/7897ac82-3b5a-4490-95ab-5e60a57c6d14
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+[Parent 28732, IPC I/O Parent] WARNING: file /builds/worker/checkouts/gecko/ipc/chromium/src/base/process_util_win.cc:167
+Exiting due to channel error.
+Listening on 127.0.0.1:51273
+1675762351822	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "51274" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofilec0SI4d"
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1675762352605	Marionette	INFO	Marionette enabled
+1675762352609	Marionette	INFO	Listening on port 51281
+WebDriver BiDi listening on ws://localhost:51274
+Read port: 51281
+1675762352768	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofilec0SI4d\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://localhost:51274/devtools/browser/0d239d9d-6995-4f5e-992a-9d9ef0dee9c8
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://media.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://media.ira.appli.impots"
+1675762366508	Marionette	INFO	Stopped listening on port 51281
+1675762373122	geckodriver	INFO	Listening on 127.0.0.1:51343
+1675762373628	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "51344" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileC4Gp9D"
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1675762374552	Marionette	INFO	Marionette enabled
+1675762374557	Marionette	INFO	Listening on port 51351
+WebDriver BiDi listening on ws://localhost:51344
+Read port: 51351
+1675762374713	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileC4Gp9D\\search.json.mozlz4", (void 0)))
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+DevTools listening on ws://localhost:51344/devtools/browser/9670e1a0-0845-4320-b31b-3c5ff99c95e9
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+1675762492753	Marionette	INFO	Stopped listening on port 51351
+1676280289399	geckodriver	INFO	Listening on 127.0.0.1:64921
+1676280289971	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "64922" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileiKBe1P"
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1676280290764	Marionette	INFO	Marionette enabled
+1676280290769	Marionette	INFO	Listening on port 64929
+WebDriver BiDi listening on ws://localhost:64922
+Read port: 64929
+1676280290936	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileiKBe1P\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://localhost:64922/devtools/browser/ed69c8d7-2251-4741-9d05-61a14698f734
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://media.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://media.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://media.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://media.ira.appli.impots"
+1676280378894	Marionette	INFO	Stopped listening on port 64929
+console.warn: TopSitesFeed: Failed to fetch data from Contile server: NetworkError when attempting to fetch resource.
+eadless" "--remote-debugging-port" "54164" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofile2iV2qy"
+*** You are running in headless mode.
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1676280377445	Marionette	INFO	Marionette enabled
+1676280377450	Marionette	INFO	Listening on port 54171
+WebDriver BiDi listening on ws://localhost:54164
+Read port: 54171
+1676280377557	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofile2iV2qy\\search.json.mozlz4", (void 0)))
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+DevTools listening on ws://localhost:54164/devtools/browser/57d59ff1-1678-419a-99ba-c1ce381331c5
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+1676280597580	Marionette	INFO	Stopped listening on port 54171
+1676288729138	geckodriver	INFO	Listening on 127.0.0.1:53898
+1676288729651	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--remote-debugging-port" "53899" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofilescpQ9r"
+*** You are running in headless mode.
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1676288730620	Marionette	INFO	Marionette enabled
+1676288730625	Marionette	INFO	Listening on port 53906
+WebDriver BiDi listening on ws://localhost:53899
+Read port: 53906
+1676288730779	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofilescpQ9r\\search.json.mozlz4", (void 0)))
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+DevTools listening on ws://localhost:53899/devtools/browser/2b7ec56f-c2e8-42c4-bcd4-ce83382df826
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+1676288807168	geckodriver	INFO	Listening on 127.0.0.1:53959
+1676288807682	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "53960" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofilejzahh5"
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1676288808470	Marionette	INFO	Marionette enabled
+1676288808474	Marionette	INFO	Listening on port 53967
+WebDriver BiDi listening on ws://localhost:53960
+Read port: 53967
+1676288808633	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofilejzahh5\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://localhost:53960/devtools/browser/689084f9-894c-479e-88d3-9223134b855c
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://media.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://media.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://media.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://media.ira.appli.impots"
+1676288821128	Marionette	INFO	Stopped listening on port 53967
+console.warn: TopSitesFeed: Failed to fetch data from Contile server: NetworkError when attempting to fetch resource.
+1676291759176	geckodriver	INFO	Listening on 127.0.0.1:51505
+1676291759706	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--remote-debugging-port" "51506" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofilePt3m4K"
+*** You are running in headless mode.
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1676291760507	Marionette	INFO	Marionette enabled
+1676291760512	Marionette	INFO	Listening on port 51513
+WebDriver BiDi listening on ws://localhost:51506
+Read port: 51513
+1676291760739	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofilePt3m4K\\search.json.mozlz4", (void 0)))
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+DevTools listening on ws://localhost:51506/devtools/browser/3284468c-00d1-4460-892d-fbb86e6f2e12
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+1676291853009	geckodriver	INFO	Listening on 127.0.0.1:51569
+1676291853543	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "51570" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileZbgIgO"
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1676291854330	Marionette	INFO	Marionette enabled
+1676291854335	Marionette	INFO	Listening on port 51577
+WebDriver BiDi listening on ws://localhost:51570
+Read port: 51577
+1676291854485	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileZbgIgO\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://localhost:51570/devtools/browser/3779f0a3-3435-4b0d-a58c-eb2382b9c31d
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://media.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://media.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://media.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://media.ira.appli.impots"
+1676291881395	Marionette	INFO	Stopped listening on port 51577
+console.warn: TopSitesFeed: Failed to fetch data from Contile server: NetworkError when attempting to fetch resource.
+1676291903093	geckodriver	INFO	Listening on 127.0.0.1:51631
+1676291903618	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--remote-debugging-port" "51632" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofile5KKZpU"
+*** You are running in headless mode.
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1676291904457	Marionette	INFO	Marionette enabled
+1676291904461	Marionette	INFO	Listening on port 51642
+WebDriver BiDi listening on ws://localhost:51632
+Read port: 51642
+1676291904550	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofile5KKZpU\\search.json.mozlz4", (void 0)))
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+DevTools listening on ws://localhost:51632/devtools/browser/34446aca-6d49-4021-b42d-93abf95be5bc
+1676291923024	geckodriver	INFO	Listening on 127.0.0.1:51685
+1676291923570	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "51686" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileXo9hcb"
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1676291924496	Marionette	INFO	Marionette enabled
+1676291924501	Marionette	INFO	Listening on port 51693
+WebDriver BiDi listening on ws://localhost:51686
+Read port: 51693
+1676291924680	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: CustomizableUI: 
+  unable to normalize widget
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 165: TypeError: prin.addonPolicy.extension is undefined
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvCreateProxyContext
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 165: TypeError: prin.addonPolicy.extension is undefined
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 165: TypeError: prin.addonPolicy.extension is undefined
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvAPICall
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 165: TypeError: prin.addonPolicy.extension is undefined
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvCreateProxyContext
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 165: TypeError: prin.addonPolicy.extension is undefined
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 165: TypeError: prin.addonPolicy.extension is undefined
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvAPICall
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvConduitClosed
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvConduitClosed
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvAddListener
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvAPICall
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvAddListener
+JavaScript error: resource://gre/modules/ConduitsParent.jsm, line 438: Error: Unknown sender or wrong actor for recvAPICall
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileXo9hcb\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://localhost:51686/devtools/browser/d4491863-7e76-4b15-9603-0da974defcc9
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://media.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://media.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://media.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://media.ira.appli.impots"
+1676291940514	Marionette	INFO	Stopped listening on port 51693
+console.warn: TopSitesFeed: Failed to fetch data from Contile server: NetworkError when attempting to fetch resource.
+1676292227574	geckodriver	INFO	Listening on 127.0.0.1:62046
+1676292228106	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--remote-debugging-port" "62047" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileCdPvXj"
+*** You are running in headless mode.
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1676292228923	Marionette	INFO	Marionette enabled
+1676292228928	Marionette	INFO	Listening on port 62054
+WebDriver BiDi listening on ws://localhost:62047
+Read port: 62054
+1676292229135	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileCdPvXj\\search.json.mozlz4", (void 0)))
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+DevTools listening on ws://localhost:62047/devtools/browser/a6a5f0e1-7d4f-4d58-b034-d46c9ef0d4e1
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+1676292281315	geckodriver	INFO	Listening on 127.0.0.1:62117
+1676292281838	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "62118" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileL4OxVN"
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1676292282660	Marionette	INFO	Marionette enabled
+1676292282665	Marionette	INFO	Listening on port 62125
+WebDriver BiDi listening on ws://localhost:62118
+Read port: 62125
+1676292282823	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileL4OxVN\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://localhost:62118/devtools/browser/f388dbbe-f733-444a-8c81-021ba480934f
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://media.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://media.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://media.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://media.ira.appli.impots"
+1676292296690	Marionette	INFO	Stopped listening on port 62125
+console.warn: TopSitesFeed: Failed to fetch data from Contile server: NetworkError when attempting to fetch resource.
+1676293043137	geckodriver	INFO	Listening on 127.0.0.1:62289
+1676293043675	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--remote-debugging-port" "62290" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofilexyidu6"
+*** You are running in headless mode.
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1676293044502	Marionette	INFO	Marionette enabled
+1676293044506	Marionette	INFO	Listening on port 62297
+WebDriver BiDi listening on ws://localhost:62290
+Read port: 62297
+1676293044623	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofilexyidu6\\search.json.mozlz4", (void 0)))
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+DevTools listening on ws://localhost:62290/devtools/browser/8f1c7722-ce89-48c4-9b23-05ee167bad36
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+1676293262805	Marionette	INFO	Stopped listening on port 62297
+1676293810469	geckodriver	INFO	Listening on 127.0.0.1:55948
+1676293811001	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--remote-debugging-port" "55949" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofilewcVzAW"
+*** You are running in headless mode.
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1676293811853	Marionette	INFO	Marionette enabled
+1676293811857	Marionette	INFO	Listening on port 55956
+WebDriver BiDi listening on ws://localhost:55949
+Read port: 55956
+1676293811946	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofilewcVzAW\\search.json.mozlz4", (void 0)))
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+DevTools listening on ws://localhost:55949/devtools/browser/dbafd7e6-c3d8-4fa3-a760-28846610b31c
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+1676294123610	Marionette	INFO	Stopped listening on port 55956
+1676294793851	geckodriver	INFO	Listening on 127.0.0.1:49743
+1676294794348	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--remote-debugging-port" "49744" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofilekq9xvY"
+*** You are running in headless mode.
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1676294795192	Marionette	INFO	Marionette enabled
+1676294795196	Marionette	INFO	Listening on port 49751
+WebDriver BiDi listening on ws://localhost:49744
+Read port: 49751
+1676294795284	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofilekq9xvY\\search.json.mozlz4", (void 0)))
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+DevTools listening on ws://localhost:49744/devtools/browser/b04fdd38-32ff-49a0-8b7d-bfeb4b371351
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://medoc.ia.dgfip:8141"
+1676294836667	geckodriver	INFO	Listening on 127.0.0.1:49802
+1676294837182	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "49803" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileq6FJuq"
+console.error: Enterprise Policies: 
+  Unknown policy: WebSiteFilter
+1676294838010	Marionette	INFO	Marionette enabled
+1676294838014	Marionette	INFO	Listening on port 49810
+WebDriver BiDi listening on ws://localhost:49803
+Read port: 49810
+1676294838160	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+console.error: Policies.jsm: 
+  Installation failed - ERROR_FILE_ACCESS - {url}
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MEDDB-~1\\AppData\\Local\\Temp\\rust_mozprofileq6FJuq\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://localhost:49803/devtools/browser/cac3afea-8a43-427b-b5e1-8fa757bf5678
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://portailmetierpriv.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://media.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://media.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://media.ira.appli.impots"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "http://media.ira.appli.impots"
+1676294852381	Marionette	INFO	Stopped listening on port 49810
+console.warn: TopSitesFeed: Failed to fetch data from Contile server: NetworkError when attempting to fetch resource.
