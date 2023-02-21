@@ -1,54 +1,0 @@
-
-mpython:S1192Ç"ODefine a constant instead of duplicating this literal 'Mot de passe: ' 3 times.(Í¹û±úÿÿÿÿ
-vpython:S1192Ã"XDefine a constant instead of duplicating this literal 'barre_outils:touche_f2' 12 times.(ªô÷øÿÿÿÿ
-rpython:S1192G"UDefine a constant instead of duplicating this literal "Service Interrompu !" 8 times.(êìŒÄûÿÿÿÿ
-opython:S1192¯"WDefine a constant instead of duplicating this literal "CrÃ©ation d'opposition" 6 times.(°Ô¢+
-hpython:S1192µ"JDefine a constant instead of duplicating this literal '_%Y-%m-%d' 7 times.(şËºµùÿÿÿÿ
-_python:S1192¯"GDefine a constant instead of duplicating this literal ' ligne' 4 times.(°Ô¢+
-fpython:S1192Ã"MDefine a constant instead of duplicating this literal 'Identifiant:' 3 times.(€İÚ»
-spython:S1192Ç"UDefine a constant instead of duplicating this literal "NumÃ©ro d'OpÃ©ration" 3 times.(±®‘äøÿÿÿÿ
-‹python:S1192?"nDefine a constant instead of duplicating this literal r'C:\Program Files\Mozilla Firefox\firefox.exe' 3 times.(¶ÖÃşÿÿÿÿ
-špython:S1192t"}Define a constant instead of duplicating this literal 'bmenuxtableMenus:16:outputBmenuxBrmenx04LibelleLigneProposee' 4 times.(¾‚İÇùÿÿÿÿ
-ipython:S1192º"KDefine a constant instead of duplicating this literal 'Unnamed: 0' 3 times.(½Òÿäüÿÿÿÿ
-Špython:S1192G"mDefine a constant instead of duplicating this literal "Le service est indisponible\n pour l'instant" 4 times.(êìŒÄûÿÿÿÿ
-xpython:S1192¶"_Define a constant instead of duplicating this literal '/donnees_sortie/donnees_sortie' 3 times.(‘Á‚
-_python:S2208"GImport only needed names or import the module and then use its members.(ï€¢
-rpython:S117¡"[Rename this local variable "currentUrl" to match the regular expression ^[_a-z][a-z0-9_]*$.(¨Û‚
-wpython:S117Å"ZRename this local variable "dataTable" to match the regular expression ^[_a-z][a-z0-9_]*$.(ã«æÁúÿÿÿÿ
-tpython:S117:"^Rename this local variable "numeroDossier" to match the regular expression ^[_a-z][a-z0-9_]*$.(ß©/
-Npython:S1481®"0Remove the unused local variable "webtable_df1".(Ãª¦Œıÿÿÿÿ
-Mpython:S14817"0Remove the unused local variable "mot_de_passe".(·…şîşÿÿÿÿ
-Fpython:S14816")Remove the unused local variable "login".(é“®Œÿÿÿÿÿ
-Gpython:S1481à")Remove the unused local variable "liste".(Ãè ùÿÿÿÿ
-kpython:S3776/"TRefactor this function to reduce its Cognitive Complexity from 25 to the 15 allowed.(œŸ²_
-;python:S125M"Remove this commented out code.(Ù™àúÿÿÿÿ
-Upython:S5754"<Specify an exception class to catch or reraise the exception(ˆÊÉ·
-<python:S125µ"Remove this commented out code.(®Øî†øÿÿÿÿ
-Hpython:S1481¢"0Remove the unused local variable "frp_opposant".(ÿ‘»;
-Gpython:S1481ã")Remove the unused local variable "login".(é“®Œÿÿÿÿÿ
->python:S1481Î"&Remove the unused local variable "df".(ıØş&
-Epython:S1481Ñ",Remove the unused local variable "final_df".(ó¨¹¡
-Npython:S1481ä"0Remove the unused local variable "mot_de_passe".(·…şîşÿÿÿÿ
-Qpython:S1481¥"3Remove the unused local variable "destination_rep".(ƒÑ¼èùÿÿÿÿ
-Epython:S1481",Remove the unused local variable "progress".(ÖğŒÂ
-7python:S125·"Remove this commented out code.(Øé—
-<python:S125ü"Remove this commented out code.(Ù™àúÿÿÿÿ
-Upython:S5754™"<Specify an exception class to catch or reraise the exception(ˆÊÉ·
-Upython:S5754¹"<Specify an exception class to catch or reraise the exception(ˆÊÉ·
-<python:S125™"Remove this commented out code.(‹¡‡Ğşÿÿÿÿ
-<python:S125¤"Remove this commented out code.(öÑÛÑşÿÿÿÿ
-upython:S117Ì"^Rename this local variable "numeroDossier" to match the regular expression ^[_a-z][a-z0-9_]*$.(ß©/
-Ipython:S1481Ì"1Remove the unused local variable "numeroDossier".(ß©/
-Fpython:S1481ş"-Remove the unused local variable "menu_list".(ù¬Áâ
-Npython:S1481É"0Remove the unused local variable "mot_de_passe".(·…şîşÿÿÿÿ
-Gpython:S1481È")Remove the unused local variable "login".(é“®Œÿÿÿÿÿ
-<python:S125Ğ"Remove this commented out code.(óÜ•şÿÿÿÿ
-7python:S125Ò"Remove this commented out code.(õµ¥›
-<python:S125ç"Remove this commented out code.(¯Ò­Ôşÿÿÿÿ
-<python:S125ø"Remove this commented out code.(ÇÂÔúÿÿÿÿ
-Ipython:S1481¶"+Remove the unused local variable "column1".(øúĞûÿÿÿÿ
-mpython:S3776›"TRefactor this function to reduce its Cognitive Complexity from 28 to the 15 allowed.(Î¬éŠ
-Dpython:S5806Ÿ"+Rename this variable; it shadows a builtin.(å¿ıŒ
-Apython:S108ä")Either remove or fill this block of code.(ã‘Û¾
-Apython:S108ì")Either remove or fill this block of code.(ã‘Û¾
-<python:S125Œ"Remove this commented out code.(Ã¢Ÿ–øÿÿÿÿ

@@ -420,7 +420,7 @@ def create_opposition(headless):
         source_rep = os.getcwd()
         destination_rep = source_rep + '/archive_SATD/archive' + datetime.now().strftime('_%Y-%m-%d')
         num_of_secs = 60
-        m, s = divmod(num_of_secs * nb_ligne, 60)
+        m, s = divmod(num_of_secs * (nb_ligne+1), 60)
         min_sec_format = '{:02d}:{:02d}'.format(m, s)
         progressbar_label = Label(tab6,
                                   text=f"Le travail est en cours: {pb['value']}%  ~  il reste environ {min_sec_format}")
@@ -448,12 +448,13 @@ def create_opposition(headless):
             wd.close()
 
         ## Saisie numéro de Dossier
+
         WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputYrdos211NumeroDeDossier')))
         ## TODO: ajouter un try pour échapper vers F2 et message de plantage
         # wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(numeroDossier)
         wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(data[i][0])
         wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(Keys.ENTER)
-        # print(data[i][0])
+
         ## Saisie du choix Créer
         time.sleep(delay)
         time.sleep(delay)
@@ -668,6 +669,7 @@ def create_opposition(headless):
         os.makedirs(destination_rep1)
     if os.path.exists(destination_rep1 + '/' + filename1):
         os.remove(destination_rep1 + '/' + filename1)
+        data.insert(1,old_data[0])
     save_data(destination_rep1 + '/' + filename1, data)
 
     frp_societe = data[0]
@@ -997,11 +999,11 @@ button2.place(x=paramx + 240, y=paramy - 30)
 label_path6 = Label(tab6)
 label_path6.place(x=paramx + 490, y=paramy - 30)
 
-purge_button = Button(tab6, bg="#CEDDDE", text='Purger', command=purge)
-purge_button.place(x=paramx + 240, y=paramy + 50)
-purge_label = Label(tab6, text="A utiliser en cas d'arrêt inattendu de l'automate en cours d'utilisation !",
-                    relief="sunken")
-purge_label.place(x=paramx + 340, y=paramy + 50)
+# purge_button = Button(tab6, bg="#CEDDDE", text='Purger', command=purge)
+# purge_button.place(x=paramx + 240, y=paramy + 50)
+# purge_label = Label(tab6, text="A utiliser en cas d'arrêt inattendu de l'automate en cours d'utilisation !",
+#                     relief="sunken")
+# purge_label.place(x=paramx + 340, y=paramy + 50)
 browser_button = Button(tab6, bg="#82CFD8", text='Créer les Oppositions sans visualisation des transactions',
                         command=lambda: create_opposition(headless=True))
 browser_button.place(x=paramx + 240, y=paramy + 100)
