@@ -269,7 +269,7 @@ def main():
 
 
 def create_opposition(headless):
-    delay = 3
+    delay = 2
 
     # Etablissement du progressBar
 
@@ -333,7 +333,7 @@ def create_opposition(headless):
 
     df = pd.DataFrame(
         columns=["Indice", "FRP société", "FRP opposant", "Montant", "Date d’effet = date réception SATD",
-                 "Numéro d'Opération", "Fait"])
+                 "Numéro d'Opération", "Date d'exécution", "Fait"])
     final_df = pd.DataFrame()
     # Condition qui vérifie que chaque cellule de la colonne rib, à part le header, est vide, d'après le besoin case
     # vide = rang 1, si l'item correspondant au rang est vide il prend la valeur "1" utilisable dans la boucle
@@ -420,7 +420,7 @@ def create_opposition(headless):
         source_rep = os.getcwd()
         destination_rep = source_rep + '/archive_SATD/archive' + datetime.now().strftime('_%Y-%m-%d')
         num_of_secs = 60
-        m, s = divmod(num_of_secs * (nb_ligne+1), 60)
+        m, s = divmod(num_of_secs * (nb_ligne + 1), 60)
         min_sec_format = '{:02d}:{:02d}'.format(m, s)
         progressbar_label = Label(tab6,
                                   text=f"Le travail est en cours: {pb['value']}%  ~  il reste environ {min_sec_format}")
@@ -448,29 +448,56 @@ def create_opposition(headless):
             wd.close()
 
         ## Saisie numéro de Dossier
-
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputYrdos211NumeroDeDossier')))
-        ## TODO: ajouter un try pour échapper vers F2 et message de plantage
-        # wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(numeroDossier)
-        wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(data[i][0])
-        wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(Keys.ENTER)
+        try:
+            WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputYrdos211NumeroDeDossier')))
+            ## TODO: ajouter un try pour échapper vers F2 et message de plantage
+            # wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(numeroDossier)
+            wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(data[i][0])
+            wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(Keys.ENTER)
+        except:
+            progressbar_label.destroy()
+            WebDriverWait(wd, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
+            messages = wd.find_element(By.CLASS_NAME, 'ui-messages-error').text
+            messagebox.showinfo("Service Interrompu !", messages)
+            WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+            wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+            wd.close()
 
         ## Saisie du choix Créer
-        time.sleep(delay)
-        time.sleep(delay)
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33gmenuYa33Gch1ChoixCMAI')))
+        try:
+            time.sleep(delay)
+            time.sleep(delay)
+            WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33gmenuYa33Gch1ChoixCMAI')))
 
-        wd.find_element(By.ID, 'inputB33gmenuYa33Gch1ChoixCMAI').send_keys('C')
-        wd.find_element(By.ID, 'inputB33gmenuYa33Gch1ChoixCMAI').send_keys(Keys.TAB)
+            wd.find_element(By.ID, 'inputB33gmenuYa33Gch1ChoixCMAI').send_keys('C')
+            wd.find_element(By.ID, 'inputB33gmenuYa33Gch1ChoixCMAI').send_keys(Keys.TAB)
+        except:
+            progressbar_label.destroy()
+            WebDriverWait(wd, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
+            messages = wd.find_element(By.CLASS_NAME, 'ui-messages-error').text
+            messagebox.showinfo("Service Interrompu !", messages)
+            WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+            wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+            wd.close()
 
         ## Saisie du numéro de dossier créancier
-        time.sleep(delay)
-        time.sleep(delay)
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputYrdos211NumeroDeDossier')))
-        # wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(numero_creancier_opposant)
-        wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(data[i][1])
-        wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(Keys.TAB)
-        # print(data[i][1])
+        try:
+            time.sleep(delay)
+            time.sleep(delay)
+            WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputYrdos211NumeroDeDossier')))
+            # wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(numero_creancier_opposant)
+            wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(data[i][1])
+            wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(Keys.TAB)
+            # print(data[i][1])
+        except:
+            progressbar_label.destroy()
+            WebDriverWait(wd, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
+            messages = wd.find_element(By.CLASS_NAME, 'ui-messages-error').text
+            messagebox.showinfo("Service Interrompu !", messages)
+            WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+            wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+            wd.close()
+
 
         ## Saisie de la suite
 
@@ -639,11 +666,13 @@ def create_opposition(headless):
         match os.path.isfile(filepath1):
             case True:
                 data[i][5] = numero_ope
-                data[i][6] = 'X'
+                data[i][6] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                data[i][7] = 'X'
                 print("inscription des données dans la liste", data)
             case False:
                 data[i][3] = str(date_d_effet)
                 data[i].append(numero_ope)
+                data[i].append(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
                 data[i].append('X')
                 print("inscription des données", data)
 
@@ -660,7 +689,7 @@ def create_opposition(headless):
         tab6.update()
         i += 1
     columns = ["FRP société", "FRP opposant", "Montant", "Date d’effet = date réception SATD",
-               "Réf jugement validité = réf SATD", "Numéro d'Opération", "Fait"]
+               "Réf jugement validité = réf SATD", "Numéro d'Opération", "Date d'exécution", "Fait"]
     data.insert(0, columns)
     print("les nouvelles data", data)
     # source_rep = os.getcwd()
@@ -669,7 +698,7 @@ def create_opposition(headless):
         os.makedirs(destination_rep1)
     if os.path.exists(destination_rep1 + '/' + filename1):
         os.remove(destination_rep1 + '/' + filename1)
-        data.insert(1,old_data[0])
+        data.insert(1, old_data[0])
     save_data(destination_rep1 + '/' + filename1, data)
 
     frp_societe = data[0]
@@ -798,12 +827,12 @@ def open_file():
     global File_path
     global l1
     global nb_ligne1
+    source_rep = os.getcwd()
     file = filedialog.askopenfile(mode='r', filetypes=[('Ods Files', '*.ods')])
     if file:
         filepath = os.path.abspath(file.name)
         filepath = filepath.replace(os.sep, "/")
         name = os.path.basename(filepath)
-        source_rep = os.getcwd()
         destination_rep = source_rep + '/archive_SATD/archive' + datetime.now().strftime('_%Y-%m-%d')
         if not os.path.exists(destination_rep):
             os.makedirs(destination_rep)

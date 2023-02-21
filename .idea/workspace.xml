@@ -2,12 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="70ab0b16-4c84-4496-b73d-11dcc68f9ae0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/archive_SATD/archive_2023-02-21/SATD_20022023.ods" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/donnees_sortie/donnees_sortie_2023-02-21/donnees_creation_opposition_sortie_2023-02-21.ods" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/2/7/2799f98614ce4cd1db6c3f2d98b4702b15eba9a2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Creation_Opposition.py" beforeDir="false" afterPath="$PROJECT_DIR$/Creation_Opposition.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/donnees_sortie/donnees_sortie_2023-02-21/donnees_creation_opposition_sortie_2023-02-21.ods" beforeDir="false" afterPath="$PROJECT_DIR$/donnees_sortie/donnees_sortie_2023-02-21/donnees_creation_opposition_sortie_2023-02-21.ods" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/geckodriver.log" beforeDir="false" afterPath="$PROJECT_DIR$/geckodriver.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -31,6 +29,10 @@
             <RecentBranchesForRepo>
               <option name="branches">
                 <list>
+                  <RecentBranch>
+                    <option name="branchName" value="feat/changing_line_automatically" />
+                    <option name="lastUsedInstant" value="1676990206" />
+                  </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="feat/autom_line_charged" />
                     <option name="lastUsedInstant" value="1675760329" />
@@ -63,14 +65,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "settings.editor.selected.configurable": "advanced.settings"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="Creation_Opposition" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="create_opposant" />

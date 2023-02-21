@@ -1,50 +1,0 @@
-
-}python:S1192Θ"XDefine a constant instead of duplicating this literal 'barre_outils:touche_f2' 10 times.(ªτχψÿÿÿÿ8ωύνη0
-ypython:S1192L"UDefine a constant instead of duplicating this literal "Service Interrompu !" 4 times.(κμΔϋÿÿÿÿ8ωύνη0
-vpython:S1192"WDefine a constant instead of duplicating this literal "CrΓ©ation d'opposition" 6 times.(°ΤΆ+8ϊύνη0
-opython:S1192¨"JDefine a constant instead of duplicating this literal '_%Y-%m-%d' 7 times.(ƒΡΌθωÿÿÿÿ8ÿύνη0
-fpython:S1192"GDefine a constant instead of duplicating this literal ' ligne' 4 times.(°ΤΆ+8€ώνη0
-zpython:S1192Ί"UDefine a constant instead of duplicating this literal "NumΓ©ro d'OpΓ©ration" 3 times.(±®‘δψÿÿÿÿ8ώνη0
-΅python:S1192y"}Define a constant instead of duplicating this literal 'bmenuxtableMenus:16:outputBmenuxBrmenx04LibelleLigneProposee' 4 times.(Ύ‚έΗωÿÿÿÿ8ώνη0
-ppython:S1192Ώ"KDefine a constant instead of duplicating this literal 'Unnamed: 0' 3 times.(½Òÿδόÿÿÿÿ8‚ώνη0
-‘python:S1192L"mDefine a constant instead of duplicating this literal "Le service est indisponible\n pour l'instant" 4 times.(κμΔϋÿÿÿÿ8‚ώνη0
-fpython:S2208"GImport only needed names or import the module and then use its members.(ο€Ά8‚ώνη0
-ypython:S117¦"[Rename this local variable "currentUrl" to match the regular expression ^[_a-z][a-z0-9_]*$.(¨Ϋ‚8‚ώνη0
-~python:S117Κ"ZRename this local variable "dataTable" to match the regular expression ^[_a-z][a-z0-9_]*$.(γ«ζΑϊÿÿÿÿ8‚ώνη0
-{python:S117?"^Rename this local variable "numeroDossier" to match the regular expression ^[_a-z][a-z0-9_]*$.(ί©/8‚ώνη0
-Npython:S1481ε")Remove the unused local variable "liste".(Γθ ωÿÿÿÿ8‚ώνη0
-Upython:S1481³"0Remove the unused local variable "webtable_df1".(Γª¦ύÿÿÿÿ8‚ώνη0
-Mpython:S1481;")Remove the unused local variable "login".(ι“®ÿÿÿÿÿ8ƒώνη0
-Tpython:S1481<"0Remove the unused local variable "mot_de_passe".(·…ώξώÿÿÿÿ8ƒώνη0
-rpython:S37764"TRefactor this function to reduce its Cognitive Complexity from 25 to the 15 allowed.(²_8ƒώνη0
-Bpython:S125R"Remove this commented out code.(Ω™ΰϊÿÿÿÿ8ƒώνη0
-\python:S5754†"<Specify an exception class to catch or reraise the exception(ΚΙ·8ƒώνη0
-Cpython:S125Ί"Remove this commented out code.(®Ψξ†ψÿÿÿÿ8ƒώνη0
-Lpython:S1481",Remove the unused local variable "progress".(ΦπΒ8ƒώνη0
-Upython:S1481τ"0Remove the unused local variable "mot_de_passe".(·…ώξώÿÿÿÿ8ƒώνη0
-Npython:S1481σ")Remove the unused local variable "login".(ι“®ÿÿÿÿÿ8ƒώνη0
-Tpython:S1481Ι"4Remove the unused local variable "last_item_index1".(σΥηΥ8ƒώνη0
-Lpython:S1481ϊ",Remove the unused local variable "df_reset".(‘Ο‡Κ8„ώνη0
-=python:S125Ο"Remove this commented out code.(Ώώώs8„ώνη0
-=python:S125Ψ"Remove this commented out code.(Ώώώs8„ώνη0
-Cpython:S125"Remove this commented out code.(Ω™ΰϊÿÿÿÿ8„ώνη0
-Cpython:S125"Remove this commented out code.(Ά‹Ζ®ψÿÿÿÿ8„ώνη0
-|python:S117Γ"^Rename this local variable "numeroDossier" to match the regular expression ^[_a-z][a-z0-9_]*$.(ί©/8„ώνη0
-Npython:S1481Ώ")Remove the unused local variable "login".(ι“®ÿÿÿÿÿ8„ώνη0
-Upython:S1481ΐ"0Remove the unused local variable "mot_de_passe".(·…ώξώÿÿÿÿ8„ώνη0
-Ppython:S1481Γ"1Remove the unused local variable "numeroDossier".(ί©/8„ώνη0
-Mpython:S1481κ"-Remove the unused local variable "menu_list".(ω¬Αβ8…ώνη0
-Cpython:S125Η"Remove this commented out code.(σά•ώÿÿÿÿ8…ώνη0
-Cpython:S125Φ"Remove this commented out code.(―Ò­Τώÿÿÿÿ8…ώνη0
-Cpython:S125δ"Remove this commented out code.(ΗΒΤϊÿÿÿÿ8…ώνη0
-Ppython:S1481"+Remove the unused local variable "column1".(ψϊΠϋÿÿÿÿ8…ώνη0
-tpython:S3776†"TRefactor this function to reduce its Cognitive Complexity from 28 to the 15 allowed.(Ξ¬ι8…ώνη0
-Kpython:S5806‰"+Rename this variable; it shadows a builtin.(εΏύ8…ώνη0
-Hpython:S108Ν")Either remove or fill this block of code.(γ‘ΫΎ8…ώνη0
-Hpython:S108Υ")Either remove or fill this block of code.(γ‘ΫΎ8…ώνη0
-Cpython:S125™"Remove this commented out code.(ραξψÿÿÿÿ8†ώνη0
-Cpython:S125£"Remove this commented out code.(²Φ—ϊÿÿÿÿ8†ώνη0
-Cpython:S125¦"Remove this commented out code.(΅Ήοθϊÿÿÿÿ8†ώνη0
-Cpython:S125«"Remove this commented out code.(ΣέΡ‚ύÿÿÿÿ8†ώνη0
->python:S125Ό"Remove this commented out code.(‹γΐξ8†ώνη0
-Cpython:S125Ι"Remove this commented out code.(ήυΩθόÿÿÿÿ8†ώνη0
