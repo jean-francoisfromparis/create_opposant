@@ -10,9 +10,11 @@ from tkinter import filedialog, messagebox, messagebox as msg, ttk
 from tkinter.messagebox import showinfo
 from tkinter.ttk import Progressbar
 
+import numpy as np
 import pandas as pd
 import pyexcel_ods3 as pe
 from PIL import Image, ImageTk
+from pandas.core.dtypes.common import is_datetime64_dtype
 from pandastable import Table
 from pyexcel_ods import save_data
 from pynput.keyboard import Controller
@@ -269,7 +271,7 @@ def main():
 
 
 def create_opposition(headless):
-    delay = 2
+    delay = 3
 
     # Etablissement du progressBar
 
@@ -309,32 +311,67 @@ def create_opposition(headless):
     filename1 = 'donnees_creation_opposition_sortie' + datetime.now().strftime('_%Y-%m-%d') + '.ods'
     filepath1 = source_rep + '/donnees_sortie/donnees_sortie' + datetime.now().strftime('_%Y-%m-%d') + '/' + filename1
     # df = pd.read_excel(File_path)
-    print(filepath1)
+    print("filepath1: \n", filepath1)
+    print("----------------------------------------------------------------------------")
     match os.path.isfile(filepath1):
         case True:
             donnees_creation_opposition_sortie = pd.read_excel(filepath1)
-            old_data = donnees_creation_opposition_sortie[donnees_creation_opposition_sortie['Fait'] == 'X'].values \
-                .tolist()
-            data = donnees_creation_opposition_sortie[donnees_creation_opposition_sortie['Fait'] != 'X'].values.tolist()
+            donnees_creation_opposition = pd.read_excel(File_path)
+            donnees_creation_opposition['Données manquantes'] = ""
+            donnees_creation_opposition["Numéro d'Opération"] = ""
+            donnees_creation_opposition["Date d'exécution"] = ""
+            donnees_creation_opposition["Fait"] = ""
+            print("dataframe des données d'entrée : \n", donnees_creation_opposition)
+            print("----------------------------------------------------------------------------")
+            join = pd.concat([donnees_creation_opposition, donnees_creation_opposition_sortie])
+            print("la fusion : \n", join["Réf jugement validité = réf SATD"])
+            print("----------------------------------------------------------------------------")
+            old_data = donnees_creation_opposition_sortie[(donnees_creation_opposition_sortie['Fait'] == 'X') | (donnees_creation_opposition_sortie['Données manquantes'] == '∅')].values.tolist()
+            all_old_data_list = donnees_creation_opposition_sortie["Réf jugement validité = réf SATD"].values.tolist()
+            print(all_old_data_list)
+            result = join[-join["Réf jugement validité = réf SATD"].isin(all_old_data_list)]
+            print(result)
+            data = donnees_creation_opposition_sortie[(donnees_creation_opposition_sortie['Fait'] != 'X') & (
+                        donnees_creation_opposition_sortie['Données manquantes'] != '∅')]
+            data = pd.concat([data,result])
             nb_ligne = len(data)
             # print("nb ligne sortie 1: ", nb_ligne)
-            print("Les données initiales à ne pas utiliser: ", old_data[0])
-            print("Les données initiales: ", data[0])
+            print("Les données initiales à ne pas utiliser: ", old_data)
+            print("Les données initiales: ", data)
         case False:
             donnees_creation_opposition_sortie = pe.get_data(File_path)
-            # print(donnees_creation_opposition_sortie)
             print("Mauvaise sortie")
             donnees_creation_opposition_sortie['Feuille1'][0].append("Numéro d'Opération")
             donnees_creation_opposition_sortie['Feuille1'][0].append("Fait")
             donnees_creation_opposition = pd.read_excel(File_path)
+            donnees_creation_opposition["Date d’effet = date réception SATD"] = donnees_creation_opposition[
+                "Date d’effet = date réception SATD"].astype(str)
             nb_ligne = donnees_creation_opposition.shape[0]
-            print("nb ligne : ", nb_ligne)
-            data = donnees_creation_opposition.values.tolist()
+            ligne_incomplete = list()
+            for i in range(nb_ligne):
+                if donnees_creation_opposition.loc[i].isnull().any() or \
+                        donnees_creation_opposition["Date d’effet = date réception SATD"].loc[i] == 'NaT':
+                    ligne_incomplete.append('∅')
+                    # print(ligne_incomplete)
+                else:
+                    ligne_incomplete.append('')
+                    # print(ligne_incomplete)
+            # donnees_creation_opposition['Données manquantes'] = ligne_incomplete
+            print(ligne_incomplete)
+            donnees_creation_opposition.insert(loc=5, column='Données manquantes', value=ligne_incomplete)
+            # print("type de données: ", donnees_creation_opposition)
+            old_data = donnees_creation_opposition[donnees_creation_opposition['Données manquantes'] == '∅'].values \
+                .tolist()
+            print("les données non gardé ligne 346 \n", old_data)
+            data = donnees_creation_opposition[donnees_creation_opposition['Données manquantes'] != '∅'].values.tolist()
+            print("les données d'entrée ligne 347 \n", data)
+            nb_ligne = len(data)
+            print(nb_ligne)
+    exit()
 
     df = pd.DataFrame(
         columns=["Indice", "FRP société", "FRP opposant", "Montant", "Date d’effet = date réception SATD",
                  "Numéro d'Opération", "Date d'exécution", "Fait"])
-    final_df = pd.DataFrame()
     # Condition qui vérifie que chaque cellule de la colonne rib, à part le header, est vide, d'après le besoin case
     # vide = rang 1, si l'item correspondant au rang est vide il prend la valeur "1" utilisable dans la boucle
     # d'automatisation. Cette condition sert à s'assurer que l'on aura une valeur pour le rang, s'il n'y a pas de
@@ -368,13 +405,13 @@ def create_opposition(headless):
     wd = webdriver.Firefox(options=wd_options)
     # wd = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=wd_options)
     ## TODO Passer au service object
-    wd.get(
-        'https://portailmetierpriv.ira.appli.impots/cas/login?service=http%3A%2F%2Fmedoc.ia.dgfip%3A8141%2Fmedocweb'
-        '%2Fcas%2Fvalidation')  # adresse MEDOC DGE
-
     # wd.get(
-    #     'http://medoc.ia.dgfip:8121/medocweb/presentation/md2oagt/ouverturesessionagent/ecran'
-    #     '/ecOuvertureSessionAgent.jsf')  # adresse MEDOC Classic
+    #     'https://portailmetierpriv.ira.appli.impots/cas/login?service=http%3A%2F%2Fmedoc.ia.dgfip%3A8141%2Fmedocweb'
+    #     '%2Fcas%2Fvalidation')  # adresse MEDOC DGE
+
+    wd.get(
+        'http://medoc.ia.dgfip:8121/medocweb/presentation/md2oagt/ouverturesessionagent/ecran'
+        '/ecOuvertureSessionAgent.jsf')  # adresse MEDOC Classic
     ##Saisir utilisateur
     time.sleep(delay)
     # script = f'''identifant = document.getElementById('identifiant'); identifiant.setAttribute('type','hidden'); identifiant.setAttribute('value',"{login}");'''
@@ -395,8 +432,8 @@ def create_opposition(headless):
         messagebox.showinfo("Service Interrompu !", "Le service est indisponible\n pour l'instant")
         wd.close()
     ## Saisir service
-    wd.find_element(By.ID, 'nomServiceChoisi').send_keys('0070100')  # FRP MEDOC DGE
-    # wd.find_element(By.ID, 'nomServiceChoisi').send_keys('6200100')
+    # wd.find_element(By.ID, 'nomServiceChoisi').send_keys('0070100')  # FRP MEDOC DGE
+    wd.find_element(By.ID, 'nomServiceChoisi').send_keys('6200100')
     time.sleep(delay)
     wd.find_element(By.ID, 'nomServiceChoisi').send_keys(Keys.TAB)
 
@@ -423,7 +460,7 @@ def create_opposition(headless):
         m, s = divmod(num_of_secs * (nb_ligne + 1), 60)
         min_sec_format = '{:02d}:{:02d}'.format(m, s)
         progressbar_label = Label(tab6,
-                                  text=f"Le travail est en cours: {pb['value']}%  ~  il reste environ {min_sec_format}")
+                                  text=f"Le travail est en cours: {pb['value']:.2f}%  ~  il reste environ {min_sec_format}")
         progressbar_label.place(x=250, y=label_y)
         tab6.update()
 
@@ -468,13 +505,19 @@ def create_opposition(headless):
             time.sleep(delay)
             time.sleep(delay)
             WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33gmenuYa33Gch1ChoixCMAI')))
-
             wd.find_element(By.ID, 'inputB33gmenuYa33Gch1ChoixCMAI').send_keys('C')
             wd.find_element(By.ID, 'inputB33gmenuYa33Gch1ChoixCMAI').send_keys(Keys.TAB)
+            # print("ligne 473: ok")
         except:
             progressbar_label.destroy()
             WebDriverWait(wd, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
-            messages = wd.find_element(By.CLASS_NAME, 'ui-messages-error').text
+            # print("ligne 477")
+            errorMessages = wd.find_element(By.CLASS_NAME, 'ui-messages-error').text
+            messages = errorMessages + " La qualité de la connexion ne permet pas un bon fonctionnement de " \
+                                       "l'automate. Veuillez essayer ultérieurement ! "
+            print(messages)
+            time.sleep(delay)
+            time.sleep(delay)
             messagebox.showinfo("Service Interrompu !", messages)
             WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
             wd.find_element(By.ID, 'barre_outils:touche_f2').click()
@@ -488,7 +531,27 @@ def create_opposition(headless):
             # wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(numero_creancier_opposant)
             wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(data[i][1])
             wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(Keys.TAB)
+            print("ligne 497: ok")
             # print(data[i][1])
+        except:
+            progressbar_label.destroy()
+            WebDriverWait(wd, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
+            errorMessages = wd.find_element(By.CLASS_NAME, 'ui-messages-error').text
+            messages = errorMessages + "\nLa qualité de la connexion ne permet pas un bon fonctionnement de " \
+                                       "l'automate. Veuillez essayer ultérieurement ! "
+            messagebox.showinfo("Service Interrompu !", messages)
+            WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+            wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+            wd.close()
+
+        ## Saisie de la suite
+        try:
+            time.sleep(delay)
+            time.sleep(delay)
+            time.sleep(delay)
+            WebDriverWait(wd, 40).until(EC.presence_of_element_located((By.ID, 'inputB33gsuitYa33G002ReponseSuite')))
+            wd.find_element(By.ID, 'inputB33gsuitYa33G002ReponseSuite').send_keys('S')
+            wd.find_element(By.ID, 'inputB33gsuitYa33G002ReponseSuite').send_keys(Keys.TAB)
         except:
             progressbar_label.destroy()
             WebDriverWait(wd, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
@@ -498,169 +561,295 @@ def create_opposition(headless):
             wd.find_element(By.ID, 'barre_outils:touche_f2').click()
             wd.close()
 
-
-        ## Saisie de la suite
-
-        time.sleep(delay)
-        time.sleep(delay)
-        time.sleep(delay)
-        WebDriverWait(wd, 40).until(EC.presence_of_element_located((By.ID, 'inputB33gsuitYa33G002ReponseSuite')))
-        wd.find_element(By.ID, 'inputB33gsuitYa33G002ReponseSuite').send_keys('S')
-        wd.find_element(By.ID, 'inputB33gsuitYa33G002ReponseSuite').send_keys(Keys.TAB)
-
         ## SAISIE DES REFERENCES DE L'OPPOSITION
         ## Transport de créance
-
-        time.sleep(delay)
-        WebDriverWait(wd, 20).until(
-            EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GtrcrTransportCreance')))
-        wd.find_element(By.ID, 'inputB33ginf2Ya33GtrcrTransportCreance').send_keys('N')
-        wd.find_element(By.ID, 'inputB33ginf2Ya33GtrcrTransportCreance').send_keys(Keys.TAB)
+        try:
+            time.sleep(delay)
+            WebDriverWait(wd, 20).until(
+                EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GtrcrTransportCreance')))
+            wd.find_element(By.ID, 'inputB33ginf2Ya33GtrcrTransportCreance').send_keys('N')
+            wd.find_element(By.ID, 'inputB33ginf2Ya33GtrcrTransportCreance').send_keys(Keys.TAB)
+        except:
+            progressbar_label.destroy()
+            WebDriverWait(wd, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
+            messages = wd.find_element(By.CLASS_NAME, 'ui-messages-error').text
+            messagebox.showinfo("Service Interrompu !", messages)
+            WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+            wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+            wd.close()
 
         ## Saisie ATD
+        try:
+            time.sleep(delay)
+            WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GadtAdt')))
+            wd.find_element(By.ID, 'inputB33ginf2Ya33GadtAdt').send_keys('O')
+            wd.find_element(By.ID, 'inputB33ginf2Ya33GadtAdt').send_keys(Keys.TAB)
+        except:
+            progressbar_label.destroy()
+            WebDriverWait(wd, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
+            messages = wd.find_element(By.CLASS_NAME, 'ui-messages-error').text
+            messagebox.showinfo("Service Interrompu !", messages)
+            WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+            wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+            wd.close()
 
-        time.sleep(delay)
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GadtAdt')))
-        wd.find_element(By.ID, 'inputB33ginf2Ya33GadtAdt').send_keys('O')
-        wd.find_element(By.ID, 'inputB33ginf2Ya33GadtAdt').send_keys(Keys.TAB)
-
-        ## Saisi crédit
-
-        time.sleep(delay)
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GcredCreditIs')))
-        wd.find_element(By.ID, 'inputB33ginf2Ya33GcredCreditIs').send_keys('N')
-        wd.find_element(By.ID, 'inputB33ginf2Ya33GcredCreditIs').send_keys(Keys.TAB)
+        ## Saisie du crédit
+        try:
+            time.sleep(delay)
+            WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GcredCreditIs')))
+            wd.find_element(By.ID, 'inputB33ginf2Ya33GcredCreditIs').send_keys('N')
+            wd.find_element(By.ID, 'inputB33ginf2Ya33GcredCreditIs').send_keys(Keys.TAB)
+        except:
+            progressbar_label.destroy()
+            WebDriverWait(wd, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
+            messages = wd.find_element(By.CLASS_NAME, 'ui-messages-error').text
+            messagebox.showinfo("Service Interrompu !", messages)
+            WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+            wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+            wd.close()
 
         ## Saisie Empêchement
-
-        time.sleep(delay)
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GempEmpechement')))
-        wd.find_element(By.ID, 'inputB33ginf2Ya33GempEmpechement').send_keys('N')
-        wd.find_element(By.ID, 'inputB33ginf2Ya33GempEmpechement').send_keys(Keys.TAB)
+        try:
+            time.sleep(delay)
+            WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GempEmpechement')))
+            wd.find_element(By.ID, 'inputB33ginf2Ya33GempEmpechement').send_keys('N')
+            wd.find_element(By.ID, 'inputB33ginf2Ya33GempEmpechement').send_keys(Keys.TAB)
+        except:
+            progressbar_label.destroy()
+            WebDriverWait(wd, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
+            messages = wd.find_element(By.CLASS_NAME, 'ui-messages-error').text
+            messagebox.showinfo("Service Interrompu !", messages)
+            WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+            wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+            wd.close()
 
         ## Saisie Montant
-
-        time.sleep(delay)
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GmtMontant')))
-        wd.find_element(By.ID, 'inputB33ginf2Ya33GmtMontant').send_keys(data[i][2])
-        wd.find_element(By.ID, 'inputB33ginf2Ya33GmtMontant').send_keys(Keys.TAB)
-        # print(data[i][2])
+        try:
+            time.sleep(delay)
+            WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GmtMontant')))
+            wd.find_element(By.ID, 'inputB33ginf2Ya33GmtMontant').send_keys(data[i][2])
+            wd.find_element(By.ID, 'inputB33ginf2Ya33GmtMontant').send_keys(Keys.TAB)
+            # print(data[i][2])
+        except:
+            progressbar_label.destroy()
+            WebDriverWait(wd, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
+            messages = wd.find_element(By.CLASS_NAME, 'ui-messages-error').text
+            messagebox.showinfo("Service Interrompu !", messages)
+            WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+            wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+            wd.close()
 
         ## Saisie de la Date d'Effet
         print(type(data[i][3]))
         if isinstance(data[i][3], str):
-            date_d_effet = datetime.strptime(data[i][3], "%Y-%m-%d %H:%M:%S")
+            date_d_effet = datetime.strptime(data[i][3], "%Y-%m-%d")
             print("ici c'est un string")
             print(date_d_effet.day)
         else:
             date_d_effet = data[i][3]
             print("ici ce n'est pas un string")
-
-        time.sleep(delay)
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtefDateEffetJour')))
-        wd.find_element(By.ID, 'inputB33ginf2Ya33GdtefDateEffetJour').send_keys(date_d_effet.day)
-        wd.find_element(By.ID, 'inputB33ginf2Ya33GdtefDateEffetJour').send_keys(Keys.TAB)
+        try:
+            time.sleep(delay)
+            WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtefDateEffetJour')))
+            wd.find_element(By.ID, 'inputB33ginf2Ya33GdtefDateEffetJour').send_keys(date_d_effet.day)
+            wd.find_element(By.ID, 'inputB33ginf2Ya33GdtefDateEffetJour').send_keys(Keys.TAB)
+        except:
+            progressbar_label.destroy()
+            WebDriverWait(wd, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
+            messages = wd.find_element(By.CLASS_NAME, 'ui-messages-error').text
+            messagebox.showinfo("Service Interrompu !", messages)
+            WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+            wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+            wd.close()
 
         ## Saisie du Mois d'Effet
-
-        time.sleep(delay)
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtefDateEffetMois')))
-        wd.find_element(By.ID, 'inputB33ginf2Ya33GdtefDateEffetMois').send_keys(date_d_effet.month)
-        wd.find_element(By.ID, 'inputB33ginf2Ya33GdtefDateEffetMois').send_keys(Keys.TAB)
+        try:
+            time.sleep(delay)
+            WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtefDateEffetMois')))
+            wd.find_element(By.ID, 'inputB33ginf2Ya33GdtefDateEffetMois').send_keys(date_d_effet.month)
+            wd.find_element(By.ID, 'inputB33ginf2Ya33GdtefDateEffetMois').send_keys(Keys.TAB)
+        except:
+            progressbar_label.destroy()
+            WebDriverWait(wd, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
+            messages = wd.find_element(By.CLASS_NAME, 'ui-messages-error').text
+            messagebox.showinfo("Service Interrompu !", messages)
+            WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+            wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+            wd.close()
 
         ## Saisie de l'Année d'Effet
-
-        time.sleep(delay)
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtefDateEffetAnnee')))
-        wd.find_element(By.ID, 'inputB33ginf2Ya33GdtefDateEffetAnnee').send_keys(date_d_effet.year)
-        wd.find_element(By.ID, 'inputB33ginf2Ya33GdtefDateEffetAnnee').send_keys(Keys.TAB)
+        try:
+            time.sleep(delay)
+            WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtefDateEffetAnnee')))
+            wd.find_element(By.ID, 'inputB33ginf2Ya33GdtefDateEffetAnnee').send_keys(date_d_effet.year)
+            wd.find_element(By.ID, 'inputB33ginf2Ya33GdtefDateEffetAnnee').send_keys(Keys.TAB)
+        except:
+            progressbar_label.destroy()
+            WebDriverWait(wd, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
+            messages = wd.find_element(By.CLASS_NAME, 'ui-messages-error').text
+            messagebox.showinfo("Service Interrompu !", messages)
+            WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+            wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+            wd.close()
 
         ## Saisie de la référence de jugement
-
-        time.sleep(delay)
-        WebDriverWait(wd, 20).until(
-            EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GjuvlJugementValidite')))
-        wd.find_element(By.ID, 'inputB33ginf2Ya33GjuvlJugementValidite').send_keys(data[i][4])
-        wd.find_element(By.ID, 'inputB33ginf2Ya33GjuvlJugementValidite').send_keys(Keys.TAB)
-        # print(data[i][4])
+        try:
+            time.sleep(delay)
+            WebDriverWait(wd, 20).until(
+                EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GjuvlJugementValidite')))
+            wd.find_element(By.ID, 'inputB33ginf2Ya33GjuvlJugementValidite').send_keys(data[i][4])
+            wd.find_element(By.ID, 'inputB33ginf2Ya33GjuvlJugementValidite').send_keys(Keys.TAB)
+            # print(data[i][4])
+        except:
+            progressbar_label.destroy()
+            WebDriverWait(wd, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
+            messages = wd.find_element(By.CLASS_NAME, 'ui-messages-error').text
+            messagebox.showinfo("Service Interrompu !", messages)
+            WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+            wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+            wd.close()
 
         ## Saisie de la date d'exécution de jugement
+        try:
+            time.sleep(delay)
+            WebDriverWait(wd, 20).until(
+                EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdjuvDateExecutionJugementJour')))
+            wd.find_element(By.ID, 'inputB33ginf2Ya33GdjuvDateExecutionJugementJour').send_keys(Keys.TAB)
 
-        time.sleep(delay)
-        WebDriverWait(wd, 20).until(
-            EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdjuvDateExecutionJugementJour')))
-        wd.find_element(By.ID, 'inputB33ginf2Ya33GdjuvDateExecutionJugementJour').send_keys(Keys.TAB)
+            time.sleep(delay)
+            WebDriverWait(wd, 20).until(
+                EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdjuvDateExecutionJugementMois')))
+            wd.find_element(By.ID, 'inputB33ginf2Ya33GdjuvDateExecutionJugementMois').send_keys(Keys.TAB)
 
-        time.sleep(delay)
-        WebDriverWait(wd, 20).until(
-            EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdjuvDateExecutionJugementMois')))
-        wd.find_element(By.ID, 'inputB33ginf2Ya33GdjuvDateExecutionJugementMois').send_keys(Keys.TAB)
-
-        time.sleep(delay)
-        WebDriverWait(wd, 20).until(
-            EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdjuvDateExecutionJugementAnnee')))
-        wd.find_element(By.ID, 'inputB33ginf2Ya33GdjuvDateExecutionJugementAnnee').send_keys(Keys.TAB)
+            time.sleep(delay)
+            WebDriverWait(wd, 20).until(
+                EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdjuvDateExecutionJugementAnnee')))
+            wd.find_element(By.ID, 'inputB33ginf2Ya33GdjuvDateExecutionJugementAnnee').send_keys(Keys.TAB)
+        except:
+            progressbar_label.destroy()
+            WebDriverWait(wd, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
+            messages = wd.find_element(By.CLASS_NAME, 'ui-messages-error').text
+            messagebox.showinfo("Service Interrompu !", messages)
+            WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+            wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+            wd.close()
 
         ## Saisie de la date de renouvellement
+        try:
+            time.sleep(delay)
+            WebDriverWait(wd, 20).until(
+                EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementJour')))
+            wd.find_element(By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementJour').send_keys(Keys.TAB)
 
-        time.sleep(delay)
-        WebDriverWait(wd, 20).until(
-            EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementJour')))
-        wd.find_element(By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementJour').send_keys(Keys.TAB)
+            time.sleep(delay)
+            WebDriverWait(wd, 20).until(
+                EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementMois')))
+            wd.find_element(By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementMois').send_keys(Keys.TAB)
 
-        time.sleep(delay)
-        WebDriverWait(wd, 20).until(
-            EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementMois')))
-        wd.find_element(By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementMois').send_keys(Keys.TAB)
-
-        time.sleep(delay)
-        WebDriverWait(wd, 20).until(
-            EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementAnnee')))
-        wd.find_element(By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementAnnee').send_keys(Keys.TAB)
+            time.sleep(delay)
+            WebDriverWait(wd, 20).until(
+                EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementAnnee')))
+            wd.find_element(By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementAnnee').send_keys(Keys.TAB)
+        except:
+            progressbar_label.destroy()
+            WebDriverWait(wd, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
+            messages = wd.find_element(By.CLASS_NAME, 'ui-messages-error').text
+            messagebox.showinfo("Service Interrompu !", messages)
+            WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+            wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+            wd.close()
 
         ## Validation de la non saisie des dates
-
-        time.sleep(delay)
-        WebDriverWait(wd, 20).until(
-            EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementAnnee')))
-        wd.find_element(By.ID, 'inputBrep9081Rep9082ReponseUtilisateurON').send_keys('O')
-        wd.find_element(By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementAnnee').send_keys(Keys.TAB)
+        try:
+            time.sleep(delay)
+            WebDriverWait(wd, 20).until(
+                EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementAnnee')))
+            wd.find_element(By.ID, 'inputBrep9081Rep9082ReponseUtilisateurON').send_keys('O')
+            wd.find_element(By.ID, 'inputB33ginf2Ya33GdtreDateRenouvellementAnnee').send_keys(Keys.TAB)
+        except:
+            progressbar_label.destroy()
+            WebDriverWait(wd, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
+            messages = wd.find_element(By.CLASS_NAME, 'ui-messages-error').text
+            messagebox.showinfo("Service Interrompu !", messages)
+            WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+            wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+            wd.close()
 
         ## Validation de la suite
-
-        time.sleep(delay)
-        WebDriverWait(wd, 20).until(
-            EC.presence_of_element_located((By.ID, 'inputB33gsuprYa33G007ReponseSuitePrec')))
-        wd.find_element(By.ID, 'inputB33gsuprYa33G007ReponseSuitePrec').send_keys('S')
-        wd.find_element(By.ID, 'inputB33gsuprYa33G007ReponseSuitePrec').send_keys(Keys.TAB)
+        try:
+            time.sleep(delay)
+            WebDriverWait(wd, 20).until(
+                EC.presence_of_element_located((By.ID, 'inputB33gsuprYa33G007ReponseSuitePrec')))
+            wd.find_element(By.ID, 'inputB33gsuprYa33G007ReponseSuitePrec').send_keys('S')
+            wd.find_element(By.ID, 'inputB33gsuprYa33G007ReponseSuitePrec').send_keys(Keys.TAB)
+        except:
+            progressbar_label.destroy()
+            WebDriverWait(wd, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
+            messages = wd.find_element(By.CLASS_NAME, 'ui-messages-error').text
+            messagebox.showinfo("Service Interrompu !", messages)
+            WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+            wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+            wd.close()
 
         ## Validation de la saisie de l'opposition
-
-        time.sleep(delay)
-        WebDriverWait(wd, 20).until(
-            EC.presence_of_element_located((By.ID, 'inputB33gvlcrYa33GvalcValidationCreation')))
-        wd.find_element(By.ID, 'inputB33gvlcrYa33GvalcValidationCreation').send_keys('O')
-        wd.find_element(By.ID, 'inputB33gvlcrYa33GvalcValidationCreation').send_keys(Keys.TAB)
+        try:
+            time.sleep(delay)
+            WebDriverWait(wd, 20).until(
+                EC.presence_of_element_located((By.ID, 'inputB33gvlcrYa33GvalcValidationCreation')))
+            wd.find_element(By.ID, 'inputB33gvlcrYa33GvalcValidationCreation').send_keys('O')
+            wd.find_element(By.ID, 'inputB33gvlcrYa33GvalcValidationCreation').send_keys(Keys.TAB)
+        except:
+            progressbar_label.destroy()
+            WebDriverWait(wd, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
+            messages = wd.find_element(By.CLASS_NAME, 'ui-messages-error').text
+            messagebox.showinfo("Service Interrompu !", messages)
+            WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+            wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+            wd.close()
 
         ## Capture numéro d'opération
-
-        time.sleep(delay)
-        WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'outputB33gnopeYa33GnopeNOpe')))
-        numero_ope = wd.find_element(By.ID, 'outputB33gnopeYa33GnopeNOpe').text
+        try:
+            time.sleep(delay)
+            WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'outputB33gnopeYa33GnopeNOpe')))
+            numero_ope = wd.find_element(By.ID, 'outputB33gnopeYa33GnopeNOpe').text
+        except:
+            progressbar_label.destroy()
+            WebDriverWait(wd, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
+            messages = wd.find_element(By.CLASS_NAME, 'ui-messages-error').text
+            messagebox.showinfo("Service Interrompu !", messages)
+            WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+            wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+            wd.close()
 
         ## Saisie de la fin de saisie
-
-        time.sleep(delay)
-        WebDriverWait(wd, 20).until(
-            EC.presence_of_element_located((By.ID, 'inputB33gnouvYa33GnvopNouvelleOpposition')))
-        wd.find_element(By.ID, 'inputB33gnouvYa33GnvopNouvelleOpposition').send_keys('N')
-        wd.find_element(By.ID, 'inputB33gnouvYa33GnvopNouvelleOpposition').send_keys(Keys.TAB)
+        try:
+            time.sleep(delay)
+            WebDriverWait(wd, 20).until(
+                EC.presence_of_element_located((By.ID, 'inputB33gnouvYa33GnvopNouvelleOpposition')))
+            wd.find_element(By.ID, 'inputB33gnouvYa33GnvopNouvelleOpposition').send_keys('N')
+            wd.find_element(By.ID, 'inputB33gnouvYa33GnvopNouvelleOpposition').send_keys(Keys.TAB)
+        except:
+            progressbar_label.destroy()
+            WebDriverWait(wd, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
+            messages = wd.find_element(By.CLASS_NAME, 'ui-messages-error').text
+            messagebox.showinfo("Service Interrompu !", messages)
+            WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+            wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+            wd.close()
 
         ## Validation de la sortie du formulaire
-
-        time.sleep(delay)
-        WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
-        wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+        try:
+            time.sleep(delay)
+            WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+            wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+        except:
+            progressbar_label.destroy()
+            WebDriverWait(wd, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
+            messages = wd.find_element(By.CLASS_NAME, 'ui-messages-error').text
+            messagebox.showinfo("Service Interrompu !", messages)
+            WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+            wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+            wd.close()
 
         ## Marquage tâche faîte dans le fichier
         match os.path.isfile(filepath1):
@@ -668,13 +857,13 @@ def create_opposition(headless):
                 data[i][5] = numero_ope
                 data[i][6] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                 data[i][7] = 'X'
-                print("inscription des données dans la liste", data)
+                print("inscription des données dans la liste ligne 842", data)
             case False:
                 data[i][3] = str(date_d_effet)
                 data[i].append(numero_ope)
                 data[i].append(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
                 data[i].append('X')
-                print("inscription des données", data)
+                print("inscription des données ligne 848", data)
 
         ## Incrementation ProgressBar
 
@@ -683,27 +872,48 @@ def create_opposition(headless):
         tab6.update()
         progress = pb['value']
         progressbar_label = Label(tab6,
-                                  text=f"Le travail est en cours : {pb['value']}% il reste environ {min_sec_format}")
+                                  text=f"Le travail est en cours : {pb['value']:.2f}% il reste environ {min_sec_format}")
         progressbar_label.place(x=250, y=label_y)
         pb.update()
         tab6.update()
         i += 1
     columns = ["FRP société", "FRP opposant", "Montant", "Date d’effet = date réception SATD",
-               "Réf jugement validité = réf SATD", "Numéro d'Opération", "Date d'exécution", "Fait"]
+               "Réf jugement validité = réf SATD", "Données manquantes", "Numéro d'Opération", "Date d'exécution",
+               "Fait"]
     data.insert(0, columns)
-    print("les nouvelles data", data)
+    print("les nouvelles data : \n", data)
     # source_rep = os.getcwd()
     destination_rep1 = source_rep + '/donnees_sortie/donnees_sortie' + datetime.now().strftime('_%Y-%m-%d')
     if not os.path.exists(destination_rep1):
         os.makedirs(destination_rep1)
     if os.path.exists(destination_rep1 + '/' + filename1):
         os.remove(destination_rep1 + '/' + filename1)
-        data.insert(1, old_data[0])
+        print("old_data : \n", old_data)
+        del data[0]
+        print("data sans les entêtes", data)
+        numpyData = np.append(data, old_data, axis=0)
+        data = list(numpyData)
+        data.insert(0, columns)
+        print("listData : \n", data)
+        wd.close()
+    else:
+        for i in range(len(old_data)):
+            old_data[i].append('')
+            old_data[i].append('')
+            old_data[i].append('')
+
+        print("old_data : \n", old_data)
+        del data[0]
+        print("data sans les entêtes", data)
+        numpyData = np.append(data, old_data, axis=0)
+        data = list(numpyData)
+        data.insert(0, columns)
+        print("listData : \n", data)
+        wd.close()
+
     save_data(destination_rep1 + '/' + filename1, data)
 
-    frp_societe = data[0]
     frp_opposant = list(zip(data[1]))
-    print(frp_societe)
     # zipped = list(zip(data))
     # print("zipped", zipped)
     # data_df = pd.DataFrame.columns(
@@ -851,30 +1061,32 @@ def open_file():
     if os.path.isfile(filepath1):
         df1 = pd.read_excel(filepath1)
         column1 = df1.columns[6]
-        print(df1)
+        print("le dataframe des anciennes données : \n", df1)
+        print("----------------------------------------------------------------------------")
         nb_ligne1 = df1.shape[0]
         s = 's' if nb_ligne1 > 1 else ''
         sub_df1 = df1[df1['Fait'] == 'X']
-        print("le dataframe contenant les lignes déjà faites: ", sub_df1)
+        print("le dataframe contenant les lignes déjà faites: \n", sub_df1)
+        print("----------------------------------------------------------------------------")
         if len(sub_df1) == 0:
             messagebox.showinfo("Création d'opposition", "Aucune opération n'a été effectué pour l'instant !")
-        elif min(df.index[df1['Fait'] == 'X'].tolist()) != 0 & min(df.index[df1['Fait'] == 'X'].tolist()):
-            premiere_partie = 'La première opposition du fichier n\'a pas été enregistré' if min(
-                df.index[df1['Fait'] == 'X'].tolist()) == 1 else 'Les ' + str(min(
-                df.index[df1['Fait'] == 'X'].tolist()) + 1) + 'premières oppositions du fichier n\'ont pas été ' \
-                                                              'enregistrées '
-            messagebox.showwarning(
-                "Création d'opposition", 'Vous avez déjà un fichier de sortie qui contient ' + str(nb_ligne1) + ' ligne'
-                                         + s + '.\n Une opération de création d\'opposition à déjà été lancée, '
-                                               'l\'opération \n s\'est arrêtée à la ligne '
-                                         + str(min(df.index[df1['Fait'] == 'X'].tolist()) + 1) + '.\n'
-                                         + premiere_partie)
-            print('Vous avez déjà un fichier de sortie qui contient ' + str(nb_ligne1) + ' ligne' + s +
-                  '.\n Une opération de création d\'opposition à déjà été lancée, l\'opération \n s\'est arrêtée à la '
-                  'ligne '
-                  + str(min(df.index[df1['Fait'] == 'X'].tolist()) + 1) + '.\n'
-                  + premiere_partie
-                  )
+        # elif min(df.index[df1['Fait'] == 'X'].tolist()) != 0 & min(df.index[df1['Fait'] == 'X'].tolist()):
+        #     premiere_partie = 'La première opposition du fichier n\'a pas été enregistré' if min(
+        #         df.index[df1['Fait'] == 'X'].tolist()) == 1 else 'Les ' + str(min(
+        #         df.index[df1['Fait'] == 'X'].tolist()) + 1) + 'premières oppositions du fichier n\'ont pas été ' \
+        #                                                       'enregistrées '
+        #     messagebox.showwarning(
+        #         "Création d'opposition", 'Vous avez déjà un fichier de sortie qui contient ' + str(nb_ligne1) + ' ligne'
+        #                                  + s + '.\n Une opération de création d\'opposition à déjà été lancée, '
+        #                                        'l\'opération \n s\'est arrêtée à la ligne '
+        #                                  + str(min(df.index[df1['Fait'] == 'X'].tolist()) + 1) + '.\n'
+        #                                  + premiere_partie)
+        #     print('Vous avez déjà un fichier de sortie qui contient ' + str(nb_ligne1) + ' ligne' + s +
+        #           '.\n Une opération de création d\'opposition à déjà été lancée, l\'opération \n s\'est arrêtée à la '
+        #           'ligne '
+        #           + str(min(df.index[df1['Fait'] == 'X'].tolist()) + 1) + '.\n'
+        #           + premiere_partie
+        #           )
         elif len(sub_df1) - len(df) != 0:
             response = messagebox.askyesno(
                 "Création d'opposition", "Vous avez déjà effectué les opérations sur ce fichier. Mais plusieurs lignes"
@@ -908,6 +1120,13 @@ def open_file():
 
     else:
         messagebox.showinfo("Création d'opposition", "Aucune opération n'a été effectué pour l'instant !")
+    file.close()
+    for i in range(df.shape[0]):
+        if df.loc[i].isnull().any():
+            message = "la ligne {} du tableau comporte une ou plusieurs données obligatoires manquantes.\n Cette " \
+                      "ligne ne sera pas traitée et sera marquée dans le fichier de sortie".format(i + 1)
+            print(messagebox, df.loc[i])
+            messagebox.showwarning("Données manquantes", message)
 
 
 # Procédure pour la progress bar
