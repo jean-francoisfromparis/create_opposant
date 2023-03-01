@@ -2,10 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="70ab0b16-4c84-4496-b73d-11dcc68f9ae0" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/2/7/2799f98614ce4cd1db6c3f2d98b4702b15eba9a2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/archive_SATD/archive_2023-02-23/SATD_20022023.ods" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/archive_SATD/archive_2023-02-28/SATD_20022023.ods" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/donnees_sortie/donnees_sortie_2023-02-23/donnees_creation_opposition_sortie_2023-02-23 - Copie.ods" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/donnees_sortie/donnees_sortie_2023-02-23/donnees_creation_opposition_sortie_2023-02-23.ods" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/donnees_sortie/donnees_sortie_2023-02-28/donnees_creation_opposition_sortie_2023-02-28.ods" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Creation_Opposition.py" beforeDir="false" afterPath="$PROJECT_DIR$/Creation_Opposition.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SATD_20022023.ods" beforeDir="false" afterPath="$PROJECT_DIR$/SATD_20022023.ods" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/geckodriver.log" beforeDir="false" afterPath="$PROJECT_DIR$/geckodriver.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,6 +33,14 @@
             <RecentBranchesForRepo>
               <option name="branches">
                 <list>
+                  <RecentBranch>
+                    <option name="branchName" value="feat/changing_line_automatically" />
+                    <option name="lastUsedInstant" value="1676990206" />
+                  </RecentBranch>
+                  <RecentBranch>
+                    <option name="branchName" value="feat/autom_line_charged" />
+                    <option name="lastUsedInstant" value="1675760329" />
+                  </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="feat/connectivity-quality" />
                     <option name="lastUsedInstant" value="1675335529" />
@@ -61,7 +74,7 @@
     &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;advanced.settings&quot;
   }
 }</component>
   <component name="RunManager">
@@ -123,5 +136,16 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Creation_Opposition.py</url>
+          <line>272</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
