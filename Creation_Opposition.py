@@ -14,7 +14,6 @@ import numpy as np
 import pandas as pd
 import pyexcel_ods3 as pe
 from PIL import Image, ImageTk
-from pandas.core.dtypes.common import is_datetime64_dtype
 from pandastable import Table
 from pyexcel_ods import save_data
 from pynput.keyboard import Controller
@@ -317,35 +316,72 @@ def create_opposition(headless):
         case True:
             donnees_creation_opposition_sortie = pd.read_excel(filepath1)
             donnees_creation_opposition = pd.read_excel(File_path)
-            donnees_creation_opposition['Données manquantes'] = ""
             donnees_creation_opposition["Numéro d'Opération"] = ""
             donnees_creation_opposition["Date d'exécution"] = ""
-            donnees_creation_opposition["Fait"] = ""
+            donnees_creation_opposition["Dossiers traités"] = ""
+            donnees_creation_opposition["Dossiers traités"] = ""
             print("dataframe des données d'entrée : \n", donnees_creation_opposition)
             print("----------------------------------------------------------------------------")
-            join = pd.concat([donnees_creation_opposition, donnees_creation_opposition_sortie])
-            print("la fusion : \n", join["Réf jugement validité = réf SATD"])
+            # Enlever les données manquantes du fichier d'entrée
+            taille_donnee_entree = donnees_creation_opposition.shape[0]
+            print("Taille des données d'entrées :  \n", taille_donnee_entree)
             print("----------------------------------------------------------------------------")
-            old_data = donnees_creation_opposition_sortie[(donnees_creation_opposition_sortie['Fait'] == 'X') | (donnees_creation_opposition_sortie['Données manquantes'] == '∅')].values.tolist()
-            all_old_data_list = donnees_creation_opposition_sortie["Réf jugement validité = réf SATD"].values.tolist()
-            print(all_old_data_list)
-            result = join[-join["Réf jugement validité = réf SATD"].isin(all_old_data_list)]
-            print(result)
-            data = donnees_creation_opposition_sortie[(donnees_creation_opposition_sortie['Fait'] != 'X') & (
-                        donnees_creation_opposition_sortie['Données manquantes'] != '∅')]
-            data = pd.concat([data,result])
+            print("les données : \n", donnees_creation_opposition)
+            print("----------------------------------------------------------------------------")
+            for i in range(taille_donnee_entree):
+                if donnees_creation_opposition.loc[i].isnull().any() or \
+                        donnees_creation_opposition["Date d’effet = date réception SATD"].loc[i] == 'NaT':
+                    donnees_creation_opposition.drop(i, inplace=True)
+            taille_donnee_entree1 = donnees_creation_opposition.shape[0]
+            print("Taille des données d'entrées après suppression lignes incomplétes : \n", taille_donnee_entree1)
+            print("----------------------------------------------------------------------------")
+            print("les données après suppression des lignes incomplétes :  \n", donnees_creation_opposition)
+            print("----------------------------------------------------------------------------")
+            # Enlever les données déjà passées du fichier d'entrée
+            old_data_done = donnees_creation_opposition_sortie[
+                (donnees_creation_opposition_sortie['Dossiers traités'] == 'X')]
+            old_data_done_list = old_data_done["Réf jugement validité = réf SATD"]
+            print("liste des données déja passéés \n", old_data_done_list)
+            for element in old_data_done["Réf jugement validité = réf SATD"]:
+                old_data_done_list_index = donnees_creation_opposition[
+                    donnees_creation_opposition["Réf jugement validité = réf SATD"] == element].index
+                donnees_creation_opposition.drop(old_data_done_list_index, inplace=True)
+                print("Dataframe après suppression des données déjà enregistré : ", donnees_creation_opposition)
+            data = donnees_creation_opposition.values.tolist()
+            old_data = old_data_done.values.tolist()
             nb_ligne = len(data)
+            print("nb ligne sortie 1: \n", nb_ligne)
+            print("Les données initiales à ne pas utiliser: \n", old_data)
+            print("Les données initiales: \n", data)
+
+            # join = pd.concat([donnees_creation_opposition, donnees_creation_opposition_sortie])
+            # print("la fusion : \n", join["Réf jugement validité = réf SATD"])
+            # print("----------------------------------------------------------------------------")
+            # old_data = donnees_creation_opposition_sortie[(donnees_creation_opposition_sortie['Dossiers traités'] == 'X') | (
+            #         donnees_creation_opposition_sortie['Données manquantes'] == '∅')].values.tolist()
+            # all_old_data_list = donnees_creation_opposition_sortie["Réf jugement validité = réf SATD"].values.tolist()
+            # print("liste des données", old_data)
+            # print("----------------------------------------------------------------------------")
+            # result = join[-join["Réf jugement validité = réf SATD"].isin(all_old_data_list)]
+            # print("résultat de la jointure : ",result)
+            # print("----------------------------------------------------------------------------")
+            # data = donnees_creation_opposition_sortie[(donnees_creation_opposition_sortie['Dossiers traités'] != 'X') & (
+            #         donnees_creation_opposition_sortie['Données manquantes'] != '∅')]
+            # data = pd.concat([data, result], ignore_index=True).values.tolist()
+            # nb_ligne = len(data)
             # print("nb ligne sortie 1: ", nb_ligne)
-            print("Les données initiales à ne pas utiliser: ", old_data)
-            print("Les données initiales: ", data)
+            # print("Les données initiales à ne pas utiliser: ", old_data)
+            # print("Les données initiales: ", data)
         case False:
             donnees_creation_opposition_sortie = pe.get_data(File_path)
             print("Mauvaise sortie")
             donnees_creation_opposition_sortie['Feuille1'][0].append("Numéro d'Opération")
-            donnees_creation_opposition_sortie['Feuille1'][0].append("Fait")
+            donnees_creation_opposition_sortie['Feuille1'][0].append("Dossiers traités")
+            # donnees_creation_opposition_sortie['Feuille1'][0].append("Dossiers traités")
             donnees_creation_opposition = pd.read_excel(File_path)
             donnees_creation_opposition["Date d’effet = date réception SATD"] = donnees_creation_opposition[
                 "Date d’effet = date réception SATD"].astype(str)
+
             nb_ligne = donnees_creation_opposition.shape[0]
             ligne_incomplete = list()
             for i in range(nb_ligne):
@@ -356,22 +392,22 @@ def create_opposition(headless):
                 else:
                     ligne_incomplete.append('')
                     # print(ligne_incomplete)
-            # donnees_creation_opposition['Données manquantes'] = ligne_incomplete
+            donnees_creation_opposition["Dossiers traités"] = ligne_incomplete
             print(ligne_incomplete)
-            donnees_creation_opposition.insert(loc=5, column='Données manquantes', value=ligne_incomplete)
+            # donnees_creation_opposition.insert(loc=5, column='Lignes non traitées', value=ligne_incomplete)
             # print("type de données: ", donnees_creation_opposition)
-            old_data = donnees_creation_opposition[donnees_creation_opposition['Données manquantes'] == '∅'].values \
+            old_data = donnees_creation_opposition[donnees_creation_opposition["Dossiers traités"] == '∅'].values \
                 .tolist()
             print("les données non gardé ligne 346 \n", old_data)
-            data = donnees_creation_opposition[donnees_creation_opposition['Données manquantes'] != '∅'].values.tolist()
+            data = donnees_creation_opposition[donnees_creation_opposition["Dossiers traités"] != '∅'].values.tolist()
             print("les données d'entrée ligne 347 \n", data)
             nb_ligne = len(data)
             print(nb_ligne)
-    exit()
-
-    df = pd.DataFrame(
-        columns=["Indice", "FRP société", "FRP opposant", "Montant", "Date d’effet = date réception SATD",
-                 "Numéro d'Opération", "Date d'exécution", "Fait"])
+    # exit()
+    print("les données d'entrée ligne 373 \n", data)
+    # df = pd.DataFrame(
+    #     columns=["Indice", "FRP société", "FRP opposant", "Montant", "Date d’effet = date réception SATD",
+    #              "Numéro d'Opération", "Date d'exécution", "Dossiers traités"])
     # Condition qui vérifie que chaque cellule de la colonne rib, à part le header, est vide, d'après le besoin case
     # vide = rang 1, si l'item correspondant au rang est vide il prend la valeur "1" utilisable dans la boucle
     # d'automatisation. Cette condition sert à s'assurer que l'on aura une valeur pour le rang, s'il n'y a pas de
@@ -450,10 +486,33 @@ def create_opposition(headless):
         messagebox.showinfo("Service Interrompu !", messages)
         wd.close()
 
+    time.sleep(delay)
+    wd.find_element(By.ID, 'inputBmenuxBrmenx07CodeSaisieDirecte').send_keys('3')
+    wd.find_element(By.ID, 'inputBmenuxBrmenx07CodeSaisieDirecte').send_keys(Keys.ENTER)
+    time.sleep(delay)
+
+    ## Création d'un Redevable
+    ## Arriver à la transactionv 3-17
+    try:
+        WebDriverWait(wd, 20).until(
+            EC.presence_of_element_located((By.ID, 'bmenuxtableMenus:16:outputBmenuxBrmenx04LibelleLigneProposee')))
+        wd.find_element(By.ID, 'bmenuxtableMenus:16:outputBmenuxBrmenx04LibelleLigneProposee').click()
+    except:
+        progressbar_label.destroy()
+        messagebox.showinfo("Service Interrompu !", "La transaction création des oppositions ne semblent pas être "
+                                                    "disponible. Veuillez tester manuellement avant de redémarrer "
+                                                    "l'automate.")
+        WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+        wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+        wd.close()
+
     progressbar_label.destroy()
+
     ## Boucle sur le fichier selon le nombre de lignes indiquées
-    for i in range(nb_ligne):
-        print("N° de ligne : ", i)
+    # for j in range(nb_ligne):
+    j = 0
+    while True:
+        print("N° de ligne à la ligne 510: ", j)
         source_rep = os.getcwd()
         destination_rep = source_rep + '/archive_SATD/archive' + datetime.now().strftime('_%Y-%m-%d')
         num_of_secs = 60
@@ -464,47 +523,68 @@ def create_opposition(headless):
         progressbar_label.place(x=250, y=label_y)
         tab6.update()
 
-        ## Création d'un Redevable
-        ## Arriver à la transactionv 3-17
-
-        time.sleep(delay)
-        wd.find_element(By.ID, 'inputBmenuxBrmenx07CodeSaisieDirecte').send_keys('3')
-        wd.find_element(By.ID, 'inputBmenuxBrmenx07CodeSaisieDirecte').send_keys(Keys.ENTER)
-        time.sleep(delay)
-        try:
-            WebDriverWait(wd, 20).until(
-                EC.presence_of_element_located((By.ID, 'bmenuxtableMenus:16:outputBmenuxBrmenx04LibelleLigneProposee')))
-            wd.find_element(By.ID, 'bmenuxtableMenus:16:outputBmenuxBrmenx04LibelleLigneProposee').click()
-        except:
-            progressbar_label.destroy()
-            messagebox.showinfo("Service Interrompu !", "La transaction création des oppositions ne semblent pas être "
-                                                        "disponible. Veuillez tester manuellement avant de redémarrer "
-                                                        "l'automate.")
-            WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
-            wd.find_element(By.ID, 'barre_outils:touche_f2').click()
-            wd.close()
-
         ## Saisie numéro de Dossier
-        try:
-            WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputYrdos211NumeroDeDossier')))
-            ## TODO: ajouter un try pour échapper vers F2 et message de plantage
-            # wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(numeroDossier)
-            wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(data[i][0])
+        # while True:
+        # try:
+        #     print("numero de dossier : ", data[i][0])
+        #     WebDriverWait(wd, 30).until(EC.presence_of_element_located((By.ID, 'inputYrdos211NumeroDeDossier')))
+        #     wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(data[i][0])
+        #     wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(Keys.ENTER)
+        # except:
+        #     print("erreur")
+        #     WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
+        #
+        #     errorMessages = wd.find_element(By.CLASS_NAME, 'ui-messages-error').text
+        #     messages = f"{errorMessages} + \n Le dossier N°{data[i][0]} est ouvert par un autre agent ou verrouillé." \
+        #                f"\n Vous pouvez relancer le processus. Cette ligne sera exclu et pourra être relancer dans " \
+        #                f"45 minutes"
+        #     messagebox.showinfo("Service Interrompu !", messages)
+        #     time.sleep(delay)
+        #     WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+        #     wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+        while True:
+            print("le N° de ligne est à la ligne 541 :", j)
+            print("numero de dossier : ", data[j][0])
+            WebDriverWait(wd, 30).until(EC.presence_of_element_located((By.ID, 'inputYrdos211NumeroDeDossier')))
+            wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(data[j][0])
             wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(Keys.ENTER)
-        except:
-            progressbar_label.destroy()
-            WebDriverWait(wd, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
-            messages = wd.find_element(By.CLASS_NAME, 'ui-messages-error').text
-            messagebox.showinfo("Service Interrompu !", messages)
-            WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
-            wd.find_element(By.ID, 'barre_outils:touche_f2').click()
-            wd.close()
+            errorMessages = ""
+            print("messages d'erreur: ", errorMessages)
+            time.sleep(delay)
+            time.sleep(delay)
+            time.sleep(delay)
+            WebDriverWait(wd, 200).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
+            errorMessages = wd.find_element(By.CLASS_NAME, 'ui-messages-error').text
+            print("messages d'erreur: ", errorMessages)
+            messageDossierVerrouille = "DOSSIER DEJA UTILISE PAR UN AUTRE POSTE  - ATTENTE OU ABANDON - ".replace(" ",
+                                                                                                                  "")
+
+            errorMessagesIsPresent = errorMessages.replace(" ", "") == messageDossierVerrouille
+            time.sleep(delay)
+            time.sleep(delay)
+            if errorMessagesIsPresent:
+                messages = f"{errorMessages} \n Le dossier N°{data[j][0]} est ouvert par un autre agent ou verrouillé." \
+                           f"\n Vous pouvez relancer le processus. Cette ligne sera exclu et pourra être relancer dans " \
+                           f"45 minutes"
+                messagebox.showinfo("Dossier verrouillé !", messages)
+                data[j].append('')
+                data[j].append('')
+                # data[j].append('')
+                data[j].append('\U0001F512')
+                time.sleep(delay)
+                # WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+                # wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+                j = j + 1
+            else:
+                break
+            print("le N° de ligne est à la ligne 571 :", j)
+            # exit()
 
         ## Saisie du choix Créer
         try:
             time.sleep(delay)
             time.sleep(delay)
-            WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33gmenuYa33Gch1ChoixCMAI')))
+            WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'inputB33gmenuYa33Gch1ChoixCMAI')))
             wd.find_element(By.ID, 'inputB33gmenuYa33Gch1ChoixCMAI').send_keys('C')
             wd.find_element(By.ID, 'inputB33gmenuYa33Gch1ChoixCMAI').send_keys(Keys.TAB)
             # print("ligne 473: ok")
@@ -513,8 +593,7 @@ def create_opposition(headless):
             WebDriverWait(wd, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
             # print("ligne 477")
             errorMessages = wd.find_element(By.CLASS_NAME, 'ui-messages-error').text
-            messages = errorMessages + " La qualité de la connexion ne permet pas un bon fonctionnement de " \
-                                       "l'automate. Veuillez essayer ultérieurement ! "
+            messages = errorMessages
             print(messages)
             time.sleep(delay)
             time.sleep(delay)
@@ -529,10 +608,10 @@ def create_opposition(headless):
             time.sleep(delay)
             WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputYrdos211NumeroDeDossier')))
             # wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(numero_creancier_opposant)
-            wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(data[i][1])
+            wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(data[j][1])
             wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(Keys.TAB)
-            print("ligne 497: ok")
-            # print(data[i][1])
+            print("ligne 604: ok")
+            print("le N° de ligne est à la ligne 605 :", j)  # print(data[i][1])
         except:
             progressbar_label.destroy()
             WebDriverWait(wd, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
@@ -627,7 +706,7 @@ def create_opposition(headless):
         try:
             time.sleep(delay)
             WebDriverWait(wd, 20).until(EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GmtMontant')))
-            wd.find_element(By.ID, 'inputB33ginf2Ya33GmtMontant').send_keys(data[i][2])
+            wd.find_element(By.ID, 'inputB33ginf2Ya33GmtMontant').send_keys(data[j][2])
             wd.find_element(By.ID, 'inputB33ginf2Ya33GmtMontant').send_keys(Keys.TAB)
             # print(data[i][2])
         except:
@@ -640,13 +719,13 @@ def create_opposition(headless):
             wd.close()
 
         ## Saisie de la Date d'Effet
-        print(type(data[i][3]))
-        if isinstance(data[i][3], str):
-            date_d_effet = datetime.strptime(data[i][3], "%Y-%m-%d")
+        print(type(data[j][3]))
+        if isinstance(data[j][3], str):
+            date_d_effet = datetime.strptime(data[j][3], "%Y-%m-%d")
             print("ici c'est un string")
             print(date_d_effet.day)
         else:
-            date_d_effet = data[i][3]
+            date_d_effet = data[j][3]
             print("ici ce n'est pas un string")
         try:
             time.sleep(delay)
@@ -697,7 +776,7 @@ def create_opposition(headless):
             time.sleep(delay)
             WebDriverWait(wd, 20).until(
                 EC.presence_of_element_located((By.ID, 'inputB33ginf2Ya33GjuvlJugementValidite')))
-            wd.find_element(By.ID, 'inputB33ginf2Ya33GjuvlJugementValidite').send_keys(data[i][4])
+            wd.find_element(By.ID, 'inputB33ginf2Ya33GjuvlJugementValidite').send_keys(data[j][4])
             wd.find_element(By.ID, 'inputB33ginf2Ya33GjuvlJugementValidite').send_keys(Keys.TAB)
             # print(data[i][4])
         except:
@@ -838,32 +917,33 @@ def create_opposition(headless):
             wd.close()
 
         ## Validation de la sortie du formulaire
-        try:
-            time.sleep(delay)
-            WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
-            wd.find_element(By.ID, 'barre_outils:touche_f2').click()
-        except:
-            progressbar_label.destroy()
-            WebDriverWait(wd, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
-            messages = wd.find_element(By.CLASS_NAME, 'ui-messages-error').text
-            messagebox.showinfo("Service Interrompu !", messages)
-            WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
-            wd.find_element(By.ID, 'barre_outils:touche_f2').click()
-            wd.close()
+        # try:
+        #     time.sleep(delay)
+        #     WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+        #     wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+        # except:
+        #     progressbar_label.destroy()
+        #     WebDriverWait(wd, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'ui-messages-error')))
+        #     messages = wd.find_element(By.CLASS_NAME, 'ui-messages-error').text
+        #     messagebox.showinfo("Service Interrompu !", messages)
+        #     WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
+        #     wd.find_element(By.ID, 'barre_outils:touche_f2').click()
+        #     wd.close()
 
         ## Marquage tâche faîte dans le fichier
         match os.path.isfile(filepath1):
             case True:
-                data[i][5] = numero_ope
-                data[i][6] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                data[i][7] = 'X'
-                print("inscription des données dans la liste ligne 842", data)
+                data[j][5] = numero_ope
+                data[j][6] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                data[j][7] = 'X'
+                print("inscription des données dans la liste ligne 929", data)
             case False:
-                data[i][3] = str(date_d_effet)
-                data[i].append(numero_ope)
-                data[i].append(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-                data[i].append('X')
-                print("inscription des données ligne 848", data)
+                data[j][3] = str(date_d_effet.strftime('%Y-%m-%d'))
+                data[j].insert(5,numero_ope)
+                data[j].insert(6,datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+                data[j][7] = 'X'
+                print("inscription des données ligne 936", data)
+        print("le N° de ligne est  à la ligne 937:", j)
 
         ## Incrementation ProgressBar
 
@@ -876,21 +956,28 @@ def create_opposition(headless):
         progressbar_label.place(x=250, y=label_y)
         pb.update()
         tab6.update()
-        i += 1
+        print("le N° de ligne est  à la ligne 950:", j)
+        if j < nb_ligne - 1:
+            j += 1
+        else:
+            break
     columns = ["FRP société", "FRP opposant", "Montant", "Date d’effet = date réception SATD",
-               "Réf jugement validité = réf SATD", "Données manquantes", "Numéro d'Opération", "Date d'exécution",
-               "Fait"]
+               "Réf jugement validité = réf SATD", "Numéro d'Opération", "Date d'exécution",
+               "Dossiers traités"]
     data.insert(0, columns)
     print("les nouvelles data : \n", data)
     # source_rep = os.getcwd()
     destination_rep1 = source_rep + '/donnees_sortie/donnees_sortie' + datetime.now().strftime('_%Y-%m-%d')
+    saved_file = destination_rep1 + '/' + filename1
     if not os.path.exists(destination_rep1):
         os.makedirs(destination_rep1)
     if os.path.exists(destination_rep1 + '/' + filename1):
         os.remove(destination_rep1 + '/' + filename1)
         print("old_data : \n", old_data)
         del data[0]
-        print("data sans les entêtes", data)
+        print("data sans les entêtes (ligne 978)", data)
+        # if old_data == [""]:
+
         numpyData = np.append(data, old_data, axis=0)
         data = list(numpyData)
         data.insert(0, columns)
@@ -900,25 +987,29 @@ def create_opposition(headless):
         for i in range(len(old_data)):
             old_data[i].append('')
             old_data[i].append('')
-            old_data[i].append('')
+            # old_data[i].append('')
 
         print("old_data : \n", old_data)
         del data[0]
-        print("data sans les entêtes", data)
-        numpyData = np.append(data, old_data, axis=0)
-        data = list(numpyData)
+        print("data sans les entêtes (ligne 991)", data)
+        if old_data == []:
+            data = data
+        else:
+            numpyData = np.append(data, old_data, axis=0)
+            data = list(numpyData)
+
         data.insert(0, columns)
         print("listData : \n", data)
         wd.close()
 
-    save_data(destination_rep1 + '/' + filename1, data)
+    save_data(saved_file, data)
 
     frp_opposant = list(zip(data[1]))
     # zipped = list(zip(data))
     # print("zipped", zipped)
     # data_df = pd.DataFrame.columns(
     #     ["Indice", "FRP société", "FRP opposant", "Montant", "Date d’effet = date réception SATD",
-    #      "Numéro d'Opération", "Fait"])
+    #      "Numéro d'Opération", "Dossiers traités"])
     data_df = pd.DataFrame(data)
 
     print("le dataframe : ", data_df)
@@ -1065,26 +1156,26 @@ def open_file():
         print("----------------------------------------------------------------------------")
         nb_ligne1 = df1.shape[0]
         s = 's' if nb_ligne1 > 1 else ''
-        sub_df1 = df1[df1['Fait'] == 'X']
+        sub_df1 = df1[df1['Dossiers traités'] == 'X']
         print("le dataframe contenant les lignes déjà faites: \n", sub_df1)
         print("----------------------------------------------------------------------------")
         if len(sub_df1) == 0:
             messagebox.showinfo("Création d'opposition", "Aucune opération n'a été effectué pour l'instant !")
-        # elif min(df.index[df1['Fait'] == 'X'].tolist()) != 0 & min(df.index[df1['Fait'] == 'X'].tolist()):
+        # elif min(df.index[df1['Dossiers traités'] == 'X'].tolist()) != 0 & min(df.index[df1['Dossiers traités'] == 'X'].tolist()):
         #     premiere_partie = 'La première opposition du fichier n\'a pas été enregistré' if min(
-        #         df.index[df1['Fait'] == 'X'].tolist()) == 1 else 'Les ' + str(min(
-        #         df.index[df1['Fait'] == 'X'].tolist()) + 1) + 'premières oppositions du fichier n\'ont pas été ' \
+        #         df.index[df1['Dossiers traités'] == 'X'].tolist()) == 1 else 'Les ' + str(min(
+        #         df.index[df1['Dossiers traités'] == 'X'].tolist()) + 1) + 'premières oppositions du fichier n\'ont pas été ' \
         #                                                       'enregistrées '
         #     messagebox.showwarning(
         #         "Création d'opposition", 'Vous avez déjà un fichier de sortie qui contient ' + str(nb_ligne1) + ' ligne'
         #                                  + s + '.\n Une opération de création d\'opposition à déjà été lancée, '
         #                                        'l\'opération \n s\'est arrêtée à la ligne '
-        #                                  + str(min(df.index[df1['Fait'] == 'X'].tolist()) + 1) + '.\n'
+        #                                  + str(min(df.index[df1['Dossiers traités'] == 'X'].tolist()) + 1) + '.\n'
         #                                  + premiere_partie)
         #     print('Vous avez déjà un fichier de sortie qui contient ' + str(nb_ligne1) + ' ligne' + s +
         #           '.\n Une opération de création d\'opposition à déjà été lancée, l\'opération \n s\'est arrêtée à la '
         #           'ligne '
-        #           + str(min(df.index[df1['Fait'] == 'X'].tolist()) + 1) + '.\n'
+        #           + str(min(df.index[df1['Dossiers traités'] == 'X'].tolist()) + 1) + '.\n'
         #           + premiere_partie
         #           )
         elif len(sub_df1) - len(df) != 0:
