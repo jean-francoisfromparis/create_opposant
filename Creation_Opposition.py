@@ -376,6 +376,7 @@ def create_opposition(headless):
             donnees_creation_opposition_sortie = pe.get_data(File_path)
             print("Mauvaise sortie")
             donnees_creation_opposition_sortie['Feuille1'][0].append("Numéro d'Opération")
+            donnees_creation_opposition_sortie['Feuille1'][0].append("Date d'exécution")
             donnees_creation_opposition_sortie['Feuille1'][0].append("Dossiers traités")
             # donnees_creation_opposition_sortie['Feuille1'][0].append("Dossiers traités")
             donnees_creation_opposition = pd.read_excel(File_path)
@@ -543,8 +544,8 @@ def create_opposition(headless):
         #     WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
         #     wd.find_element(By.ID, 'barre_outils:touche_f2').click()
         while True:
-            print("le N° de ligne est à la ligne 541 :", j)
-            print("numero de dossier : ", data[j][0])
+            print("le N° de ligne est à la ligne 547 :", j)
+            print("numéro de dossier : ", data[j][0])
             WebDriverWait(wd, 30).until(EC.presence_of_element_located((By.ID, 'inputYrdos211NumeroDeDossier')))
             wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(data[j][0])
             wd.find_element(By.ID, 'inputYrdos211NumeroDeDossier').send_keys(Keys.ENTER)
@@ -568,8 +569,6 @@ def create_opposition(headless):
                            f"45 minutes"
                 messagebox.showinfo("Dossier verrouillé !", messages)
                 data[j].append('')
-                data[j].append('')
-                # data[j].append('')
                 data[j].append('\U0001F512')
                 time.sleep(delay)
                 # WebDriverWait(wd, 100).until(EC.presence_of_element_located((By.ID, 'barre_outils:touche_f2')))
@@ -577,7 +576,7 @@ def create_opposition(headless):
                 j = j + 1
             else:
                 break
-            print("le N° de ligne est à la ligne 571 :", j)
+            print("le N° de ligne est à la ligne 579 :", j)
             # exit()
 
         ## Saisie du choix Créer
@@ -939,8 +938,8 @@ def create_opposition(headless):
                 print("inscription des données dans la liste ligne 929", data)
             case False:
                 data[j][3] = str(date_d_effet.strftime('%Y-%m-%d'))
-                data[j].insert(5,numero_ope)
-                data[j].insert(6,datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+                data[j].insert(5, numero_ope)
+                data[j].insert(6, datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
                 data[j][7] = 'X'
                 print("inscription des données ligne 936", data)
         print("le N° de ligne est  à la ligne 937:", j)
@@ -965,6 +964,7 @@ def create_opposition(headless):
                "Réf jugement validité = réf SATD", "Numéro d'Opération", "Date d'exécution",
                "Dossiers traités"]
     data.insert(0, columns)
+
     print("les nouvelles data : \n", data)
     # source_rep = os.getcwd()
     destination_rep1 = source_rep + '/donnees_sortie/donnees_sortie' + datetime.now().strftime('_%Y-%m-%d')
@@ -973,6 +973,9 @@ def create_opposition(headless):
         os.makedirs(destination_rep1)
     if os.path.exists(destination_rep1 + '/' + filename1):
         os.remove(destination_rep1 + '/' + filename1)
+        for i in range(len(old_data)):
+            old_data[i].insert(5, '')
+            old_data[i].insert(6, '')
         print("old_data : \n", old_data)
         del data[0]
         print("data sans les entêtes (ligne 978)", data)
@@ -985,19 +988,17 @@ def create_opposition(headless):
         wd.close()
     else:
         for i in range(len(old_data)):
-            old_data[i].append('')
-            old_data[i].append('')
-            # old_data[i].append('')
-
+            if old_data[i][5] == '' & old_data[i][6] == '':
+                del old_data[i][5]
+                del old_data[i][6]
         print("old_data : \n", old_data)
         del data[0]
-        print("data sans les entêtes (ligne 991)", data)
+        print("data sans les entêtes (ligne 993)", data)
         if old_data == []:
             data = data
         else:
             numpyData = np.append(data, old_data, axis=0)
             data = list(numpyData)
-
         data.insert(0, columns)
         print("listData : \n", data)
         wd.close()
@@ -1159,8 +1160,8 @@ def open_file():
         sub_df1 = df1[df1['Dossiers traités'] == 'X']
         print("le dataframe contenant les lignes déjà faites: \n", sub_df1)
         print("----------------------------------------------------------------------------")
-        if len(sub_df1) == 0:
-            messagebox.showinfo("Création d'opposition", "Aucune opération n'a été effectué pour l'instant !")
+        # if len(sub_df1) == 0:
+        # messagebox.showinfo("Création d'opposition", "Aucune opération n'a été effectué pour l'instant !")
         # elif min(df.index[df1['Dossiers traités'] == 'X'].tolist()) != 0 & min(df.index[df1['Dossiers traités'] == 'X'].tolist()):
         #     premiere_partie = 'La première opposition du fichier n\'a pas été enregistré' if min(
         #         df.index[df1['Dossiers traités'] == 'X'].tolist()) == 1 else 'Les ' + str(min(
@@ -1178,14 +1179,18 @@ def open_file():
         #           + str(min(df.index[df1['Dossiers traités'] == 'X'].tolist()) + 1) + '.\n'
         #           + premiere_partie
         #           )
-        elif len(sub_df1) - len(df) != 0:
+        if len(sub_df1) - len(df) != 0:
+            # response = messagebox.askyesno(
+            #     "Création d'opposition", "Vous avez déjà effectué les opérations sur ce fichier. Mais plusieurs lignes"
+            #                              " n'ont pas été enregistré. \n")
             response = messagebox.askyesno(
-                "Création d'opposition", "Vous avez déjà effectué les opérations sur ce fichier. Mais plusieurs lignes"
-                                         " n'ont pas été enregistré. \n")
+                "Création d'opposition", "Le fichier a déjà été traité par l'automate, à l'exception d'une ou "
+                                         "plusieurs SATD identifiée(s) par les symboles \"X, ∅, \U0001F512\" en "
+                                         "colonne \"Dossiers traités\".")
             try:
                 time.sleep(2)
                 tab5 = Frame(tabControl, bg='#E3EBD0')
-                tabControl.add(tab5, text='liste des oppositions déjà effectué')
+                tabControl.add(tab5, text='liste des oppositions déjà effectuées')
                 df1['Date d’effet = date réception SATD'] = df['Date d’effet = date réception SATD'].dt.strftime(
                     '%d-%m-%Y')
                 table = Table(tab5, dataframe=df1, read_only=True, index=FALSE)
@@ -1209,13 +1214,14 @@ def open_file():
             else:
                 pass
 
-    else:
-        messagebox.showinfo("Création d'opposition", "Aucune opération n'a été effectué pour l'instant !")
+    # else:
+    #     messagebox.showinfo("Création d'opposition", "Aucune opération n'a été effectué pour l'instant !")
     file.close()
     for i in range(df.shape[0]):
         if df.loc[i].isnull().any():
             message = "la ligne {} du tableau comporte une ou plusieurs données obligatoires manquantes.\n Cette " \
-                      "ligne ne sera pas traitée et sera marquée dans le fichier de sortie".format(i + 1)
+                      "ligne ne sera pas traitée et sera marquée dans la colonne \"Dossiers traités\" par le symbole " \
+                      "\"∅\". \n Vous pouvez renseigner les champs manquants avant de lancer l'automate.".format(i + 1)
             print(messagebox, df.loc[i])
             messagebox.showwarning("Données manquantes", message)
 
@@ -1279,6 +1285,13 @@ labelNumeroDossier = Label(tab1, text='Numéro Dossier Opposant:', relief="sunke
 labelNumeroDossier.place(x=250, y=paramy - 30)
 entryNumeroDossier = Entry(tab1, textvariable=EnterTable6, justify='center')
 entryNumeroDossier.place(width=225, x=paramx + 490, y=paramy - 30)
+lexique = "Lexique : \n    ● Le symbole 'X' indique que la ligne a été traitée avec succès.\n    ● Le " \
+          "symbole '∅' indique que des données obligatoires sont manquantes sur la ligne en question. \n    ● Le " \
+          "symbole '\U0001F512' indique que le dossier de la ligne en question et verrouillé, la ligne pourra " \
+          "être retraitée dans un délai de 45 minutes.\n Pour traitées les lignes comportant des anomalies, " \
+          "vous avez juste à relancé l’automates une fois les anomalies résolues. "
+labelLexique = Label(tab6, text=lexique, relief="sunken", wraplength=500, justify=LEFT)
+labelLexique.place(x=250, y=paramy + 235)
 
 creerOpposition = Button(tab2, text='Créer les Oppositions avec navigateur',
                          command=lambda: create_opposition(headless=False))

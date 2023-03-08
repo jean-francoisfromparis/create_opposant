@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="70ab0b16-4c84-4496-b73d-11dcc68f9ae0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/archive_SATD/archive_2023-03-01/SATD_20022023.ods" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/archive_SATD/archive_2023-03-03/SATD_20022023.ods" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/archive_SATD/archive_2023-03-06/SATD_20022023.ods" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/archive_SATD/archive_2023-03-07/SATD_20022023.ods" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/donnees_sortie/donnees_sortie_2023-03-07/donnees_creation_opposition_sortie_2023-03-07.ods" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gotoconfig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/archive_SATD/archive_2023-03-08/SATD_20022023.ods" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Creation_Opposition.py" beforeDir="false" afterPath="$PROJECT_DIR$/Creation_Opposition.py" afterDir="false" />
